@@ -1,0 +1,262 @@
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .page { background: #0d1117; color: #c9d1d9; min-height: 100vh; font-family: var(--font-sans); }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 0.5px solid #30363d; background: #0d1117; position: sticky; top: 0; z-index: 10; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; color: #e6edf3; }
+  .logo-dot { width: 8px; height: 8px; background: #3fb950; border-radius: 50%; box-shadow: 0 0 6px #3fb950; }
+  .nav-links { display: flex; gap: 1.5rem; font-size: 15px; }
+  .nav-links a { color: #8b949e; text-decoration: none; }
+  .nav-links a:hover { color: #e6edf3; }
+
+  .hero { padding: 4rem 2rem 3rem; text-align: center; border-bottom: 0.5px solid #21262d; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: #161b22; border: 0.5px solid #30363d; border-radius: 20px; padding: 4px 14px; font-size: 14px; color: #3fb950; margin-bottom: 1.5rem; }
+  .hero h1 { font-size: 38px; font-weight: 500; color: #e6edf3; line-height: 1.2; margin-bottom: 1rem; }
+  .hero h1 span { color: #3fb950; }
+  .hero p { font-size: 16px; color: #8b949e; max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+
+  .promo-cards { display: flex; gap: 12px; max-width: 580px; margin: 0 auto 1rem; justify-content: center; flex-wrap: wrap; }
+  .promo-block { flex: 1; min-width: 240px; display: flex; align-items: center; gap: 12px; background: #161b22; border: 0.5px solid #30363d; border-radius: 12px; padding: 1rem 1.25rem; }
+  .promo-block.second { border-color: #d29922; }
+  .promo-code { font-family: var(--font-mono); font-size: 17px; font-weight: 500; color: #e6edf3; letter-spacing: 2px; }
+  .promo-label { font-size: 15px; color: #8b949e; margin-bottom: 2px; }
+  .promo-sublabel { font-size: 15px; color: #d29922; margin-top: 2px; }
+  .copy-btn { margin-left: auto; flex-shrink: 0; background: #238636; color: #fff; border: none; border-radius: 6px; padding: 6px 12px; font-size: 15px; cursor: pointer; font-family: var(--font-sans); }
+  .copy-btn:hover { background: #2ea043; }
+  .copy-btn.gold { background: #9e6a03; }
+  .copy-btn.gold:hover { background: #d29922; }
+  
+
+
+  .condition { margin-top: 0.5rem; font-size: 16px; color: #8b949e; line-height: 1.6; }
+  .condition strong { color: #58a6ff; }
+  .condition em { color: #8b949e; font-style: normal; font-size: 16px; }
+
+  .section { padding: 2.5rem 2rem; border-bottom: 0.5px solid #21262d; }
+  .section-title { font-size: 15px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; }
+
+  .rewards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  .reward-card { background: #161b22; border: 0.5px solid #30363d; border-radius: 10px; padding: 1rem; }
+  .reward-card.premium { border-color: #d29922; background: #1a1600; }
+  .reward-icon { font-size: 20px; margin-bottom: 8px; color: #58a6ff; }
+  .reward-icon.gold { color: #d29922; }
+  .reward-name { font-size: 15px; color: #c9d1d9; font-weight: 500; margin-bottom: 2px; }
+  .reward-name.gold { color: #d29922; }
+  .reward-qty { font-size: 15px; color: #8b949e; }
+
+  .perks-list { display: flex; flex-direction: column; gap: 10px; }
+  .perk { display: flex; align-items: flex-start; gap: 12px; background: #161b22; border: 0.5px solid #30363d; border-radius: 10px; padding: 0.9rem 1rem; }
+  .perk-icon { color: #3fb950; font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .perk-text { font-size: 15px; color: #c9d1d9; line-height: 1.5; }
+  .perk-text strong { color: #e6edf3; font-weight: 500; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: #161b22; border: 0.5px solid #30363d; border-radius: 8px; padding: 4px; }
+  .tab { flex: 1; text-align: center; padding: 6px 4px; font-size: 15px; color: #8b949e; cursor: pointer; border-radius: 6px; }
+  .tab.active { background: #21262d; color: #e6edf3; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; gap: 16px; padding: 1rem 0; border-bottom: 0.5px solid #21262d; }
+  .step:last-child { border-bottom: none; }
+  .step-num { width: 28px; height: 28px; border-radius: 50%; background: #21262d; border: 0.5px solid #30363d; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #8b949e; flex-shrink: 0; }
+  .step-body { font-size: 17px; color: #c9d1d9; line-height: 1.6; }
+  .step-body strong { color: #e6edf3; font-weight: 500; }
+  .step-body code { background: #21262d; border: 0.5px solid #30363d; border-radius: 4px; padding: 1px 7px; font-family: var(--font-mono); font-size: 15px; color: #79c0ff; }
+
+  .promo-switcher { display: flex; gap: 8px; margin-bottom: 1.2rem; }
+  .ps-btn { flex: 1; padding: 8px; font-size: 15px; border-radius: 8px; border: 0.5px solid #30363d; background: #161b22; color: #8b949e; cursor: pointer; font-family: var(--font-sans); }
+  .ps-btn.active { background: #21262d; color: #e6edf3; border-color: #58a6ff; }
+  .ps-btn.gold-active { background: #1a1600; color: #d29922; border-color: #d29922; }
+
+  .hint-box { background: #161b22; border: 0.5px solid #21262d; border-left: 2px solid #d29922; border-radius: 0 8px 8px 0; padding: 0.75rem 1rem; margin-top: 1rem; font-size: 15px; color: #8b949e; line-height: 1.6; }
+  .hint-box strong { color: #d29922; font-weight: 500; }
+
+  .footer { padding: 2rem; text-align: center; font-size: 15px; color: #8b949e; }
+  
+  
+  
+  
+
+  
+</style>
+
+<div class="page">
+  <nav class="nav">
+    <div class="logo"><div class="logo-dot"></div>Stay Out Wiki — независимая фанатская энциклопедия</div>
+    <div class="nav-links">
+      <a href="#">Задания</a>
+      <a href="#">Локации</a>
+      <a href="#">Оружие</a>
+      <a href="#">Артефакты</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge"><i class="ti ti-gift" aria-hidden="true"></i> Реферальная программа</div>
+	<h1>Начни путь в Stay Out<br> <span>промокод с подарочной премиальной подпиской </span></h1>
+    <p>и набором снаряжения для выживания</p>
+
+    <div class="promo-cards">
+      <div class="promo-block">
+        <div>
+          <div class="promo-label">Промокод #1</div>
+          <div class="promo-code">PGYXTB4N</div>
+		   <div class="promo-sublabel">Для новых игроков</div>
+        </div>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('PGYXTB4N'); this.textContent='✓ Скопировано'">Копировать</button>
+      </div>
+      <div class="promo-block second">
+        <div>
+          <div class="promo-label">Промокод #2</div>
+          <div class="promo-code">PI1OQGYH</div>
+          <div class="promo-sublabel">для второго аккаунта</div>
+        </div>
+        <button class="copy-btn gold" onclick="navigator.clipboard.writeText('PI1OQGYH'); this.textContent='✓ Скопировано'">Копировать</button>
+      </div>
+    </div>
+
+    <div class="condition">
+      <strong>Для новых игроков</strong><br>
+      <em>Никто не мешает создать второй аккаунт и получить набор снова 😉</em>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Что входит в набор</div>
+    <div class="rewards-grid">
+      <div class="reward-card premium"><div class="reward-icon gold"><i class="ti ti-crown" aria-hidden="true"></i></div><div class="reward-name gold">👑Премиум подписка</div><div class="reward-qty">на 7 дней</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-shield" aria-hidden="true"></i></div><div class="reward-name">🛡Бронежилет 6Б1</div><div class="reward-qty">× 1 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-first-aid-kit" aria-hidden="true"></i></div><div class="reward-name">💊Санитарный набор</div><div class="reward-qty">× 1 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-radioactive" aria-hidden="true"></i></div><div class="reward-name">☢Средство от радиации</div><div class="reward-qty">× 3 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-pills" aria-hidden="true"></i></div><div class="reward-name">🧪Набор противоядия</div><div class="reward-qty">× 1 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-bandage" aria-hidden="true"></i></div><div class="reward-name">🩹Пачка бинтов</div><div class="reward-qty">× 3 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-meat" aria-hidden="true"></i></div><div class="reward-name">🥩Жареное мясо</div><div class="reward-qty">× 5 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-bottle" aria-hidden="true"></i></div><div class="reward-name">💧Вода 0.5л</div><div class="reward-qty">× 3 шт.</div></div>
+	  <div class="reward-card"><div class="reward-icon"><i class="ti ti-circle-dot" aria-hidden="true"></i></div><div class="reward-name">🔫Патрон 12х70 картечь</div><div class="reward-qty">× 100 шт.</div></div>
+      <div class="reward-card"><div class="reward-icon"><i class="ti ti-circle-dot" aria-hidden="true"></i></div><div class="reward-name">🔫Патрон 7.62х38R</div><div class="reward-qty">× 150 шт.</div></div>
+    </div>
+  </div>
+  
+  
+
+  
+  
+  
+
+  <div class="section">
+    <div class="section-title">👑Бонусы премиум подписки (7 дней)</div>
+    <div class="perks-list">
+      <div class="perk"><i class="ti ti-trending-up perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>×2 опыт</strong> — весь получаемый опыт удвоен</div></div>
+      <div class="perk"><i class="ti ti-map-2 perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>Скидка 50%</strong> у Проводников Зоны на переходы</div></div>
+	  <div class="perk"><i class="ti ti-swords perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>Повышенный шанс</strong> дополнительной добычи с существ</div></div>
+	  <div class="perk"><i class="ti ti-package perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>Быстрая доставка</strong> посылок</div></div>
+	  <div class="perk"><i class="ti ti-plus perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>+1 дополнительный лот</strong> на Доску объявлений</div></div>
+      <div class="perk"><i class="ti ti-tag perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>−1% комиссии</strong> на выставление лотов на Доску объявлений</div></div>
+	  <div class="perk"><i class="ti ti-coin perk-icon" aria-hidden="true"></i><div class="perk-text"><strong>+20% очков торговли</strong> в награду за задания</div></div> 
+      </div>
+  </div>
+
+
+
+
+<div class="section">
+  <div class="section-title">Как активировать</div>
+
+  <div class="promo-switcher">
+    <button class="ps-btn active" onclick="setPromo(1,this)">
+      Промокод #1 — PGYXTB4N
+    </button>
+
+    <button class="ps-btn" onclick="setPromo(2,this)">
+      Промокод #2 — PI1OQGYH
+    </button>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Активация промокода</strong><br><br>
+
+        Зайди в главное меню игры<br>
+        На экране выбора персонажа выбери
+        <strong>[ВВЕСТИ ПРОМОКОД]</strong><br><br>
+
+        Введи:
+        <code id="promoCode">PGYXTB4N</code><br><br>
+
+        Нажми кнопку <strong>[Применить]</strong><br>
+        В Хранилище аккаунта появится Подарочный набор
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Получить подарок</strong><br><br>
+
+        В безопасной зоне, открой инвентарь клавишей
+        <code>[I]</code><br>
+
+        В левом верхнем углу нажми
+        <strong>[ЛКМ]</strong> по иконке коробки —
+        откроется Хранилище аккаунта<br>
+
+        Перетащи Подарочный набор в инвентарь
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Активация подписки</strong><br><br>
+
+        Нажми <strong>[ПКМ]</strong> по Подарочному набору →
+        <strong>[Использовать]</strong><br>
+
+        Затем нажми <strong>[ПКМ]</strong> по Подарочной премиальной подписке →
+        <strong>[Использовать]</strong><br>
+
+        Премиум-статусом активирован на 7 дней.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hint-box">
+    <strong>Совет:</strong>
+    Для активации можно воспользоваться любым из представленных промокодов. Один код — один аккаунт.
+  </div>
+</div>
+
+<script>
+function setPromo(id, btn) {
+
+  const code =
+    id === 1
+      ? 'PGYXTB4N'
+      : 'PI1OQGYH';
+
+  document.getElementById('promoCode').textContent = code;
+
+  document.querySelectorAll('.promo-switcher .ps-btn')
+    .forEach(b => b.classList.remove('active'));
+
+  btn.classList.add('active');
+}
+</script>
+```
+
+
+
+
+
+  <div class="footer">© Stay Out Wiki — независимая фанатская энциклопедия · Содержание доступно по лицензии Creative Commons Attribution 4.0 International (CC BY 4.0), если не указано иное. Названия, логотипы и игровые материалы Stay Out являются собственностью их правообладателей.</div>
+</div>
+
+
+}
+</script>
