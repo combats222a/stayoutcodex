@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бульдозер — Stay Out Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0d0f0a;
+      --surface:   #141710;
+      --border:    #2a2f1e;
+      --green:     #7aaa2e;
+      --green-dim: #4a6a1a;
+      --amber:     #c8920a;
+      --text:      #c9cdbf;
+      --text-dim:  #6b7060;
+      --danger:    #b03a2e;
+      --code:      #7aaa2e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'PT Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .nav-logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--green);
+      text-decoration: none;
+      white-space: nowrap;
+      letter-spacing: .05em;
+    }
+    .nav-logo span {
+      font-weight: 400;
+      font-size: .72rem;
+      color: var(--text-dim);
+      margin-left: .4rem;
+      letter-spacing: .1em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-left: auto;
+    }
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--green); }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+      padding: 4px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-dim);
+    }
+
+    .nav-dropdown {
+      display: none;
+      flex-direction: column;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: .5rem 1.25rem 1rem;
+    }
+    .nav-dropdown.open { display: flex; }
+    .nav-dropdown a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .4rem 0;
+    }
+    .nav-dropdown a.active { color: var(--green); }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem .25rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+    }
+    .breadcrumb a {
+      color: var(--text-dim);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--green-dim); margin: 0 .4rem; }
+
+    /* CONTENT */
+    .section-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.25rem 2.5rem;
+    }
+
+    .page-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: var(--text);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin: 1.25rem 0 .4rem;
+      line-height: 1.1;
+    }
+
+    .event-meta {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+    .meta-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .2rem .6rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .meta-tag.green {
+      border-color: var(--green-dim);
+      color: var(--green);
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      letter-spacing: .2em;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* INFO BLOCK */
+    .info-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green-dim);
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      font-size: .95rem;
+    }
+    .info-block p + p { margin-top: .5rem; }
+    .info-block strong { color: var(--text); }
+
+    /* OFFERING TABLE */
+    .offering-list {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .offering-list .ol-header {
+      padding: .6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .offering-item {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .6rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .offering-item:last-child { border-bottom: none; }
+    .offering-item .qty {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--amber);
+      min-width: 2.5rem;
+      text-align: right;
+    }
+    .offering-item .item-name {
+      color: var(--text);
+      font-size: .95rem;
+    }
+    .offering-item .note {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    /* PHASES */
+    .phases { margin-bottom: 2rem; }
+
+    .phase-block {
+      border: 1px solid var(--border);
+      margin-bottom: .75rem;
+      overflow: hidden;
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .7rem 1rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .phase-num {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .phase-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: .04em;
+    }
+    .phase-timer {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--text-dim);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+    .phase-total {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--amber);
+      padding: .5rem 1rem;
+      background: rgba(200,146,10,.05);
+      border-bottom: 1px solid var(--border);
+      letter-spacing: .04em;
+    }
+    .enemy-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .45rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: .92rem;
+    }
+    .enemy-row:last-child { border-bottom: none; }
+    .enemy-name { color: var(--text); }
+    .enemy-count {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      color: var(--danger);
+      font-size: 1rem;
+    }
+    .phase-note {
+      padding: .45rem 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--text-dim);
+      letter-spacing: .04em;
+      background: rgba(176,58,46,.04);
+      border-top: 1px solid rgba(176,58,46,.2);
+    }
+
+    /* REWARDS */
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: .75rem;
+      margin-bottom: 2rem;
+    }
+    .reward-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1rem;
+    }
+    .reward-place {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+    .reward-place.gold   { color: #d4a017; }
+    .reward-place.silver { color: #9ba4b4; }
+    .reward-place.bronze { color: #a0622a; }
+    .reward-desc {
+      font-size: .88rem;
+      color: var(--text-dim);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      letter-spacing: .04em;
+    }
+
+    .xp-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      padding: .9rem 1.25rem;
+      margin-bottom: 2rem;
+      font-size: .93rem;
+    }
+    .xp-block strong { color: var(--amber); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .72rem;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      line-height: 1.8;
+    }
+    footer a { color: var(--text-dim); text-decoration: underline; }
+    footer a:hover { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">STAY OUT <span>// WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../sobytiya/sobytiya.html" data-page="sobytiya">События</a>
+      <a href="../zadaniya/zadaniya.html" data-page="zadaniya">Задания</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-dropdown" id="navDropdown">
+    <a href="../sobytiya/sobytiya.html" data-page="sobytiya">События</a>
+    <a href="../zadaniya/zadaniya.html" data-page="zadaniya">Задания</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a>
+  <span>/</span>
+  <a href="sobytiya.html">События</a>
+  <span>/</span>
+  Бульдозер
+</div>
+
+<div class="section-wrap">
+
+  <h1 class="page-title">Бульдозер</h1>
+
+  <div class="event-meta">
+    <span class="meta-tag green">Событие</span>
+    <span class="meta-tag">Открытый мир</span>
+    <span class="meta-tag">Везувий · J3-1</span>
+    <span class="meta-tag">Каждые 4 часа</span>
+  </div>
+
+  <!-- Запуск -->
+  <p class="section-label">Запуск события</p>
+
+  <div class="info-block">
+    <p>Бульдозер находится на локации <strong>Везувий</strong>, северо-восточный сектор квадрата <strong>J3-1</strong>, в карьере. Для запуска нужно сделать подношение — положить все предметы из списка ниже. После запуска все игроки в зоне получают текстовое уведомление.</p>
+    <p>Событие доступно повторно каждые <strong>4 часа</strong> реального времени (при условии успешного завершения).</p>
+  </div>
+
+  <div class="offering-list">
+    <div class="ol-header">Подношение</div>
+    <div class="offering-item">
+      <span class="qty">×6</span>
+      <span class="item-name">Автомобильная свеча</span>
+    </div>
+    <div class="offering-item">
+      <span class="qty">×1</span>
+      <span class="item-name">Короткая труба с резьбой</span>
+    </div>
+    <div class="offering-item">
+      <span class="qty">×4</span>
+      <span class="item-name">Медная проволока</span>
+    </div>
+    <div class="offering-item">
+      <span class="qty">×1</span>
+      <span class="item-name">Провод в изоляции</span>
+    </div>
+    <div class="offering-item">
+      <span class="qty">×1</span>
+      <span class="item-name">Рабочий автомобильный аккумулятор</span>
+      <span class="note">Заряд &gt; 49%</span>
+    </div>
+  </div>
+
+  <!-- Фазы -->
+  <p class="section-label">Фазы события</p>
+
+  <div class="info-block" style="margin-bottom:1.25rem;">
+    <p>4 фазы, по 5 минут каждая. Между фазами — <strong>30-секундный перерыв</strong>. Количество противников увеличивается: если в зоне события более 10 персонажей, за каждого дополнительного добавляется <strong>+5 врагов</strong>.</p>
+  </div>
+
+  <div class="phases">
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-num">Фаза I</span>
+        <span class="phase-title">Мелкая живность</span>
+        <span class="phase-timer">5 мин</span>
+      </div>
+      <div class="phase-total">Всего: 142 противника</div>
+      <div class="enemy-row">
+        <span class="enemy-name">Паук</span>
+        <span class="enemy-count">×30</span>
+      </div>
+      <div class="enemy-row">
+        <span class="enemy-name">Большая крыса</span>
+        <span class="enemy-count">×120</span>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-num">Фаза II</span>
+        <span class="phase-title">Стая</span>
+        <span class="phase-timer">5 мин</span>
+      </div>
+      <div class="phase-total">Всего: 142 противника</div>
+      <div class="enemy-row">
+        <span class="enemy-name">Дикая собака</span>
+        <span class="enemy-count">×60</span>
+      </div>
+      <div class="enemy-row">
+        <span class="enemy-name">Паук</span>
+        <span class="enemy-count">×40</span>
+      </div>
+      <div class="enemy-row">
+        <span class="enemy-name">Отверженный</span>
+        <span class="enemy-count">×50</span>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-num">Фаза III</span>
+        <span class="phase-title">Бесы</span>
+        <span class="phase-timer">5 мин</span>
+      </div>
+      <div class="phase-total">Всего: 46 противников</div>
+      <div class="enemy-row">
+        <span class="enemy-name">Быстрый бес</span>
+        <span class="enemy-count">×15</span>
+      </div>
+      <div class="enemy-row">
+        <span class="enemy-name">Медленный бес</span>
+        <span class="enemy-count">×30</span>
+      </div>
+      <div class="enemy-row">
+        <span class="enemy-name">Бес</span>
+        <span class="enemy-count">×4</span>
+      </div>
+    </div>
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-num">Фаза IV</span>
+        <span class="phase-title">Босс</span>
+        <span class="phase-timer">5 мин</span>
+      </div>
+      <div class="phase-total">Всего: 1 мутант-босс</div>
+      <div class="enemy-row">
+        <span class="enemy-name">Собака-матка</span>
+        <span class="enemy-count">×1</span>
+      </div>
+      <div class="phase-note">Финальный босс. Убить — условие завершения события.</div>
+    </div>
+
+  </div>
+
+  <!-- Награды -->
+  <p class="section-label">Награды</p>
+
+  <div class="xp-block">
+    <p>При успешном завершении между всеми участниками делится <strong>84&nbsp;000 опыта</strong> пропорционально баллам за убийства. Каждый участник сверх десятого увеличивает общий куш на <strong>+750 единиц опыта</strong>.</p>
+    <p style="margin-top:.5rem;">Игровая валюта и призы за топ-3 приходят автоматически посылкой на склад к <strong>Антону Поддубному</strong>.</p>
+  </div>
+
+  <div class="rewards-grid">
+    <div class="reward-card">
+      <div class="reward-place gold">1 место</div>
+      <div class="reward-desc">Награда за 1 место события Бульдозер × 1<br>(посылка, вскрытое состояние)</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-place silver">2 место</div>
+      <div class="reward-desc">Награда за 2 место события Бульдозер × 1<br>(посылка, вскрытое состояние)</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-place bronze">3 место</div>
+      <div class="reward-desc">Награда за 3 место события Бульдозер × 1<br>(посылка, вскрытое состояние)</div>
+    </div>
+  </div>
+
+</div><!-- .section-wrap -->
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function() {
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+})();
+
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>
