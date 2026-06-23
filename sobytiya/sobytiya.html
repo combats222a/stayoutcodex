@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>События — Stay Out Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --danger:    #b03a2e;
+    --code:      #7aaa2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'PT Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+
+  .nav-links {
+    display: flex;
+    gap: .25rem;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    padding: .3rem .55rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+
+  .nav-burger {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .35rem .45rem;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+
+  .nav-dropdown {
+    display: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: .5rem 1rem;
+  }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+    transition: color .15s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .nav-burger { display: flex; }
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 2rem;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .72rem;
+    color: var(--green);
+    letter-spacing: .15em;
+    margin-bottom: .75rem;
+  }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2rem, 7vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: #e8ecdf;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--green); }
+  .hero-sub {
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+  }
+
+  /* INFO BAR */
+  .info-bar {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.25rem 2rem;
+  }
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    font-size: .95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .info-card strong { color: var(--text); }
+
+  /* SECTION */
+  .section-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 2.5rem; }
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .82rem;
+    letter-spacing: .2em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .section-desc {
+    font-size: .95rem;
+    color: var(--text-dim);
+    margin-bottom: 1.25rem;
+  }
+
+  /* EVENT GRID */
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: .75rem;
+  }
+  @media (max-width: 480px) { .event-grid { grid-template-columns: 1fr 1fr; } }
+
+  .event-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem .9rem .9rem;
+    text-decoration: none;
+    color: var(--text-dim);
+    transition: border-color .15s, background .15s, color .15s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .event-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green-dim);
+    transition: background .15s;
+  }
+  .event-card:hover {
+    border-color: var(--green-dim);
+    background: rgba(122,170,46,.04);
+    color: var(--text);
+  }
+  .event-card:hover::before { background: var(--green); }
+  .event-card.inactive { opacity: .55; }
+  .event-card.inactive::before { background: var(--text-dim); }
+
+  .event-icon {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .event-icon svg {
+    width: 32px; height: 32px;
+    stroke: var(--text-dim); fill: none;
+    stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;
+    transition: stroke .15s;
+  }
+  .event-card:hover .event-icon svg { stroke: var(--green); }
+
+  .event-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e8ecdf;
+    line-height: 1.2;
+    letter-spacing: .03em;
+  }
+  .event-card.inactive .event-name { color: var(--text-dim); }
+
+  .event-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .72rem;
+    color: var(--text-dim);
+    letter-spacing: .06em;
+  }
+  .event-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .65rem;
+    padding: .15em .45em;
+    border-radius: 2px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .badge-static { background: rgba(122,170,46,.12); color: var(--green); border: 1px solid var(--green-dim); }
+  .badge-dynamic { background: rgba(200,146,10,.1); color: var(--amber); border: 1px solid rgba(200,146,10,.3); }
+  .badge-coop { background: rgba(100,150,220,.1); color: #6496dc; border: 1px solid rgba(100,150,220,.25); }
+  .badge-solo { background: rgba(160,100,200,.1); color: #a064c8; border: 1px solid rgba(160,100,200,.25); }
+  .badge-seasonal { background: rgba(176,58,46,.1); color: #c86450; border: 1px solid rgba(176,58,46,.3); }
+  .badge-inactive { background: rgba(107,112,96,.1); color: var(--text-dim); border: 1px solid var(--border); }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: .35rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .35rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tab-btn:hover { border-color: var(--green-dim); color: var(--text); }
+  .tab-btn.active { border-color: var(--green); color: var(--green); background: rgba(122,170,46,.06); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    font-size: .75rem;
+    color: var(--text-dim);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  footer a { color: var(--green-dim); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">STAY OUT <span>// WIKI //НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html" data-page="zadaniya">Промокод</a>
+      <a href="../index.html" data-page="lokacii">PI1OQGYH</a>
+      <a href="../index.html" data-page="oruzhie">PGYXTB4N</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-dropdown" id="navDropdown">
+    <a href="../index.html" data-page="zadaniya">Промокод</a>
+    <a href="../index.html" data-page="lokacii">PI1OQGYH</a>
+    <a href="../index.html" data-page="oruzhie">PGYXTB4N</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">// ЭНЦИКЛОПЕДИЯ // ОТКРЫТЫЙ МИР</p>
+  <h1>События <em>Зоны</em></h1>
+  <p class="hero-sub">Динамические испытания Зоны — запускай, выживай, забирай награду</p>
+</section>
+
+<!-- INFO -->
+<div class="info-bar">
+  <div class="info-card">
+    События запускаются игроками через <strong>подношения предметов</strong> на алтарях — после чего в локальной зоне начинается волна мутантов. Нужно выстоять за отведённое время. <strong>Топ-3 участника</strong> по урону получают предметные награды, места с 4-го по 10-е — денежную компенсацию.
+  </div>
+</div>
+
+<!-- TABS + CONTENT -->
+<div class="section-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('open-world', this)">Открытый мир</button>
+    <button class="tab-btn" onclick="switchTab('expeditions', this)">Экспедиции</button>
+    <button class="tab-btn" onclick="switchTab('seasonal', this)">Сезонные</button>
+  </div>
+
+  <!-- ОТКРЫТЫЙ МИР -->
+  <div class="tab-panel active" id="tab-open-world">
+
+    <p class="section-label">Статические</p>
+    <p class="section-desc">Запускаются игроком через подношение и доступны повторно каждые 8 часов после завершения.</p>
+    <div class="event-grid" style="margin-bottom: 2rem;">
+
+      <a class="event-card" href="5-obeliskov.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><polygon points="19,5 19,33"/><polygon points="13,10 25,10 22,33 16,33"/><line x1="11" y1="17" x2="27" y2="17"/><line x1="9" y1="24" x2="29" y2="24"/></svg></div>
+        <span class="event-name">5 Обелисков</span>
+        <span class="event-meta">4 волны · босс Белый Ведун</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="buldozer.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="4" y="20" width="24" height="10" rx="2"/><rect x="4" y="14" width="14" height="8" rx="1"/><circle cx="10" cy="30" r="4"/><circle cx="22" cy="30" r="4"/><rect x="26" y="16" width="8" height="6" rx="1"/></svg></div>
+        <span class="event-name">Бульдозер</span>
+        <span class="event-meta">Волны мутантов · локация Карьер</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="zabyty-chemodan.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="8" y="14" width="22" height="18" rx="2"/><path d="M14 14 L14 10 C14 8 24 8 24 10 L24 14"/><line x1="8" y1="22" x2="30" y2="22"/><rect x="17" y="18" width="4" height="8" rx="1"/></svg></div>
+        <span class="event-name">Забытый чемодан</span>
+        <span class="event-meta">Охрана контейнера · лут</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="koster.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><path d="M19 8 C14 14 12 18 14 24"/><path d="M19 8 C24 14 26 18 24 24"/><path d="M12 24 C12 30 26 30 26 24"/><line x1="8" y1="30" x2="30" y2="30"/></svg></div>
+        <span class="event-name">Костёр</span>
+        <span class="event-meta">Выстоять волну · групповое</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="moskwich.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="5" y="18" width="28" height="12" rx="2"/><path d="M8 18 L11 10 L27 10 L31 18"/><circle cx="11" cy="30" r="4"/><circle cx="27" cy="30" r="4"/><rect x="20" y="13" width="8" height="6" rx="1"/></svg></div>
+        <span class="event-name">Москвич</span>
+        <span class="event-meta">Оборона у машины</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="obelisk.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><polygon points="19,5 22,33 16,33"/><line x1="14" y1="15" x2="24" y2="15"/><line x1="13" y1="22" x2="25" y2="22"/></svg></div>
+        <span class="event-name">Обелиск</span>
+        <span class="event-meta">Одиночный алтарь · подношение</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="razbity-kolokol.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><path d="M19 6 C12 6 10 12 10 18 L10 26 L28 26 L28 18 C28 12 26 6 19 6Z"/><line x1="15" y1="26" x2="23" y2="26"/><path d="M16 29 C16 32 22 32 22 29"/><line x1="19" y1="6" x2="19" y2="3"/></svg></div>
+        <span class="event-name">Разбитый колокол</span>
+        <span class="event-meta">Волны духов · особые условия</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+      <a class="event-card" href="stary-televizor.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="6" y="10" width="26" height="18" rx="2"/><line x1="12" y1="28" x2="10" y2="34"/><line x1="26" y1="28" x2="28" y2="34"/><circle cx="27" cy="14" r="2"/><line x1="8" y1="14" x2="20" y2="14"/><line x1="8" y1="19" x2="20" y2="19"/><line x1="8" y1="24" x2="16" y2="24"/></svg></div>
+        <span class="event-name">Старый телевизор</span>
+        <span class="event-meta">Аномальный сигнал · волны</span>
+        <span class="event-badge badge-static">Статическое</span>
+      </a>
+
+    </div>
+
+    <p class="section-label">Динамические</p>
+    <p class="section-desc">Появляются случайным образом на локациях без участия игроков — нужно вовремя отреагировать.</p>
+    <div class="event-grid" style="margin-bottom: 2rem;">
+
+      <a class="event-card" href="banditsky-lager.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><path d="M10 28 L10 16 L19 10 L28 16 L28 28Z"/><line x1="15" y1="28" x2="15" y2="20"/><line x1="23" y1="28" x2="23" y2="20"/><line x1="10" y1="20" x2="28" y2="20"/></svg></div>
+        <span class="event-name">Бандитский лагерь</span>
+        <span class="event-meta">Рейд на лагерь бандитов</span>
+        <span class="event-badge badge-dynamic">Динамическое</span>
+      </a>
+
+      <a class="event-card" href="zashita-uchenyh.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><circle cx="14" cy="11" r="4"/><path d="M7 28 C7 21 10 18 14 18"/><circle cx="26" cy="11" r="3"/><path d="M31 28 C31 23 28 20 26 20"/><path d="M14 18 C16 22 22 22 24 20"/><line x1="19" y1="20" x2="19" y2="28"/></svg></div>
+        <span class="event-name">Защита учёных</span>
+        <span class="event-meta">Охрана НПС от мутантов</span>
+        <span class="event-badge badge-dynamic">Динамическое</span>
+      </a>
+
+      <a class="event-card" href="krushenie-vertoleta.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><line x1="6" y1="16" x2="32" y2="16"/><ellipse cx="19" cy="20" rx="8" ry="5"/><line x1="19" y1="16" x2="19" y2="6"/><line x1="13" y1="6" x2="25" y2="6"/><line x1="19" y1="25" x2="24" y2="32"/><line x1="24" y1="32" x2="19" y2="32"/></svg></div>
+        <span class="event-name">Крушение вертолёта</span>
+        <span class="event-meta">Место крушения · ценный груз</span>
+        <span class="event-badge badge-dynamic">Динамическое</span>
+      </a>
+
+      <a class="event-card" href="slomanny-zil.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="5" y="18" width="28" height="12" rx="2"/><rect x="5" y="12" width="16" height="8" rx="1"/><circle cx="11" cy="30" r="4"/><circle cx="27" cy="30" r="4"/><line x1="22" y1="15" x2="28" y2="15" stroke-dasharray="2 2"/></svg></div>
+        <span class="event-name">Сломанный ЗИЛ</span>
+        <span class="event-meta">Охрана груза · мутанты</span>
+        <span class="event-badge badge-dynamic">Динамическое</span>
+      </a>
+
+    </div>
+
+    <p class="section-label">Кооперативные</p>
+    <p class="section-desc">Рассчитаны на группу игроков — в одиночку пройти крайне сложно.</p>
+    <div class="event-grid">
+
+      <a class="event-card" href="zabyty-ldy.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><polygon points="19,5 33,28 5,28"/><line x1="19" y1="5" x2="19" y2="28"/><line x1="8" y1="19" x2="30" y2="19"/><line x1="5" y1="28" x2="33" y2="28"/></svg></div>
+        <span class="event-name">Забытые льды</span>
+        <span class="event-meta">Экстремальный холод · выживание</span>
+        <span class="event-badge badge-coop">Кооперативное</span>
+      </a>
+
+      <a class="event-card" href="kolodnoe.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="10" y="10" width="18" height="20" rx="2"/><line x1="6" y1="10" x2="32" y2="10"/><circle cx="19" cy="6" r="3"/><line x1="14" y1="18" x2="24" y2="18"/><line x1="14" y1="23" x2="24" y2="23"/></svg></div>
+        <span class="event-name">Колодное</span>
+        <span class="event-meta">Атака на укреплённую точку</span>
+        <span class="event-badge badge-coop">Кооперативное</span>
+      </a>
+
+      <a class="event-card" href="logovo-paukana.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="5"/><line x1="19" y1="5" x2="19" y2="14"/><line x1="19" y1="24" x2="19" y2="33"/><line x1="5" y1="19" x2="14" y2="19"/><line x1="24" y1="19" x2="33" y2="19"/><line x1="8" y1="8" x2="14" y2="14"/><line x1="24" y1="24" x2="30" y2="30"/><line x1="30" y1="8" x2="24" y2="14"/><line x1="14" y1="24" x2="8" y2="30"/></svg></div>
+        <span class="event-name">Логово Паукана</span>
+        <span class="event-meta">Босс Пауканчик · паутина</span>
+        <span class="event-badge badge-coop">Кооперативное</span>
+      </a>
+
+      <a class="event-card" href="uley.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><polygon points="19,5 28,11 28,23 19,29 10,23 10,11"/><polygon points="19,12 24,15 24,21 19,24 14,21 14,15"/><circle cx="19" cy="18" r="2"/></svg></div>
+        <span class="event-name">Улей</span>
+        <span class="event-meta">Рой насекомых · несколько боссов</span>
+        <span class="event-badge badge-coop">Кооперативное</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ЭКСПЕДИЦИИ -->
+  <div class="tab-panel" id="tab-expeditions">
+    <p class="section-label">Одиночные</p>
+    <p class="section-desc">Инстанс-события, где каждый игрок проходит свою версию локации независимо.</p>
+    <div class="event-grid">
+
+      <a class="event-card" href="bomboubezishie-lubecha.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><path d="M8 24 C8 16 12 10 19 8 C26 10 30 16 30 24"/><rect x="6" y="24" width="26" height="8" rx="1"/><line x1="12" y1="24" x2="12" y2="32"/><line x1="19" y1="24" x2="19" y2="32"/><line x1="26" y1="24" x2="26" y2="32"/></svg></div>
+        <span class="event-name">Бомбоубежище Любеча</span>
+        <span class="event-meta">Подземный инстанс · паразиты</span>
+        <span class="event-badge badge-solo">Одиночное</span>
+      </a>
+
+      <a class="event-card" href="gorodskoy-rayon.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="6" y="14" width="10" height="20" rx="1"/><rect x="18" y="8" width="14" height="26" rx="1"/><line x1="8" y1="19" x2="14" y2="19"/><line x1="8" y1="24" x2="14" y2="24"/><line x1="20" y1="13" x2="30" y2="13"/><line x1="20" y1="18" x2="30" y2="18"/><line x1="20" y1="23" x2="30" y2="23"/></svg></div>
+        <span class="event-name">Городской район</span>
+        <span class="event-meta">Городские руины · зачистка</span>
+        <span class="event-badge badge-solo">Одиночное</span>
+      </a>
+
+      <a class="event-card" href="zabroshenny-zhd-put.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><line x1="6" y1="28" x2="32" y2="28"/><line x1="6" y1="22" x2="32" y2="22"/><line x1="10" y1="22" x2="10" y2="28"/><line x1="16" y1="22" x2="16" y2="28"/><line x1="22" y1="22" x2="22" y2="28"/><line x1="28" y1="22" x2="28" y2="28"/><path d="M6 22 L14 10 L24 10 L32 22"/></svg></div>
+        <span class="event-name">Заброшенный ЖД путь</span>
+        <span class="event-meta">Аномальная зона · ловушки</span>
+        <span class="event-badge badge-solo">Одиночное</span>
+      </a>
+
+      <a class="event-card" href="tainstvennaya-biblioteka.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><rect x="6" y="6" width="6" height="28" rx="1"/><rect x="14" y="6" width="6" height="28" rx="1"/><rect x="22" y="6" width="6" height="28" rx="1"/><rect x="30" y="6" width="2" height="28" rx="1"/><line x1="6" y1="20" x2="12" y2="20"/><line x1="14" y1="16" x2="20" y2="16"/><line x1="22" y1="22" x2="28" y2="22"/></svg></div>
+        <span class="event-name">Таинственная библиотека</span>
+        <span class="event-meta">Загадки · призраки · редкий лут</span>
+        <span class="event-badge badge-solo">Одиночное</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- СЕЗОННЫЕ -->
+  <div class="tab-panel" id="tab-seasonal">
+    <p class="section-label">Сезонные события</p>
+    <p class="section-desc">Доступны только в определённый период. Вне сезона — неактивны.</p>
+    <div class="event-grid">
+
+      <a class="event-card inactive" href="anomalnaya-vesna.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><path d="M19 30 L19 12"/><path d="M19 20 C19 20 13 16 11 10"/><path d="M19 20 C19 20 25 16 27 10"/><circle cx="19" cy="9" r="3"/></svg></div>
+        <span class="event-name">Аномальная Весна</span>
+        <span class="event-meta">Сезонное · весна</span>
+        <span class="event-badge badge-inactive">Неактивно</span>
+      </a>
+
+      <a class="event-card inactive" href="novy-god.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><polygon points="19,5 22,15 33,12 25,20 30,30 19,24 8,30 13,20 5,12 16,15"/></svg></div>
+        <span class="event-name">Новый Год</span>
+        <span class="event-meta">Сезонное · декабрь–январь</span>
+        <span class="event-badge badge-inactive">Неактивно</span>
+      </a>
+
+      <a class="event-card inactive" href="velesova-noch.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><path d="M19 6 C11 6 8 13 8 19 C8 27 14 32 19 32 C24 32 30 27 30 19 C30 13 27 6 19 6Z"/><path d="M14 19 C14 16 17 14 19 14 C21 14 24 16 24 19"/><line x1="19" y1="19" x2="19" y2="26"/></svg></div>
+        <span class="event-name">Велесова Ночь</span>
+        <span class="event-meta">Сезонное · октябрь</span>
+        <span class="event-badge badge-inactive">Неактивно</span>
+      </a>
+
+      <a class="event-card inactive" href="ulyodnaya-zhara.html">
+        <div class="event-icon"><svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="7"/><line x1="19" y1="4" x2="19" y2="9"/><line x1="19" y1="29" x2="19" y2="34"/><line x1="4" y1="19" x2="9" y2="19"/><line x1="29" y1="19" x2="34" y2="19"/><line x1="8" y1="8" x2="12" y2="12"/><line x1="26" y1="26" x2="30" y2="30"/><line x1="30" y1="8" x2="26" y2="12"/><line x1="12" y1="26" x2="8" y2="30"/></svg></div>
+        <span class="event-name">Улёдная Жара</span>
+        <span class="event-meta">Сезонное · лето</span>
+        <span class="event-badge badge-inactive">Неактивно</span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+</body>
+</html>

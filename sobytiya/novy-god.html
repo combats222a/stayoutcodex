@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Новый Год — Stay Out Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f0a;--surface:#141710;--border:#2a2f1e;--green:#7aaa2e;--green-dim:#4a6a1a;--amber:#c8920a;--text:#c9cdbf;--text-dim:#6b7060;--danger:#b03a2e;--code:#7aaa2e;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'PT Sans',sans-serif;font-size:18px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);pointer-events:none;z-index:9999;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1rem;position:sticky;top:0;z-index:100;}
+.nav-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:1rem;}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex-shrink:1;}
+.nav-logo span{color:var(--text-dim);font-weight:400;}
+@media(max-width:600px){.nav-logo span{display:none;}}
+.nav-links{display:flex;gap:.25rem;flex-shrink:0;align-items:center;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.8rem;letter-spacing:.05em;padding:.3rem .55rem;border:1px solid transparent;border-radius:2px;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover{color:var(--green);border-color:var(--green-dim);}
+.nav-links a.active{color:var(--green);border-color:var(--green-dim);background:rgba(122,170,46,.06);}
+.nav-burger{display:none;flex-shrink:0;background:none;border:1px solid var(--border);border-radius:3px;padding:.35rem .45rem;cursor:pointer;flex-direction:column;gap:4px;align-items:center;justify-content:center;}
+.nav-burger span{display:block;width:18px;height:2px;background:var(--text-dim);border-radius:1px;}
+.nav-burger:hover span{background:var(--green);}
+.nav-dropdown{display:none;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.5rem 1rem;}
+.nav-dropdown.open{display:block;}
+.nav-dropdown a{display:block;color:var(--text-dim);text-decoration:none;font-size:.85rem;padding:.5rem .25rem;border-bottom:1px solid var(--border);transition:color .15s;}
+.nav-dropdown a:last-child{border-bottom:none;}
+.nav-dropdown a:hover,.nav-dropdown a.active{color:var(--green);}
+@media(max-width:480px){.nav-links{display:none;}.nav-burger{display:flex;}}
+.breadcrumb{max-width:900px;margin:0 auto;padding:1rem 1.25rem .5rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--text-dim);letter-spacing:.08em;}
+.breadcrumb a{color:var(--text-dim);text-decoration:none;}
+.breadcrumb a:hover{color:var(--green);}
+.breadcrumb span{color:var(--green);}
+.hero{max-width:900px;margin:0 auto;padding:1.5rem 1.25rem 2rem;}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--green);letter-spacing:.15em;margin-bottom:.6rem;}
+.hero h1{font-family:'Oswald',sans-serif;font-size:clamp(1.8rem,6vw,3rem);font-weight:700;line-height:1.05;color:#e8ecdf;text-transform:uppercase;letter-spacing:.02em;margin-bottom:.75rem;}
+.hero h1 em{font-style:normal;color:var(--green);}
+.hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.badge{font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:.2em .55em;border-radius:2px;letter-spacing:.08em;}
+.badge-static{background:rgba(122,170,46,.12);color:var(--green);border:1px solid var(--green-dim);}
+.badge-dynamic{background:rgba(200,146,10,.1);color:var(--amber);border:1px solid rgba(200,146,10,.3);}
+.badge-coop{background:rgba(100,150,220,.1);color:#6496dc;border:1px solid rgba(100,150,220,.25);}
+.badge-solo{background:rgba(160,100,200,.1);color:#a064c8;border:1px solid rgba(160,100,200,.25);}
+.badge-seasonal{background:rgba(176,58,46,.1);color:#c86450;border:1px solid rgba(176,58,46,.3);}
+.badge-time{background:rgba(200,146,10,.1);color:var(--amber);border:1px solid rgba(200,146,10,.3);}
+.content-wrap{max-width:900px;margin:0 auto;padding:0 1.25rem 2.5rem;}
+.section-label{font-family:'Share Tech Mono',monospace;font-size:.82rem;letter-spacing:.2em;color:var(--green);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.info-block{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:4px;padding:1rem 1.25rem;font-size:.95rem;color:var(--text-dim);margin-bottom:2rem;line-height:1.7;}
+.info-block strong{color:var(--text);}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:2rem;}
+@media(max-width:500px){.detail-grid{grid-template-columns:1fr;}}
+.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1rem;}
+.detail-card-title{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
+.detail-card p{font-size:.9rem;color:var(--text-dim);line-height:1.6;}
+.detail-card strong{color:var(--text);}
+.warning-block{background:rgba(176,58,46,.1);border:1px solid rgba(176,58,46,.3);border-radius:4px;padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.78rem;color:#c86450;letter-spacing:.08em;margin-bottom:1.5rem;}
+footer{border-top:1px solid var(--border);padding:1.5rem 1.25rem;text-align:center;font-size:.75rem;color:var(--text-dim);max-width:900px;margin:0 auto;}
+footer a{color:var(--green-dim);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">STAY OUT <span>// WIKI //НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html" data-page="zadaniya">Промокод</a>
+      <a href="../index.html" data-page="lokacii">PI1OQGYH</a>
+      <a href="../index.html" data-page="oruzhie">PGYXTB4N</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-dropdown" id="navDropdown">
+    <a href="../index.html" data-page="zadaniya">Промокод</a>
+    <a href="../index.html" data-page="lokacii">PI1OQGYH</a>
+    <a href="../index.html" data-page="oruzhie">PGYXTB4N</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a> → <a href="sobytiya.html">События</a> → <span>Новый Год</span>
+</div>
+
+<section class="hero">
+  <p class="hero-eyebrow">// СЕЗОННОЕ СОБЫТИЕ // СЕЗОННОЕ</p>
+  <h1><em>Новый Год</em></h1>
+  <div class="hero-badges">
+    <span class="badge badge-seasonal">Сезонное</span>
+    <span class="badge badge-time">⏱ Декабрь–январь</span>
+    <span class="badge badge-static">Город N</span>
+  </div>
+</section>
+
+<div class="content-wrap">
+  <div class="warning-block">⚠ СЕЗОННОЕ СОБЫТИЕ — В данный момент неактивно</div>
+  <p class="section-label">О событии</p>
+  <div class="info-block">Праздник в Зоне — Дед Мороз и Зазывала ждут сталкеров в Городе N. Особые задания, праздничный лут, снежные мутанты. Зазывала появляется на нескольких локациях.</div>
+
+  <div class="detail-grid">
+    <div class="detail-card">
+      <div class="detail-card-title">Локация / Инстанс</div>
+      <p><strong>Город N (специальная локация)</strong></p>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-title">Противники</div>
+      <p>Снежные мутанты, Снегурочки-бандиты.</p>
+    </div>
+  </div>
+
+  <p class="section-label">Награда</p>
+  <div class="info-block">
+    Топ-3 участника по урону получают <strong>предметные награды</strong>, которые приходят посылкой к <strong>Суслу</strong>.
+    Места 4–10 — денежная компенсация. Опыт делится пропорционально нанесённому урону между всеми участниками.
+  </div>
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+</body>
+</html>
