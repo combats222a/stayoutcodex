@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бандитский лагерь — Stay Out Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0d0f0a;
+      --surface:   #141710;
+      --border:    #2a2f1e;
+      --green:     #7aaa2e;
+      --green-dim: #4a6a1a;
+      --amber:     #c8920a;
+      --text:      #c9cdbf;
+      --text-dim:  #6b7060;
+      --danger:    #b03a2e;
+      --code:      #7aaa2e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'PT Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      height: 52px;
+    }
+    .nav-logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--green);
+      text-decoration: none;
+      white-space: nowrap;
+      letter-spacing: .05em;
+    }
+    .nav-logo span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .7rem;
+      color: var(--text-dim);
+      font-weight: 400;
+      letter-spacing: .1em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      margin-left: auto;
+    }
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .8rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: auto;
+      padding: 4px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-dim);
+      border-radius: 2px;
+    }
+    .nav-dropdown {
+      display: none;
+      flex-direction: column;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: .5rem 1.25rem;
+    }
+    .nav-dropdown.open { display: flex; }
+    .nav-dropdown a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .8rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: .4rem 0;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .nav-dropdown a:hover { color: var(--green); }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem .25rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      color: var(--text-dim);
+      letter-spacing: .08em;
+    }
+    .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--green); margin: 0 .4em; }
+
+    /* CONTENT */
+    .section-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.25rem 2.5rem;
+    }
+
+    .page-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin: 1.25rem 0 .25rem;
+    }
+
+    .event-type {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--amber);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .event-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 680px) {
+      .event-layout { grid-template-columns: 1fr; }
+      .event-image { order: -1; }
+    }
+
+    .event-image img {
+      width: 100%;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      letter-spacing: .2em;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .event-desc {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    /* Лут */
+    .loot-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .loot-list li {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .85rem;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: .45rem .75rem;
+    }
+    .loot-qty {
+      color: var(--text-dim);
+      margin-left: auto;
+      font-size: .78rem;
+    }
+
+    /* Warning block */
+    .warn-block {
+      border: 1px solid var(--amber);
+      background: rgba(200,146,10,.05);
+      padding: .85rem 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .warn-block .warn-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .warn-block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    .warn-block ul li {
+      font-size: .9rem;
+      color: var(--text);
+      padding-left: .9rem;
+      position: relative;
+    }
+    .warn-block ul li::before {
+      content: '//';
+      position: absolute;
+      left: 0;
+      color: var(--amber);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .72rem;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      line-height: 1.8;
+    }
+    footer a { color: var(--text-dim); text-decoration: underline; }
+    footer a:hover { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="../index.html">STAY OUT <span>// WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="../sobytiya/sobytiya.html" data-page="sobytiya">События</a>
+      <a href="../zadaniya/zadaniya.html" data-page="zadaniya">Задания</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-dropdown" id="navDropdown">
+    <a href="../sobytiya/sobytiya.html" data-page="sobytiya">События</a>
+    <a href="../zadaniya/zadaniya.html" data-page="zadaniya">Задания</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a>
+  <span>→</span>
+  <a href="sobytiya.html">События</a>
+  <span>→</span>
+  Бандитский лагерь
+</div>
+
+<div class="section-wrap">
+
+  <h1 class="page-title">Бандитский лагерь</h1>
+  <p class="event-type">// Динамическое событие // Открытый мир</p>
+
+  <div class="event-layout">
+    <div class="event-main">
+
+      <p class="section-label">Описание</p>
+      <p class="event-desc">
+        Динамическое событие, периодически появляющееся в разных уголках Зоны.
+        Лагерь охраняется группой бандитов. Уровень опасности охраны и ценность груза зависят от локации.
+        После устранения охраны открывается доступ к обыску контейнеров рядом с палатками.
+      </p>
+
+      <p class="section-label">Груз</p>
+      <ul class="loot-list">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.4"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M8 8V6a4 4 0 018 0v2"/></svg>
+          Коробка картонная (событие)
+          <span class="loot-qty">× 2 шт.</span>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.4"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 00-2 2v0"/></svg>
+          Ящик металлический (событие)
+          <span class="loot-qty">× 1 шт.</span>
+        </li>
+      </ul>
+
+      <div class="warn-block">
+        <p class="warn-title">⚠ Важно</p>
+        <ul>
+          <li>Если рядом с событием долго никого не будет — оно завершится досрочно.</li>
+          <li>После устранения охраны событие исчезает через <strong>5 минут</strong>.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="event-image">
+      <img
+        src="https://so-wiki.ru/w/images/thumb/5/58/Screen_%D0%91%D0%B0%D0%BD%D0%B4%D0%B8%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BB%D0%B0%D0%B3%D0%B5%D1%80%D1%8C.jpg/350px-Screen_%D0%91%D0%B0%D0%BD%D0%B4%D0%B8%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%BB%D0%B0%D0%B3%D0%B5%D1%80%D1%8C.jpg"
+        alt="Бандитский лагерь"
+      >
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function() {
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+})();
+
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>
