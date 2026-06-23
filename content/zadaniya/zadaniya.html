@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задания — Stay Out Wiki</title>
+<meta name="description" content="Все задания игры Stay Out. Поиск по названию, типу и персонажу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --surface2:  #1a1e12;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --danger:    #b03a2e;
+    --blue:      #4a90c4;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'PT Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+  .nav-links { display: flex; gap: .25rem; align-items: center; }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    padding: .3rem .55rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-burger {
+    display: none; flex-shrink: 0;
+    background: none; border: 1px solid var(--border);
+    border-radius: 3px; padding: .35rem .45rem;
+    cursor: pointer; flex-direction: column;
+    gap: 4px; align-items: center; justify-content: center;
+  }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+  .nav-dropdown { display: none; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .5rem 1rem; }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a { display: block; color: var(--text-dim); text-decoration: none; font-size: .85rem; letter-spacing: .05em; padding: .5rem .25rem; border-bottom: 1px solid var(--border); transition: color .15s; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover, .nav-dropdown a.active { color: var(--green); }
+  @media (max-width: 480px) { .nav-links { display: none; } .nav-burger { display: flex; } }
+
+  /* BREADCRUMB */
+  .breadcrumb {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: .75rem 1.25rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .75rem;
+    color: var(--text-dim);
+    letter-spacing: .05em;
+  }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); margin: 0 .4rem; }
+
+  /* PAGE HEADER */
+  .page-header {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.25rem 1.5rem;
+  }
+  .page-header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: #e8ecdf;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: .35rem;
+  }
+  .page-header p { color: var(--text-dim); font-size: .95rem; }
+
+  /* SEARCH BOX */
+  .search-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.25rem 1.5rem;
+  }
+  .search-box {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  .search-box svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    stroke: var(--text-dim);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    pointer-events: none;
+  }
+  #searchInput {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'PT Sans', sans-serif;
+    font-size: 1rem;
+    padding: .7rem 1rem .7rem 2.75rem;
+    outline: none;
+    transition: border-color .15s;
+  }
+  #searchInput:focus { border-color: var(--green-dim); }
+  #searchInput::placeholder { color: var(--text-dim); }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .08em;
+    padding: .3rem .7rem;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .filter-btn:hover { border-color: var(--green-dim); color: var(--text); }
+  .filter-btn.active { border-color: var(--green); color: var(--green); background: rgba(122,170,46,.08); }
+
+  /* ALPHABET */
+  .alphabet-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.25rem 1.5rem;
+  }
+  .alphabet-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: .6rem;
+  }
+  .alphabet {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+  }
+  .alpha-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .8rem;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .15s;
+    text-transform: uppercase;
+  }
+  .alpha-btn:hover { border-color: var(--green-dim); color: var(--text); }
+  .alpha-btn.active { border-color: var(--green); color: var(--green); background: rgba(122,170,46,.08); }
+  .alpha-btn.disabled { opacity: .3; cursor: default; pointer-events: none; }
+
+  /* RESULTS */
+  .results-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.25rem 3rem;
+  }
+  .results-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .78rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    letter-spacing: .05em;
+  }
+  .results-meta b { color: var(--green); }
+
+  /* QUEST TABLE */
+  .quest-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .quest-table thead tr {
+    border-bottom: 2px solid var(--border);
+  }
+  .quest-table th {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: .5rem .75rem;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  .quest-table th:hover { color: var(--green); }
+  .quest-table th .sort-icon { margin-left: .3rem; opacity: .4; }
+  .quest-table th.sorted .sort-icon { opacity: 1; color: var(--green); }
+
+  .quest-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background .1s;
+    cursor: pointer;
+  }
+  .quest-table tbody tr:hover { background: rgba(122,170,46,.04); }
+  .quest-table td {
+    padding: .65rem .75rem;
+    font-size: .9rem;
+    vertical-align: middle;
+  }
+  .quest-table td:first-child { padding-left: .75rem; }
+
+  .quest-name {
+    color: #e8ecdf;
+    font-weight: 700;
+    text-decoration: none;
+    display: block;
+  }
+  .quest-name:hover { color: var(--green); }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .68rem;
+    letter-spacing: .06em;
+    padding: .15rem .45rem;
+    border-radius: 2px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .badge-holiday { color: #c8920a; border-color: rgba(200,146,10,.35); background: rgba(200,146,10,.07); }
+  .badge-main { color: var(--green); border-color: rgba(122,170,46,.35); background: rgba(122,170,46,.07); }
+  .badge-side { color: var(--text-dim); border-color: var(--border); }
+  .badge-chain { color: var(--blue); border-color: rgba(74,144,196,.35); background: rgba(74,144,196,.07); }
+
+  .quest-npc { color: var(--blue); font-size: .85rem; }
+  .quest-xp { font-family: 'Share Tech Mono', monospace; font-size: .82rem; color: var(--amber); }
+  .quest-hours { font-family: 'Share Tech Mono', monospace; font-size: .82rem; color: var(--text-dim); }
+
+  @media (max-width: 680px) {
+    .col-npc, .col-xp, .col-hours { display: none; }
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-dim);
+  }
+  .empty-state svg { width: 48px; height: 48px; stroke: var(--border); fill: none; stroke-width: 1.4; stroke-linecap: round; margin-bottom: 1rem; }
+  .empty-state p { font-family: 'Share Tech Mono', monospace; font-size: .85rem; letter-spacing: .08em; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    font-size: .75rem;
+    color: var(--text-dim);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  footer a { color: var(--green-dim); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/index.html">STAY OUT <span>// WIKI</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="/index.html" data-page="index">Главная</a>
+      <a href="/content/zadaniya/zadaniya.html" data-page="zadaniya" class="active">Задания</a>
+      <a href="/content/lokacii/lokacii.html" data-page="lokacii">Локации</a>
+      <a href="/content/predmety/predmety.html" data-page="predmety">Предметы</a>
+      <a href="/content/personazhi/personazhi.html" data-page="personazhi">Персонажи</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-dropdown" id="navDropdown">
+    <a href="/index.html">Главная</a>
+    <a href="/content/zadaniya/zadaniya.html" class="active">Задания</a>
+    <a href="/content/lokacii/lokacii.html">Локации</a>
+    <a href="/content/predmety/predmety.html">Предметы</a>
+    <a href="/content/personazhi/personazhi.html">Персонажи</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="/index.html">Главная</a>
+  <span>→</span>
+  Задания
+</div>
+
+<div class="page-header">
+  <h1>Задания(В разработке) </h1>
+  <p>Все задания Stay Out — используй поиск или алфавитный указатель</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-box">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    <input type="text" id="searchInput" placeholder="Поиск по названию, NPC, локации…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-type="all">Все типы</button>
+    <button class="filter-btn" data-type="Основное">Основные</button>
+    <button class="filter-btn" data-type="Побочное">Побочные</button>
+    <button class="filter-btn" data-type="Праздничное">Праздничные</button>
+    <button class="filter-btn" data-type="Цепочка">Цепочка</button>
+  </div>
+</div>
+
+<!-- ALPHABET -->
+<div class="alphabet-wrap">
+  <p class="alphabet-label">По алфавиту</p>
+  <div class="alphabet" id="alphabetBar"></div>
+</div>
+
+<!-- RESULTS -->
+<div class="results-wrap">
+  <p class="results-meta" id="resultsMeta"></p>
+  <table class="quest-table" id="questTable">
+    <thead>
+      <tr>
+        <th data-col="name">Название <span class="sort-icon">↕</span></th>
+        <th data-col="type">Тип <span class="sort-icon">↕</span></th>
+        <th data-col="npc" class="col-npc">NPC <span class="sort-icon">↕</span></th>
+        <th data-col="xp" class="col-xp">Опыт <span class="sort-icon">↕</span></th>
+        <th data-col="hours" class="col-hours">Повтор <span class="sort-icon">↕</span></th>
+      </tr>
+    </thead>
+    <tbody id="questBody"></tbody>
+  </table>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <svg viewBox="0 0 48 48"><circle cx="22" cy="22" r="14"/><line x1="32" y1="32" x2="44" y2="44"/><line x1="18" y1="22" x2="26" y2="22"/><line x1="22" y1="18" x2="22" y2="26"/></svg>
+    <p>Ничего не найдено — попробуй другой запрос</p>
+  </div>
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям.
+</footer>
+
+<script>
+// ── ДАННЫЕ ЗАДАНИЙ ──────────────────────────────────────────────────────────
+// Добавляй сюда свои задания. slug — имя файла страницы задания.
+const QUESTS = [
+  {
+    name: '"Беленькая" для Свекольного',
+    slug: 'belenkaya-dlya-svekolnogo',
+    type: 'Праздничное',
+    npc: 'Свекольный',
+    location: 'Город N',
+    xp: 3000,
+    hours: 4000,
+    holiday: 'Новый год 2025'
+  },
+  {
+    name: 'Старый должок',
+    slug: 'staryy-dolzhok',
+    type: 'Основное',
+    npc: 'Бармен',
+    location: 'Свалка',
+    xp: 1500,
+    hours: null,
+    holiday: null
+  },
+  {
+    name: 'Охота на волков',
+    slug: 'ohota-na-volkov',
+    type: 'Побочное',
+    npc: 'Лесник',
+    location: 'Лес',
+    xp: 800,
+    hours: 2400,
+    holiday: null
+  },
+  {
+    name: 'Аномальная активность',
+    slug: 'anomalnaya-aktivnost',
+    type: 'Цепочка',
+    npc: 'Профессор',
+    location: 'Лаборатория',
+    xp: 5000,
+    hours: null,
+    holiday: null
+  },
+  {
+    name: 'Рождественский пакет',
+    slug: 'rozhdestvenskiy-paket',
+    type: 'Праздничное',
+    npc: 'Дед Мороз',
+    location: 'Город N',
+    xp: 2000,
+    hours: 4000,
+    holiday: 'Новый год 2025'
+  },
+  {
+    name: 'Пропавший конвой',
+    slug: 'propavshiy-konvoy',
+    type: 'Основное',
+    npc: 'Полковник',
+    location: 'Дорога',
+    xp: 3500,
+    hours: null,
+    holiday: null
+  },
+  {
+    name: 'Запасы для базы',
+    slug: 'zapasy-dlya-bazy',
+    type: 'Побочное',
+    npc: 'Техник',
+    location: 'База',
+    xp: 600,
+    hours: 1200,
+    holiday: null
+  },
+  {
+    name: 'Черный рынок',
+    slug: 'chernyy-rynok',
+    type: 'Цепочка',
+    npc: 'Торговец',
+    location: 'Подземелье',
+    xp: 4200,
+    hours: null,
+    holiday: null
+  },
+  {
+    name: 'Буран',
+    slug: 'buran',
+    type: 'Основное',
+    npc: 'Механик',
+    location: 'Гараж',
+    xp: 2200,
+    hours: null,
+    holiday: null
+  },
+  {
+    name: 'Взрыв на заводе',
+    slug: 'vzryv-na-zavode',
+    type: 'Побочное',
+    npc: 'Инженер',
+    location: 'Завод',
+    xp: 1100,
+    hours: 3600,
+    holiday: null
+  },
+];
+
+// ── СОСТОЯНИЕ ───────────────────────────────────────────────────────────────
+let currentFilter = 'all';
+let currentLetter = null;
+let sortCol = 'name';
+let sortDir = 1;
+let query = '';
+
+// ── АЛФАВИТ ─────────────────────────────────────────────────────────────────
+const LETTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'.split('');
+const usedLetters = new Set(QUESTS.map(q => q.name[0]?.toUpperCase()));
+
+function buildAlphabet() {
+  const bar = document.getElementById('alphabetBar');
+  // Кнопка «Все»
+  const allBtn = document.createElement('button');
+  allBtn.className = 'alpha-btn active';
+  allBtn.textContent = '#';
+  allBtn.title = 'Все';
+  allBtn.onclick = () => { currentLetter = null; setAlpha(allBtn); render(); };
+  bar.appendChild(allBtn);
+
+  LETTERS.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'alpha-btn' + (usedLetters.has(l) ? '' : ' disabled');
+    btn.textContent = l;
+    btn.onclick = () => { currentLetter = l; setAlpha(btn); render(); };
+    bar.appendChild(btn);
+  });
+}
+
+function setAlpha(active) {
+  document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+  active.classList.add('active');
+}
+
+// ── ФИЛЬТРЫ ─────────────────────────────────────────────────────────────────
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.type;
+  render();
+});
+
+// ── ПОИСК ───────────────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', e => {
+  query = e.target.value.trim().toLowerCase();
+  // Сбрасываем букву при вводе
+  if (query) { currentLetter = null; document.querySelectorAll('.alpha-btn').forEach((b,i) => { b.classList.remove('active'); if(i===0) b.classList.add('active'); }); }
+  render();
+});
+
+// ── СОРТИРОВКА ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.quest-table th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortDir *= -1;
+    else { sortCol = col; sortDir = 1; }
+    document.querySelectorAll('.quest-table th').forEach(t => t.classList.remove('sorted'));
+    th.classList.add('sorted');
+    th.querySelector('.sort-icon').textContent = sortDir === 1 ? '↑' : '↓';
+    render();
+  });
+});
+
+// ── РЕНДЕР ──────────────────────────────────────────────────────────────────
+function typeBadge(type) {
+  const map = { 'Праздничное': 'badge-holiday', 'Основное': 'badge-main', 'Побочное': 'badge-side', 'Цепочка': 'badge-chain' };
+  return `<span class="badge ${map[type] || 'badge-side'}">${type}</span>`;
+}
+
+function render() {
+  let list = QUESTS.filter(q => {
+    if (currentFilter !== 'all' && q.type !== currentFilter) return false;
+    if (currentLetter && q.name[0]?.toUpperCase() !== currentLetter) return false;
+    if (query) {
+      const haystack = (q.name + ' ' + q.npc + ' ' + q.location + ' ' + (q.holiday||'')).toLowerCase();
+      return haystack.includes(query);
+    }
+    return true;
+  });
+
+  // Sort
+  list = list.slice().sort((a, b) => {
+    let va = a[sortCol] ?? '', vb = b[sortCol] ?? '';
+    if (typeof va === 'string') return va.localeCompare(vb, 'ru') * sortDir;
+    return (va - vb) * sortDir;
+  });
+
+  const tbody = document.getElementById('questBody');
+  const empty = document.getElementById('emptyState');
+  const meta = document.getElementById('resultsMeta');
+
+  if (list.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    meta.innerHTML = '';
+    return;
+  }
+
+  empty.style.display = 'none';
+  meta.innerHTML = `Показано <b>${list.length}</b> из ${QUESTS.length} заданий`;
+
+  tbody.innerHTML = list.map(q => `
+    <tr onclick="location.href='/content/zadaniya/zadanie-${q.slug}.html'">
+      <td>
+        <a class="quest-name" href="/content/zadaniya/zadanie-${q.slug}.html">${q.name}</a>
+        ${q.location ? `<span style="font-size:.78rem;color:var(--text-dim)">${q.location}</span>` : ''}
+      </td>
+      <td>${typeBadge(q.type)}</td>
+      <td class="col-npc quest-npc">${q.npc || '—'}</td>
+      <td class="col-xp quest-xp">${q.xp ? q.xp.toLocaleString('ru') : '—'}</td>
+      <td class="col-hours quest-hours">${q.hours ? q.hours + ' ч.' : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+// ── INIT ────────────────────────────────────────────────────────────────────
+buildAlphabet();
+render();
+
+// Burger
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+</body>
+</html>
