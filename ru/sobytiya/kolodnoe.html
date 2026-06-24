@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Колодное — Stay Out Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0f0a; --surface:#141710; --border:#2a2f1e;
+    --green:#7aaa2e; --green-dim:#4a6a1a; --amber:#c8920a;
+    --text:#c9cdbf; --text-dim:#6b7060; --danger:#b03a2e; --code:#7aaa2e;
+    --swamp:#6aaa6e; --swamp-dim:#2a5a2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 18px; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+/* NAV — ОБЩИЙ КОМПОНЕНТ ШАПКИ. НЕ РЕДАКТИРОВАТЬ ВРУЧНУЮ НА ОТДЕЛЬНЫХ СТРАНИЦАХ.
+     Структуру/ссылки строит ../_nav.js в <div id="site-nav">, логику активной
+     страницы и языка — ../../common.js. Этот CSS-блок копируется одинаковым
+     на каждую страницу и должен совпадать с эталоном. */
+  #site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+
+  .nav-links {
+    display: flex;
+    gap: .25rem;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    padding: .3rem .55rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+
+  .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: .08em;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .nav-lang a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: .35rem .6rem;
+    transition: all .15s;
+    line-height: 1;
+  }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active {
+    color: var(--green);
+    background: rgba(122,170,46,.1);
+    cursor: default;
+    pointer-events: none;
+  }
+  .nav-lang span {
+    color: var(--border);
+    padding: 0 1px;
+    user-select: none;
+  }
+
+  .nav-steam {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+
+  .nav-burger {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .35rem .45rem;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+
+  .nav-dropdown {
+    display: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: .5rem 1rem;
+  }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+    transition: color .15s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row {
+    display: flex;
+    gap: .75rem;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-dropdown .lang-row a.lang-active {
+    color: var(--green);
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .nav-lang { display: none; }
+    .nav-burger { display: flex; }
+  }
+  /* /NAV */
+
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .5rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); }
+
+  .hero { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
+  .hero-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--swamp); letter-spacing: .15em; margin-bottom: .6rem; }
+  .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 700; line-height: 1.05; color: #e8ecdf; text-transform: uppercase; letter-spacing: .02em; margin-bottom: .75rem; }
+  .hero h1 em { font-style: normal; color: var(--swamp); }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .badge { font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .08em; padding: .25rem .6rem; border-radius: 2px; border: 1px solid; }
+  .badge-exp { color: var(--swamp); border-color: var(--swamp-dim); background: rgba(106,170,110,.06); }
+  .badge-time { color: var(--amber); border-color: rgba(200,146,10,.3); background: rgba(200,146,10,.06); }
+  .badge-loc { color: var(--text-dim); border-color: var(--border); }
+  .badge-warn { color: var(--danger); border-color: rgba(176,58,46,.3); background: rgba(176,58,46,.06); }
+
+  .content-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .5rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .75rem 1rem; }
+  .stat-label { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: var(--text-dim); letter-spacing: .1em; margin-bottom: .25rem; }
+  .stat-value { font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--swamp); line-height: 1; }
+
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .15em; color: var(--text-dim); border-bottom: 1px solid var(--border); padding-bottom: .5rem; margin-bottom: 1rem; text-transform: uppercase; }
+
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--swamp); border-radius: 4px; padding: 1rem 1.25rem; font-size: .95rem; color: var(--text-dim); margin-bottom: 2rem; line-height: 1.7; }
+  .info-block strong { color: var(--text); }
+  .info-block.warn { border-left-color: var(--amber); }
+  .info-block ul { margin-top: .5rem; padding-left: 0; }
+  .info-block ul li { list-style: none; display: flex; align-items: flex-start; gap: .4rem; padding: .15rem 0; }
+  .info-block ul li::before { content: '▸'; color: var(--swamp); flex-shrink: 0; margin-top: .05rem; }
+  code { font-family: 'Share Tech Mono', monospace; background: rgba(106,170,110,.1); color: var(--swamp); padding: .05em .3em; border-radius: 2px; font-size: .9em; }
+
+  .step-list { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1rem 1.1rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--swamp-dim); line-height: 1; flex-shrink: 0; width: 2rem; text-align: center; padding-top: .1rem; }
+  .step-body { flex: 1; }
+  .step-title { font-size: 1rem; font-weight: 700; color: #e8ecdf; margin-bottom: .35rem; }
+  .step-desc { font-size: .9rem; color: var(--text-dim); line-height: 1.6; }
+
+  .event-block { margin-top: .75rem; background: rgba(0,0,0,.2); border: 1px solid var(--border); border-radius: 3px; padding: .75rem 1rem; }
+  .event-label { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: var(--swamp); letter-spacing: .1em; margin-bottom: .5rem; }
+  .event-phase { margin-bottom: .5rem; }
+  .event-phase:last-child { margin-bottom: 0; }
+  .event-phase-title { font-size: .82rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
+  .event-timer { font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--amber); margin-bottom: .3rem; }
+  .event-mobs { font-size: .82rem; color: var(--text-dim); }
+  .event-mobs li { list-style: none; padding: .05rem 0; display: flex; align-items: center; gap: .35rem; }
+  .event-mobs li::before { content: '·'; color: var(--swamp-dim); }
+  .event-mobs li strong { color: var(--text); }
+  .event-mobs li.boss { color: var(--danger); }
+  .event-mobs li.boss::before { content: '★'; color: var(--amber); }
+  .event-sep { border: none; border-top: 1px solid var(--border); margin: .5rem 0; }
+  .event-note { font-family: 'Share Tech Mono', monospace; font-size: .68rem; color: var(--amber); margin-top: .4rem; padding: .3rem .5rem; border: 1px solid rgba(200,146,10,.2); border-radius: 2px; background: rgba(200,146,10,.04); }
+
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 1.25rem; text-align: center; font-size: .75rem; color: var(--text-dim); max-width: 900px; margin: 0 auto; }
+  footer a { color: var(--green-dim); text-decoration: none; }
+</style>
+</head>
+<body>
+<div id="site-nav"></div>
+
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a>
+  <span>→</span>
+  <a href="sobytiya.html">События</a>
+  <span>→</span>
+  Колодное
+</div>
+
+<div class="breadcrumb">
+  <a href="#">Главная</a> &rsaquo; <a href="#">События</a> &rsaquo; <span>Колодное</span>
+</div>
+
+<section class="hero">
+  <p class="hero-eyebrow">// ЭКСПЕДИЦИЯ // ОТКРЫТЫЙ МИР</p>
+  <h1><em>Колодное</em></h1>
+  <div class="hero-badges">
+    <span class="badge badge-exp">Экспедиция · 5 игроков</span>
+    <span class="badge badge-time">⏱ Обновление в 07:00</span>
+    <span class="badge badge-loc">Локация: Окрестности Любеча</span>
+    <span class="badge badge-warn">⚠ Статья не полная</span>
+  </div>
+</section>
+
+<div class="content-wrap">
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-label">Этапов</div><div class="stat-value">3</div></div>
+    <div class="stat-card"><div class="stat-label">Мин. уровень</div><div class="stat-value">85</div></div>
+    <div class="stat-card"><div class="stat-label">Мин. отряд</div><div class="stat-value">2+</div></div>
+    <div class="stat-card"><div class="stat-label">Макс. игроков</div><div class="stat-value">5</div></div>
+    <div class="stat-card"><div class="stat-label">Сброс</div><div class="stat-value">07:00</div></div>
+  </div>
+
+  <p class="section-label">Условия доступа</p>
+  <div class="info-block">
+    Экспедиция доступна персонажам <strong>85 уровня</strong> и выше, только в составе отряда из <strong>двух и более</strong> человек. Вход — через <strong>Костю Мазая</strong> на локации Окрестности Любеча. При посещении каждому игроку автоматически выдаются задания <strong>«Дорога через топи в Усов»</strong> и <strong>«Собрать припасы для Усова»</strong>. Повторное прохождение в роли лидера обновляется ежедневно в <code>07:00</code> по серверному времени (команда <code>/time</code>).<br><br>
+    Персонажи ниже 85 уровня могут получить доступ при наличии у одной из группировок достаточного количества репутации:
+    <ul>
+      <li><strong>«Мокруха»</strong> — более 7 500 очков репутации</li>
+      <li><strong>Чёрный рынок</strong> — более 7 500 очков репутации</li>
+      <li><strong>Деревня «Усов»</strong> — более 3 000 очков репутации</li>
+    </ul>
+  </div>
+
+  <p class="section-label">Этапы экспедиции</p>
+
+  <div class="step-list">
+
+    <!-- ЭТАП I -->
+    <div class="step-card">
+      <div class="step-num">I</div>
+      <div class="step-body">
+        <div class="step-title">Первый этап</div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ · ПЕРЕРЫВ МЕЖДУ ФАЗАМИ: 30 СЕК</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 5 минут — убить 72 мутанта</div>
+            <ul class="event-mobs">
+              <li><strong>Особая Малая верлиока</strong> × 22</li>
+              <li><strong>Старый Одичавший</strong> × 33</li>
+              <li><strong>Небольшой паук</strong> × 25</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП II -->
+    <div class="step-card">
+      <div class="step-num">II</div>
+      <div class="step-body">
+        <div class="step-title">Второй этап</div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ · БЕЗ ПЕРЕРЫВА МЕЖДУ ФАЗАМИ</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 3 мин 40 сек — убить 57 мутантов</div>
+            <ul class="event-mobs">
+              <li><strong>Особая Малая верлиока</strong> × 20</li>
+              <li><strong>Особая Собака</strong> × 30</li>
+              <li><strong>Особый Бес</strong> × 10</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 4 минуты — убить 19 мутантов</div>
+            <ul class="event-mobs">
+              <li><strong>Особая Панцирная верлиока</strong> × 20</li>
+            </ul>
+          </div>
+          <div class="event-note">⚠ Перерыв между фазами не предусмотрен</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП III -->
+    <div class="step-card">
+      <div class="step-num">III</div>
+      <div class="step-body">
+        <div class="step-title">Третий этап</div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ · ПЕРЕРЫВ МЕЖДУ ФАЗАМИ: 30 СЕК</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 5 минут — убить 114 мутантов</div>
+            <ul class="event-mobs">
+              <li><strong>Жидкий студень</strong> × 20</li>
+              <li><strong>Быстрый бес</strong> × 40</li>
+              <li><strong>Небольшой паук</strong> × 60</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 5 минут — убить 76 мутантов</div>
+            <ul class="event-mobs">
+              <li><strong>Слепой ведун</strong> × 20</li>
+              <li><strong>Небольшой паук</strong> × 40</li>
+              <li><strong>Каменный брутор</strong> × 20</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза III</div>
+            <div class="event-timer">⏱ 5 минут — убить 26 мутантов</div>
+            <ul class="event-mobs">
+              <li><strong>Волк</strong> × 25</li>
+              <li class="boss"><strong>Репей</strong> × 1</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+<script>
+(function() {
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+})();
+
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>
+</body>
+</html>
