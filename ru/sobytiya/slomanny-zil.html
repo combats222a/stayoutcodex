@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сломанный ЗИЛ — Stay Out Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       ПЕРЕМЕННЫЕ
+    ========================================================= */
+    :root {
+      --bg:        #0d0f0a;
+      --surface:   #141710;
+      --border:    #2a2f1e;
+      --green:     #7aaa2e;
+      --green-dim: #4a6a1a;
+      --amber:     #c8920a;
+      --text:      #c9cdbf;
+      --text-dim:  #6b7060;
+      --danger:    #b03a2e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'PT Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* Scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* =========================================================
+       NAV — не трогать
+    ========================================================= */
+    /* NAV */
+  #site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+
+  .nav-links {
+    display: flex;
+    gap: .25rem;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    padding: .3rem .55rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+
+  .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: .08em;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .nav-lang a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: .35rem .6rem;
+    transition: all .15s;
+    line-height: 1;
+  }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active {
+    color: var(--green);
+    background: rgba(122,170,46,.1);
+    cursor: default;
+    pointer-events: none;
+  }
+  .nav-lang span {
+    color: var(--border);
+    padding: 0 1px;
+    user-select: none;
+  }
+
+  .nav-steam {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+
+  .nav-burger {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .35rem .45rem;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+
+  .nav-dropdown {
+    display: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: .5rem 1rem;
+  }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+    transition: color .15s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row {
+    display: flex;
+    gap: .75rem;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-dropdown .lang-row a {
+    border: none;
+    padding: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .8rem;
+  }
+  .nav-dropdown .lang-row a.lang-active {
+    color: var(--green);
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .nav-lang { display: none; }
+    .nav-burger { display: flex; }
+  }
+
+    /* =========================================================
+       BREADCRUMB
+    ========================================================= */
+    .breadcrumb {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem .25rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .75rem;
+      color: var(--text-dim);
+      letter-spacing: .08em;
+    }
+    .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb span { color: var(--green); margin: 0 .4em; }
+
+    /* =========================================================
+       ОБЁРТКА СТРАНИЦЫ
+    ========================================================= */
+    .section-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.25rem 3rem;
+    }
+
+    /* =========================================================
+       ЗАГОЛОВОК СТРАНИЦЫ
+    ========================================================= */
+    .page-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin: 1.25rem 0 .25rem;
+    }
+    .event-type {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--amber);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+
+    /* =========================================================
+       ЛЕЙБЛ СЕКЦИИ
+    ========================================================= */
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      letter-spacing: .2em;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* =========================================================
+       ДВУХКОЛОНОЧНЫЙ БЛОК: описание + инфокарточка
+    ========================================================= */
+    .event-layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 1.75rem;
+      align-items: start;
+      margin-bottom: 1.75rem;
+    }
+    @media (max-width: 680px) {
+      .event-layout { grid-template-columns: 1fr; }
+      .event-image { order: -1; }
+    }
+
+    /* Описание */
+    .event-desc p {
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+    .event-desc p:last-child { margin-bottom: 0; }
+    .event-desc strong { color: #e0dfd4; }
+
+    /* Изображение / инфокарточка в правой колонке */
+    .event-image img {
+      width: 100%;
+      border: 1px solid var(--border);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: .85rem 1rem;
+    }
+    .info-card-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .15em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: .5rem;
+      padding: .3rem 0;
+      border-bottom: 1px solid rgba(42,47,30,.6);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .8rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-key { color: var(--text-dim); }
+    .info-val { color: var(--text); text-align: right; }
+    .info-val strong { color: var(--green); }
+
+    /* =========================================================
+       СПИСОК ЛУТА / ГРУЗА
+    ========================================================= */
+    .loot-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+      margin-bottom: 1.75rem;
+    }
+    .loot-list li {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .85rem;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: .5rem .85rem;
+    }
+    .loot-list li svg { flex-shrink: 0; }
+    .loot-qty {
+      color: var(--text-dim);
+      margin-left: auto;
+      font-size: .78rem;
+    }
+
+    /* =========================================================
+       ВАЖНО — блок предупреждений
+       Два варианта: --danger (красный) и --amber (жёлтый).
+       Используйте нужный класс: warn-block--danger / warn-block--amber
+    ========================================================= */
+    .warn-block {
+      padding: .9rem 1.1rem;
+      margin-bottom: 1.75rem;
+    }
+    .warn-block--danger {
+      border: 1px solid var(--danger);
+      background: rgba(176,58,46,.07);
+    }
+    .warn-block--amber {
+      border: 1px solid var(--amber);
+      background: rgba(200,146,10,.05);
+    }
+    .warn-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: .92rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+    }
+    .warn-block--danger .warn-title { color: var(--danger); }
+    .warn-block--amber  .warn-title { color: var(--amber); }
+    .warn-block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+    }
+    .warn-block ul li {
+      font-size: .9rem;
+      color: var(--text);
+      padding-left: 1.1rem;
+      position: relative;
+      line-height: 1.55;
+    }
+    .warn-block ul li::before {
+      content: '//';
+      position: absolute;
+      left: 0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .72rem;
+      top: .22em;
+    }
+    .warn-block--danger ul li::before { color: var(--danger); }
+    .warn-block--amber  ul li::before { color: var(--amber); }
+    .warn-block strong { color: #e07060; }
+
+    /* =========================================================
+       СПИСОК ЛОКАЦИЙ
+    ========================================================= */
+    .loc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin-bottom: 1.75rem;
+    }
+    .loc-list li {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .92rem;
+      color: var(--text);
+      padding: .4rem .75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .loc-list li::before {
+      content: '▸';
+      color: var(--green);
+      font-size: .8rem;
+      flex-shrink: 0;
+    }
+
+    /* =========================================================
+       ПОДНОШЕНИЕ (для событий с запуском вручную)
+    ========================================================= */
+    .offering-list {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin-bottom: 1.75rem;
+    }
+    .offering-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: .55rem .85rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .85rem;
+      color: var(--text);
+    }
+    .offering-name { color: var(--text); }
+    .offering-note { font-size: .75rem; color: var(--text-dim); margin-top: .15rem; }
+    .offering-qty { color: var(--text-dim); white-space: nowrap; flex-shrink: 0; }
+
+    /* =========================================================
+       ФАЗЫ СОБЫТИЯ
+    ========================================================= */
+    .note-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green-dim);
+      padding: .7rem 1rem;
+      font-size: .9rem;
+      color: var(--text-dim);
+      margin-bottom: 1.25rem;
+    }
+    .note-box strong { color: var(--text); }
+
+    .phases {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      margin-bottom: 1.75rem;
+    }
+    .phase-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .55rem .85rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(122,170,46,.04);
+    }
+    .phase-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--green);
+      min-width: 1.5rem;
+      text-align: center;
+    }
+    .phase-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      color: var(--text);
+      letter-spacing: .08em;
+      flex: 1;
+    }
+    .phase-time {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--text-dim);
+    }
+    .phase-enemies {
+      padding: .5rem .85rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+    .enemy-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      color: var(--text);
+    }
+    .enemy-count { color: var(--text-dim); }
+    .phase-kill-target {
+      padding: .4rem .85rem .55rem;
+      font-size: .85rem;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+    }
+    .phase-kill-target strong { color: var(--amber); }
+
+    /* =========================================================
+       ОПЫТ
+    ========================================================= */
+    .xp-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      padding: .8rem 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .xp-main {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: .3rem;
+    }
+    .xp-note {
+      font-size: .85rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+    }
+
+    /* =========================================================
+       НАГРАДЫ ТОП-3
+    ========================================================= */
+    .rewards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .75rem;
+      margin-bottom: 1.75rem;
+    }
+    @media (max-width: 520px) { .rewards-grid { grid-template-columns: 1fr; } }
+    .reward-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1rem .85rem;
+      text-align: center;
+    }
+    .reward-place {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: .15rem;
+    }
+    .reward-place.gold   { color: #d4a93a; }
+    .reward-place.silver { color: #9eaab8; }
+    .reward-place.bronze { color: #b06e3a; }
+    .reward-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .72rem;
+      color: var(--text-dim);
+      letter-spacing: .12em;
+      margin-bottom: .65rem;
+      text-transform: uppercase;
+    }
+    .reward-note {
+      font-size: .8rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .72rem;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      line-height: 1.8;
+    }
+    footer a { color: var(--text-dim); text-decoration: underline; }
+    footer a:hover { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<!-- ============================================================
+     BREADCRUMB — менять только последний пункт
+============================================================ -->
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a>
+  <span>→</span>
+  <a href="sobytiya.html">События</a>
+  <span>→</span>
+  Сломанный ЗИЛ
+</div>
+
+<div class="section-wrap">
+
+  <!-- ЗАГОЛОВОК -->
+  <h1 class="page-title">Сломанный ЗИЛ</h1>
+  <p class="event-type">// Динамическое событие // Открытый мир</p>
+
+  <!-- ============================================================
+       БЛОК: ОПИСАНИЕ + ИНФОКАРТОЧКА
+  ============================================================ -->
+  <div class="event-layout">
+    <div class="event-desc">
+      <p>
+        Динамическое событие, периодически встречающееся в разных уголках Зоны.
+      </p>
+      <p>
+        ЗИЛ охраняется вооружённым экипажем. Уровень опасности охраны и ценность груза зависит от локации.
+        Устранив охрану, можно получить доступ к обыску перевозимого груза, который находится в контейнерах рядом с грузовиком.
+      </p>
+    </div>
+
+
+  <!-- ============================================================
+       БЛОК: ПОДНОШЕНИЕ ДЛЯ ЗАПУСКА (только для ручного запуска)
+       Удалить целиком, если не нужно
+  ============================================================ -->
+  <!--
+  <p class="section-label">Подношение для запуска</p>
+  <div class="offering-list">
+    <div class="offering-row">
+      <div>
+        <div class="offering-name">Название предмета</div>
+        <div class="offering-note">Дополнительное условие, если есть</div>
+      </div>
+      <span class="offering-qty">× 1 шт.</span>
+    </div>
+    <div class="offering-row">
+      <span class="offering-name">Название предмета</span>
+      <span class="offering-qty">× 2 шт.</span>
+    </div>
+  </div>
+  -->
+
+  <!-- ============================================================
+       БЛОК: ФАЗЫ СОБЫТИЯ (только для многофазных)
+       Удалить целиком, если не нужно
+  ============================================================ -->
+  <!--
+  <p class="section-label">Фазы события</p>
+
+  <div class="note-box">
+    Между каждой фазой — перерыв <strong>30 секунд</strong>.
+  </div>
+
+  <div class="phases">
+
+    <div class="phase-block">
+      <div class="phase-header">
+        <span class="phase-num">I</span>
+        <span class="phase-title">Фаза первая</span>
+        <span class="phase-time">⏱ 4 минуты</span>
+      </div>
+      <div class="phase-enemies">
+        <div class="enemy-row">
+          <span class="enemy-name">Название врага</span>
+          <span class="enemy-count">× 100</span>
+        </div>
+      </div>
+      <p class="phase-kill-target">Цель: убить <strong>100</strong> противников</p>
+    </div>
+
+  </div>
+  -->
+
+  <!-- ============================================================
+       БЛОК: ОПЫТ (только для событий с опытом)
+       Удалить целиком, если не нужно
+  ============================================================ -->
+  <!--
+  <p class="section-label">Опыт за событие</p>
+  <div class="xp-box">
+    <p class="xp-main">219 100 опыта</p>
+    <p class="xp-note">Распределяется пропорционально баллам между всеми участниками.</p>
+  </div>
+  -->
+
+  <!-- ============================================================
+       БЛОК: НАГРАДА / ГРУЗ
+  ============================================================ -->
+  <p class="section-label">Груз (контейнеры)</p>
+  <ul class="loot-list">
+    <li>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.4">
+        <rect x="2" y="7" width="20" height="14" rx="1"/>
+        <path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 00-2 2"/>
+      </svg>
+      Деревянный ящичек (событие)
+      <span class="loot-qty">× 1 шт.</span>
+    </li>
+    <li>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.4">
+        <rect x="2" y="7" width="20" height="14" rx="1"/>
+        <path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 00-2 2"/>
+      </svg>
+      Коробки (событие)
+      <span class="loot-qty">× 1 шт.</span>
+    </li>
+    <li>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.4">
+        <rect x="2" y="7" width="20" height="14" rx="1"/>
+        <path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 00-2 2"/>
+      </svg>
+      Коробка с препаратами большая (событие)
+      <span class="loot-qty">× 1 шт.</span>
+    </li>
+  </ul>
+
+  <!-- ============================================================
+       БЛОК: НАГРАДЫ ТОП-3 (только для рейтинговых событий)
+       Удалить целиком, если не нужно
+  ============================================================ -->
+  <!--
+  <p class="section-label">Награды за топ-3 места</p>
+  <div class="rewards-grid">
+    <div class="reward-card">
+      <p class="reward-place gold">1</p>
+      <p class="reward-label">место</p>
+      <p class="reward-note">Название награды × 1 шт.</p>
+    </div>
+    <div class="reward-card">
+      <p class="reward-place silver">2</p>
+      <p class="reward-label">место</p>
+      <p class="reward-note">Название награды × 1 шт.</p>
+    </div>
+    <div class="reward-card">
+      <p class="reward-place bronze">3</p>
+      <p class="reward-label">место</p>
+      <p class="reward-note">Название награды × 1 шт.</p>
+    </div>
+  </div>
+  -->
+
+  <!-- ============================================================
+       БЛОК: ВАЖНО
+       warn-block--danger = красный (угроза провала)
+       warn-block--amber  = жёлтый (просто замечание)
+  ============================================================ -->
+  <div class="warn-block warn-block--danger">
+    <p class="warn-title">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      Важно
+    </p>
+    <ul>
+      <li>Если по прошествии определённого времени никого рядом с событием так и не окажется, оно преждевременно завершится.</li>
+      <li>После устранения охраны событие исчезнет по истечении <strong>5 минут</strong>.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================
+       БЛОК: ЛОКАЦИИ
+  ============================================================ -->
+  <p class="section-label">Встречается на локации</p>
+  <ul class="loc-list">
+    <li>Почти все локации Зоны</li>
+  </ul>
+
+</div><!-- /section-wrap -->
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function() {
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+})();
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

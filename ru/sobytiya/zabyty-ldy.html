@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Забытые льды — Stay Out Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0f0a; --surface:#141710; --border:#2a2f1e;
+    --green:#7aaa2e; --green-dim:#4a6a1a; --amber:#c8920a;
+    --text:#c9cdbf; --text-dim:#6b7060; --danger:#b03a2e; --code:#7aaa2e;
+    --ice:#5ab4d4; --ice-dim:#2a6080;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 18px; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+  /* NAV — ОБЩИЙ КОМПОНЕНТ ШАПКИ. НЕ РЕДАКТИРОВАТЬ ВРУЧНУЮ НА ОТДЕЛЬНЫХ СТРАНИЦАХ.
+     Структуру/ссылки строит ../_nav.js в <div id="site-nav">, логику активной
+     страницы и языка — ../../common.js. Этот CSS-блок копируется одинаковым
+     на каждую страницу и должен совпадать с эталоном (banditsky-lager.html). */
+  #site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+
+  .nav-links {
+    display: flex;
+    gap: .25rem;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    padding: .3rem .55rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+
+  .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: .08em;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .nav-lang a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: .35rem .6rem;
+    transition: all .15s;
+    line-height: 1;
+  }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active {
+    color: var(--green);
+    background: rgba(122,170,46,.1);
+    cursor: default;
+    pointer-events: none;
+  }
+  .nav-lang span {
+    color: var(--border);
+    padding: 0 1px;
+    user-select: none;
+  }
+
+  .nav-steam {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+
+  .nav-burger {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .35rem .45rem;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+
+  .nav-dropdown {
+    display: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: .5rem 1rem;
+  }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+    transition: color .15s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row {
+    display: flex;
+    gap: .75rem;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-dropdown .lang-row a.lang-active {
+    color: var(--green);
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .nav-lang { display: none; }
+    .nav-burger { display: flex; }
+  }
+  /* /NAV */
+
+  /* BREADCRUMB */
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .5rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); }
+
+  /* HERO */
+  .hero { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
+  .hero-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--ice); letter-spacing: .15em; margin-bottom: .6rem; }
+  .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 700; line-height: 1.05; color: #e8ecdf; text-transform: uppercase; letter-spacing: .02em; margin-bottom: .75rem; }
+  .hero h1 em { font-style: normal; color: var(--ice); }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .badge { font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .08em; padding: .25rem .6rem; border-radius: 2px; border: 1px solid; }
+  .badge-exp { color: var(--ice); border-color: var(--ice-dim); background: rgba(90,180,212,.06); }
+  .badge-time { color: var(--amber); border-color: rgba(200,146,10,.3); background: rgba(200,146,10,.06); }
+  .badge-loc { color: var(--text-dim); border-color: var(--border); }
+
+  /* CONTENT WRAP */
+  .content-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+
+  /* STAT ROW */
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .5rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .75rem 1rem; }
+  .stat-label { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: var(--text-dim); letter-spacing: .1em; margin-bottom: .25rem; }
+  .stat-value { font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--ice); line-height: 1; }
+
+  /* SECTION LABEL */
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .15em; color: var(--text-dim); border-bottom: 1px solid var(--border); padding-bottom: .5rem; margin-bottom: 1rem; text-transform: uppercase; }
+
+  /* PHASE LIST */
+  .phase-list { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+  .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1rem 1.1rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .phase-num { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--border); line-height: 1; flex-shrink: 0; width: 2.2rem; text-align: center; }
+  .phase-body { flex: 1; }
+  .phase-title { font-size: 1.05rem; font-weight: 700; color: #e8ecdf; margin-bottom: .35rem; }
+  .phase-timer { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); margin-bottom: .5rem; }
+  .phase-enemies { font-size: .9rem; color: var(--text-dim); }
+  .phase-enemies li { list-style: none; display: flex; align-items: center; gap: .4rem; padding: .1rem 0; }
+  .phase-enemies li::before { content: '▸'; color: var(--ice); }
+  .phase-enemies li strong { color: var(--text); }
+  .phase-boss { color: var(--danger) !important; }
+  .phase-boss::before { content: '★' !important; color: var(--amber) !important; }
+
+  /* STEPS */
+  .step-list { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1rem 1.1rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--ice-dim); line-height: 1; flex-shrink: 0; width: 2rem; text-align: center; padding-top: .1rem; }
+  .step-body { flex: 1; }
+  .step-title { font-size: 1rem; font-weight: 700; color: #e8ecdf; margin-bottom: .35rem; }
+  .step-desc { font-size: .9rem; color: var(--text-dim); line-height: 1.6; }
+
+  /* INFO BLOCK */
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--ice); border-radius: 4px; padding: 1rem 1.25rem; font-size: .95rem; color: var(--text-dim); margin-bottom: 2rem; line-height: 1.7; }
+  .info-block strong { color: var(--text); }
+  .info-block.warn { border-left-color: var(--amber); }
+  code { font-family: 'Share Tech Mono', monospace; background: rgba(90,180,212,.1); color: var(--ice); padding: .05em .3em; border-radius: 2px; font-size: .9em; }
+
+  /* EVENT BLOCK inside phase */
+  .event-block { margin-top: .75rem; background: rgba(0,0,0,.2); border: 1px solid var(--border); border-radius: 3px; padding: .75rem 1rem; }
+  .event-label { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: var(--ice); letter-spacing: .1em; margin-bottom: .5rem; }
+  .event-phase { margin-bottom: .5rem; }
+  .event-phase-title { font-size: .82rem; font-weight: 700; color: var(--text); margin-bottom: .2rem; }
+  .event-timer { font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--amber); margin-bottom: .3rem; }
+  .event-mobs { font-size: .82rem; color: var(--text-dim); }
+  .event-mobs li { list-style: none; padding: .05rem 0; display: flex; align-items: center; gap: .35rem; }
+  .event-mobs li::before { content: '·'; color: var(--ice-dim); }
+  .event-mobs li strong { color: var(--text); }
+  .event-sep { border: none; border-top: 1px solid var(--border); margin: .5rem 0; }
+
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 1.25rem; text-align: center; font-size: .75rem; color: var(--text-dim); max-width: 900px; margin: 0 auto; }
+  footer a { color: var(--green-dim); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a>
+  <span>→</span>
+  <a href="sobytiya.html">События</a>
+  <span>→</span>
+  Забытые льды
+</div>
+
+<section class="hero">
+  <p class="hero-eyebrow">// ЭКСПЕДИЦИЯ // ОТКРЫТЫЙ МИР</p>
+  <h1><em>Забытые</em> льды</h1>
+  <div class="hero-badges">
+    <span class="badge badge-exp">Экспедиция · 5 игроков</span>
+    <span class="badge badge-time">⏱ Обновление в 07:00</span>
+    <span class="badge badge-loc">Локация: Новая Земля о. Северный</span>
+  </div>
+</section>
+
+<div class="content-wrap">
+
+  <!-- STATS -->
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-label">Этапов</div><div class="stat-value">5</div></div>
+    <div class="stat-card"><div class="stat-label">Мин. уровень</div><div class="stat-value">75</div></div>
+    <div class="stat-card"><div class="stat-label">Мин. отряд</div><div class="stat-value">2+</div></div>
+    <div class="stat-card"><div class="stat-label">Макс. игроков</div><div class="stat-value">5</div></div>
+    <div class="stat-card"><div class="stat-label">Сброс</div><div class="stat-value">07:00</div></div>
+  </div>
+
+  <!-- CONDITIONS -->
+  <p class="section-label">Условия доступа</p>
+  <div class="info-block">
+    Экспедиция доступна только персонажам <strong>75 уровня</strong> и выше, и только в составе отряда из <strong>двух и более</strong> человек. Вход — через <strong>Вострикова</strong> на локации Новая Земля о. Северный, после завершения задания <strong>«Заброшенная нефтяная платформа»</strong>. При посещении локации каждому игроку автоматически выдаётся задание <strong>«И снова дорога во льдах…»</strong>. Повторное прохождение в роли лидера обновляется каждый день в <code>07:00</code> по серверному времени (команда <code>/time</code>).
+  </div>
+
+  <!-- PHASES / STEPS -->
+  <p class="section-label">Этапы экспедиции</p>
+
+  <div class="step-list">
+
+    <!-- ЭТАП I -->
+    <div class="step-card">
+      <div class="step-num">I</div>
+      <div class="step-body">
+        <div class="step-title">Первый остров — зачистка территории</div>
+        <div class="step-desc">
+          Оказавшись на пристани, выдвигайтесь в юго-восточный сектор квадрата D2-1. Зайдите в дом со сферой на крыше и пообщайтесь с <strong>Доктором Мирославом Гало</strong> — начнётся мини-событие.
+        </div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ · ПЕРЕРЫВ МЕЖДУ ФАЗАМИ: 30 СЕК</div>
+
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 5 минут — убить 156 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Белая крыса</strong> × 80</li>
+              <li><strong>Полярный волк</strong> × 25</li>
+              <li><strong>Замерзший Отверженный</strong> × 40</li>
+              <li><strong>Йети</strong> × 15</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 5 минут — убить 171 противника</div>
+            <ul class="event-mobs">
+              <li><strong>Замерзший Отверженный</strong> × 50</li>
+              <li><strong>Йети</strong> × 20</li>
+              <li><strong>Полярный волк</strong> × 35</li>
+              <li><strong>Белая крыса</strong> × 70</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза III</div>
+            <div class="event-timer">⏱ 7 минут — убить 177 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Замерзший Отверженный</strong> × 50</li>
+              <li><strong>Полярный волк</strong> × 25</li>
+              <li><strong>Йети</strong> × 20</li>
+              <li><strong>Ледяной Студень</strong> × 20</li>
+              <li><strong>Белая крыса</strong> × 65</li>
+              <li class="phase-boss"><strong>Особый Белый медведь</strong> × 1</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП II -->
+    <div class="step-card">
+      <div class="step-num">II</div>
+      <div class="step-body">
+        <div class="step-title">Второй остров — вездеход и доставка грузов</div>
+        <div class="step-desc">
+          Получив координаты пропавшего вездехода, пройдите на взлётную площадку и поговорите с <strong>Антохой Сорокиным</strong> — отправляйтесь на вертолёте на второй остров.<br><br>
+          На острове найдите вездеход. Вдоль дороги рассыпаны ящики с оборудованием и провизией — их атакуют мутанты. Защитите ящики и погрузите в вертолёт: <strong>за один рейс помещается не более 6 ящиков</strong>, поэтому понадобится несколько ходок.<br><br>
+          На нефтяной платформе: <strong>деревянные ящики с оборудованием</strong> → склад (поддон); <strong>бумажные ящики с продовольствием</strong> → буфет (поддон справа за углом). После разгрузки вернитесь за оставшимися ящиками. Когда всё доставлено — поговорите с <strong>Сатором Тенетом</strong> в помещении склада.
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП III -->
+    <div class="step-card">
+      <div class="step-num">III</div>
+      <div class="step-body">
+        <div class="step-title">Третий остров — бункер</div>
+        <div class="step-desc">
+          После неудачного эксперимента Сатора Тенета отправляйтесь на вертолёте в бункер на третьем острове. Найдите гермодверь и войдите внутрь. Активируйте пульт системы безопасности — начнётся мини-событие.
+        </div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ · ПЕРЕРЫВ МЕЖДУ ФАЗАМИ: 30 СЕК</div>
+
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 4 минуты — убить 122 противника</div>
+            <ul class="event-mobs">
+              <li><strong>Замерзший Отверженный</strong> × 40</li>
+              <li><strong>Белая крыса</strong> × 70</li>
+              <li><strong>Ледяной Студень</strong> × 10</li>
+              <li><strong>Снежный Бес</strong> × 5</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 5 мин 30 сек — убить 191 противника</div>
+            <ul class="event-mobs">
+              <li><strong>Замерзший Отверженный</strong> × 65</li>
+              <li><strong>Белая крыса</strong> × 85</li>
+              <li><strong>Йети</strong> × 20</li>
+              <li><strong>Снежный Бес</strong> × 10</li>
+              <li><strong>Ледяной Студень</strong> × 15</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-desc" style="margin-top:.75rem;">
+          После зачистки откроется гермодверь вглубь бункера — спускайтесь в пещеры.
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП IV -->
+    <div class="step-card">
+      <div class="step-num">IV</div>
+      <div class="step-body">
+        <div class="step-title">Пещеры под бункером — ящики с оборудованием</div>
+        <div class="step-desc">
+          Перед спуском в пещеры обязательно посетите точку у входа (условие для зачёта задания). В пещерах найдите <strong>5 деревянных ящиков с оборудованием</strong>, погрузите их в вертолёт и доставьте на нефтяную платформу. Сложите ящики на <strong>второй поддон</strong> в помещении склада.
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП V -->
+    <div class="step-card">
+      <div class="step-num">V</div>
+      <div class="step-body">
+        <div class="step-title">Нефтяная платформа — финальная оборона</div>
+        <div class="step-desc">
+          Уложив последний ящик, вновь поговорите с <strong>Сатором Тенетом</strong> (склад, рядом с поддоном) — начнётся мини-событие.
+        </div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ · ПЕРЕРЫВ МЕЖДУ ФАЗАМИ: 30 СЕК</div>
+          <div class="info-block warn" style="margin-bottom:.75rem; margin-top:.25rem; font-size:.82rem;">
+            ⚠ Каждую минуту один случайный вентиль на платформе будет повреждён. На его закрутку отводится ~60 секунд. Всего нужно закрутить вентили <strong>10 раз</strong>. Провал — сброс фазы.
+          </div>
+
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 6 минут — убить 180 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Белая крыса</strong> × 100</li>
+              <li><strong>Полярный волк</strong> × 20</li>
+              <li><strong>Замерзший Отверженный</strong> × 70</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 7 мин 30 сек — убить 238 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Замерзший Отверженный</strong> × 55</li>
+              <li><strong>Ледяной Студень</strong> × 15</li>
+              <li><strong>Белая крыса</strong> × 180</li>
+              <li class="phase-boss"><strong>Особый Белый медведь</strong> × 1</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-desc" style="margin-top:.75rem;">
+          Успешное завершение всех пяти этапов — задание выполнено, выдаётся награда.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function() {
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+})();
+
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

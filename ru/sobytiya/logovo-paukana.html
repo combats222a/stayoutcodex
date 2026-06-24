@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Логово Паукана — Stay Out Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0a0f; --surface:#13101a; --border:#2a1e35;
+    --purple:#9b6dd4; --purple-dim:#4a2a80; --amber:#c8920a;
+    --text:#c9bfcd; --text-dim:#6b6070; --danger:#b03a2e; --code:#9b6dd4;
+    --green:#7aaa2e; --green-dim:#4a6a1a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 18px; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px); pointer-events: none; z-index: 9999; }
+
+/* NAV — ОБЩИЙ КОМПОНЕНТ ШАПКИ. НЕ РЕДАКТИРОВАТЬ ВРУЧНУЮ НА ОТДЕЛЬНЫХ СТРАНИЦАХ.
+     Структуру/ссылки строит ../_nav.js в <div id="site-nav">, логику активной
+     страницы и языка — ../../common.js. Этот CSS-блок копируется одинаковым
+     на каждую страницу и должен совпадать с эталоном. */
+  #site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1rem;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    gap: 1rem;
+  }
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-shrink: 1;
+  }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+
+  .nav-links {
+    display: flex;
+    gap: .25rem;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    padding: .3rem .55rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+
+  .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: .08em;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .nav-lang a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: .35rem .6rem;
+    transition: all .15s;
+    line-height: 1;
+  }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active {
+    color: var(--green);
+    background: rgba(122,170,46,.1);
+    cursor: default;
+    pointer-events: none;
+  }
+  .nav-lang span {
+    color: var(--border);
+    padding: 0 1px;
+    user-select: none;
+  }
+
+  .nav-steam {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+
+  .nav-burger {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .35rem .45rem;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+
+  .nav-dropdown {
+    display: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: .5rem 1rem;
+  }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+    transition: color .15s;
+  }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row {
+    display: flex;
+    gap: .75rem;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-dropdown .lang-row a.lang-active {
+    color: var(--green);
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .nav-lang { display: none; }
+    .nav-burger { display: flex; }
+  }
+  /* /NAV */
+
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .5rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--purple); }
+  .breadcrumb span { color: var(--purple); }
+
+  .hero { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.25rem 2rem; }
+  .hero-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--purple); letter-spacing: .15em; margin-bottom: .6rem; }
+  .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 700; line-height: 1.05; color: #ede8f0; text-transform: uppercase; letter-spacing: .02em; margin-bottom: .75rem; }
+  .hero h1 em { font-style: normal; color: var(--purple); }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .badge { font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .08em; padding: .25rem .6rem; border-radius: 2px; border: 1px solid; }
+  .badge-exp { color: var(--purple); border-color: var(--purple-dim); background: rgba(155,109,212,.06); }
+  .badge-time { color: var(--amber); border-color: rgba(200,146,10,.3); background: rgba(200,146,10,.06); }
+  .badge-loc { color: var(--text-dim); border-color: var(--border); }
+
+  .content-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: .5rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: .75rem 1rem; }
+  .stat-label { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: var(--text-dim); letter-spacing: .1em; margin-bottom: .25rem; }
+  .stat-value { font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--purple); line-height: 1; }
+
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .15em; color: var(--text-dim); border-bottom: 1px solid var(--border); padding-bottom: .5rem; margin-bottom: 1rem; text-transform: uppercase; }
+
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--purple); border-radius: 4px; padding: 1rem 1.25rem; font-size: .92rem; color: var(--text-dim); margin-bottom: 1.5rem; line-height: 1.75; }
+  .info-block strong { color: var(--text); }
+  .info-block.warn { border-left-color: var(--amber); }
+  .info-block.danger { border-left-color: var(--danger); }
+  code { font-family: 'Share Tech Mono', monospace; background: rgba(155,109,212,.12); color: var(--purple); padding: .05em .35em; border-radius: 2px; font-size: .88em; }
+
+  /* STEP CARDS */
+  .step-list { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1rem 1.1rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--purple-dim); line-height: 1; flex-shrink: 0; width: 2rem; text-align: center; padding-top: .1rem; }
+  .step-body { flex: 1; min-width: 0; }
+  .step-title { font-size: 1rem; font-weight: 700; color: #ede8f0; margin-bottom: .4rem; }
+  .step-desc { font-size: .9rem; color: var(--text-dim); line-height: 1.7; margin-bottom: .6rem; }
+  .step-desc:last-child { margin-bottom: 0; }
+  .step-desc strong { color: var(--text); }
+
+  /* ITEM REQUIREMENT */
+  .item-req { display: inline-flex; align-items: center; gap: .3rem; font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); background: rgba(200,146,10,.07); border: 1px solid rgba(200,146,10,.2); border-radius: 2px; padding: .15rem .5rem; margin: .1rem .15rem; white-space: nowrap; }
+
+  /* EVENT BLOCK */
+  .event-block { margin-top: .6rem; background: rgba(0,0,0,.25); border: 1px solid var(--border); border-radius: 3px; padding: .75rem 1rem; }
+  .event-label { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: var(--purple); letter-spacing: .1em; margin-bottom: .6rem; }
+  .event-phase { margin-bottom: .5rem; }
+  .event-phase:last-child { margin-bottom: 0; }
+  .event-phase-title { font-size: .82rem; font-weight: 700; color: var(--text); margin-bottom: .15rem; }
+  .event-timer { font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--amber); margin-bottom: .3rem; }
+  .event-mobs { font-size: .82rem; color: var(--text-dim); }
+  .event-mobs li { list-style: none; padding: .05rem 0; display: flex; align-items: center; gap: .35rem; }
+  .event-mobs li::before { content: '·'; color: var(--purple-dim); font-size: 1.1em; }
+  .event-mobs li strong { color: var(--text); }
+  .event-mobs li.boss { color: var(--danger); font-weight: 700; }
+  .event-mobs li.boss::before { content: '★'; color: var(--amber); }
+  .event-sep { border: none; border-top: 1px solid var(--border); margin: .55rem 0; }
+  .event-note { font-family: 'Share Tech Mono', monospace; font-size: .68rem; color: var(--amber); margin-top: .45rem; padding: .3rem .5rem; border: 1px solid rgba(200,146,10,.2); border-radius: 2px; background: rgba(200,146,10,.04); }
+  .event-note.green { color: var(--green); border-color: rgba(122,170,46,.2); background: rgba(122,170,46,.04); }
+
+  /* MECHANIC BOX */
+  .mechanic-box { margin-top: .6rem; background: rgba(155,109,212,.04); border: 1px solid rgba(155,109,212,.18); border-radius: 3px; padding: .75rem 1rem; }
+  .mechanic-title { font-family: 'Share Tech Mono', monospace; font-size: .68rem; color: var(--purple); letter-spacing: .1em; margin-bottom: .5rem; }
+  .mechanic-body { font-size: .85rem; color: var(--text-dim); line-height: 1.7; }
+  .mechanic-body strong { color: var(--text); }
+  .mechanic-steps { margin-top: .4rem; padding-left: 0; }
+  .mechanic-steps li { list-style: none; display: flex; gap: .5rem; align-items: flex-start; padding: .2rem 0; font-size: .83rem; color: var(--text-dim); }
+  .mechanic-steps li::before { content: '▸'; color: var(--purple); flex-shrink: 0; margin-top: .05rem; }
+  .mechanic-steps li strong { color: var(--text); }
+
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 1.25rem; text-align: center; font-size: .75rem; color: var(--text-dim); max-width: 900px; margin: 0 auto; }
+  footer a { color: var(--purple-dim); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<div class="breadcrumb">
+  <a href="../index.html">Главная</a>
+  <span>→</span>
+  <a href="sobytiya.html">События</a>
+  <span>→</span>
+  ЛОГОВО ПАУКАНА
+</div>
+
+<div class="breadcrumb">
+  <a href="#">Главная</a> &rsaquo; <a href="#">События</a> &rsaquo; <span>Логово Паукана</span>
+</div>
+
+<section class="hero">
+  <p class="hero-eyebrow">// ЭКСПЕДИЦИЯ // БОЛЬШАЯ ПЕЩЕРА</p>
+  <h1>Логово <em>Паукана</em></h1>
+  <div class="hero-badges">
+    <span class="badge badge-exp">Экспедиция · 5 игроков</span>
+    <span class="badge badge-time">⏱ Обновление в 07:00</span>
+    <span class="badge badge-loc">Локация: Большая пещера</span>
+  </div>
+</section>
+
+<div class="content-wrap">
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-label">Основных этапов</div><div class="stat-value">4</div></div>
+    <div class="stat-card"><div class="stat-label">Бонус этап</div><div class="stat-value">+1</div></div>
+    <div class="stat-card"><div class="stat-label">Мин. уровень</div><div class="stat-value">50</div></div>
+    <div class="stat-card"><div class="stat-label">Мин. отряд</div><div class="stat-value">2+</div></div>
+    <div class="stat-card"><div class="stat-label">Сброс</div><div class="stat-value">07:00</div></div>
+  </div>
+
+  <p class="section-label">Условия доступа</p>
+  <div class="info-block">
+    Экспедиция доступна персонажам <strong>50 уровня</strong> и выше, либо при наличии задания <strong>«Охота на нулевой экземпляр»</strong>, только в составе отряда из <strong>двух и более</strong> человек. Вход — на локации Большая пещера, охраняется наёмниками ЧВК «Рэйвенхуд». Пропуском заведует <strong>Тагир Шерхан</strong>. При посещении каждому игроку автоматически выдаётся задание <strong>«Экспедиция в логово Паукана»</strong>. Повторное прохождение в роли лидера обновляется в <code>07:00</code> по серверному времени (команда <code>/time</code>).
+  </div>
+
+  <p class="section-label">Этапы экспедиции</p>
+  <div class="step-list">
+
+    <!-- ЭТАП I -->
+    <div class="step-card">
+      <div class="step-num">I</div>
+      <div class="step-body">
+        <div class="step-title">Пульт вентиляции — зачистка зала</div>
+        <div class="step-desc">
+          По пути к пульту управления вентиляцией, отстреливаясь от пауков и отверженных, необходимо собрать
+          <span class="item-req">Светящийся гриб × 30</span> (пропустить невозможно).
+          Добравшись до пульта, потяните рычаг переключателя на опоре рядом с ним — начнётся мини-событие.
+        </div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ I · РАЗНЫЕ ПЕРЕРЫВЫ МЕЖДУ ФАЗАМИ</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 4 минуты — убить 85 противников &nbsp;·&nbsp; перерыв после: 10 сек</div>
+            <ul class="event-mobs">
+              <li><strong>Небольшой паук</strong> × 60</li>
+              <li><strong>Пещерный паук</strong> × 30</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 4 минуты — убить 99 противников &nbsp;·&nbsp; перерыв после: 15 сек</div>
+            <ul class="event-mobs">
+              <li><strong>Отверженный</strong> × 105</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза III</div>
+            <div class="event-timer">⏱ 3 минуты — убить 66 противников &nbsp;·&nbsp; перерыв после: 20 сек</div>
+            <ul class="event-mobs">
+              <li><strong>Отверженный</strong> × 55</li>
+              <li><strong>Медленный бес</strong> × 15</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза IV — босс</div>
+            <div class="event-timer">⏱ 4 минуты — убить 1 противника</div>
+            <ul class="event-mobs">
+              <li class="boss"><strong>Особый пещерный паук</strong> × 1</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-desc" style="margin-top:.75rem;">
+          После победы добудьте из босса <span class="item-req">Хелицеры паука (особые) × 1</span>. Найдите в этом же зале проход, закрытый паутиной, и взаимодействуйте с ней — переложите в окно взаимодействия <strong>Хелицеры паука (особые) × 1</strong> и <strong>Светящиеся грибы</strong>. Уничтожение паутины завершает первый этап задания.
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП II -->
+    <div class="step-card">
+      <div class="step-num">II</div>
+      <div class="step-body">
+        <div class="step-title">Обвал — сбор взрывчатки и зачистка зала вентиляции</div>
+        <div class="step-desc">
+          В подземных тоннелях отряд упрётся в обвал. Для его расчистки потребуется собрать ресурсы:
+          <span class="item-req">Динамитный заряд × 40</span>
+          <span class="item-req">Огнепроводный кабель × 12</span><br><br>
+          Идите по тоннелю направо от обвала; осматривайте <strong>Электрические щитки</strong> для поиска кабеля. Далее за двумя закрытыми дверьми — зал с вентиляционными «шторками», заполненный ядовитыми испарениями. Спуститесь на уровень ниже и потяните рычаг на бетонном блоке — включится вентиляция и начнётся мини-событие.
+        </div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ II · ПЕРЕРЫВ МЕЖДУ ФАЗАМИ: 90 СЕК</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 5 минут — убить 95 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Пещерный брутор</strong> × 35</li>
+              <li><strong>Пещерный бляк</strong> × 30</li>
+              <li><strong>Пещерный брутор</strong> × 35</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 5 минут — убить 80 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Пещерный брутор</strong> × 30</li>
+              <li><strong>Подвальный бляк</strong> × 35</li>
+              <li><strong>Красный брутор</strong> × 25</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП III -->
+    <div class="step-card">
+      <div class="step-num">III</div>
+      <div class="step-body">
+        <div class="step-title">Переправа — добыча динамита и подрыв обвала</div>
+        <div class="step-desc">
+          После мини-события откроется дверь из зала со «шторками». Вернитесь немного назад и следуйте новым путём к расщелине с переправой.
+        </div>
+        <div class="mechanic-box">
+          <div class="mechanic-title">// МЕХАНИКА ПЕРЕПРАВЫ</div>
+          <div class="mechanic-body">
+            Для переправы нужны <strong>два участника</strong>: один садится в люльку, второй вращает рычаг лебёдки.
+            <ul class="mechanic-steps">
+              <li>Посреди расщелины на опорах — остановить люльку и убить <strong>2 бляка и 2 брутора</strong> по обеим сторонам.</li>
+              <li>Добравшись до другого берега — оперативно обыскать <strong>ящики с динамитными зарядами</strong>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-desc" style="margin-top:.75rem;">
+          Вернитесь к обвалу. Взаимодействуйте с <strong>указателем линии проводов</strong> — проложите проводную линию. Заложите динамит и взаимодействуйте с <strong>ручкой детонатора</strong>. Взрыв расчищает обвал и завершает второй этап задания.
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП IV -->
+    <div class="step-card">
+      <div class="step-num">IV</div>
+      <div class="step-body">
+        <div class="step-title">Финальный зал — битва с Пауканом</div>
+        <div class="step-desc">
+          Следуйте по расчищенному пути. В первом зале обновите точку возрождения, затем спускайтесь через дыру на уровень ниже. В большом зале <strong>запустите бензогенератор</strong> — он удалит ядовитые испарения и запустит мини-событие. Генератор нестабилен и может заглохнуть: следите за его работой и перезапускайте при необходимости.
+        </div>
+
+        <div class="info-block" style="margin-bottom:.75rem; font-size:.85rem;">
+          <strong>Опционально:</strong> если в отряде есть <span class="item-req" style="font-size:.75rem;">Восстановленная голова Хранителя Вулкана × 1</span> — взаимодействуйте с обезглавленным трупом у стены и «присоедините» голову. Возродится <strong>Убийца Паукана</strong>, который поможет в бою. Вернуть предмет будет невозможно.
+        </div>
+
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ III · ПЕРЕРЫВ ПОСЛЕ ФАЗЫ I: 30 СЕК</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 5 минут — убить 127 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Небольшой паук</strong> × 20</li>
+              <li><strong>Паук</strong> × 20</li>
+              <li><strong>Пещерный паук</strong> × 60</li>
+              <li><strong>Пещерный паук</strong> × 20</li>
+              <li><strong>Паук</strong> × 10</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 4 минуты — убить 88 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Небольшой паук</strong> × 30</li>
+              <li><strong>Паук</strong> × 30</li>
+              <li><strong>Пещерный паук</strong> × 30</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза III — финальный босс</div>
+            <div class="event-timer">⏱ 13 минут</div>
+            <ul class="event-mobs">
+              <li class="boss"><strong>Паукан</strong> × 1</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mechanic-box" style="margin-top:.75rem;">
+          <div class="mechanic-title">// МЕХАНИКА «ЭЛЕКТРОЖАРКИ» — ПАУКАН</div>
+          <div class="mechanic-body">
+            Паукан боится электричества. Для нанесения удара током действуйте циклически:
+            <ul class="mechanic-steps">
+              <li><strong>Активируйте рубильник трансформатора</strong> (справа от металлической площадки на полу).</li>
+              <li><strong>Активируйте три рубильника на катушках Тесла</strong> по периметру зала — трансформатор перегреется, площадка обесточится, катушки продолжат работу <strong>3 минуты</strong>.</li>
+              <li>Пока катушки активны — участники за ними в условной безопасности. Наносите максимальный урон Паукану.</li>
+              <li>За минуту до конца — заманите Паукана на металлическую площадку и активируйте <strong>ноутбук</strong> на ней. Произойдёт короткое замыкание: Паукан теряет <strong>1 000 000 HP</strong>.</li>
+              <li>Чтобы привлечь Паукана — наносите урон или разбивайте коконы в центре зала. Игрок-приманка укрывается за площадкой: Паукан будет подходить и отступать от неё.</li>
+              <li><strong>Важно:</strong> покиньте позицию за площадкой до перезапуска трансформатора. Если остаться — ток убьёт персонажа и обнулит прочность бронежилета.</li>
+            </ul>
+            <div style="margin-top:.5rem; font-size:.82rem; color: var(--danger);">⚠ Трансформатор рассчитан на <strong>3 коротких замыкания</strong>. После третьего — загорится и станет неисправным. Не промахивайтесь.</div>
+          </div>
+        </div>
+        <div class="step-desc" style="margin-top:.75rem;">
+          Победа над Пауканом завершает третий этап задания и немедленно начисляет награду.
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭТАП V — БОНУСНЫЙ -->
+    <div class="step-card">
+      <div class="step-num" style="color: var(--amber);">V</div>
+      <div class="step-body">
+        <div class="step-title" style="color: var(--amber);">Испытательная лаборатория — бонусный этап</div>
+        <div class="info-block warn" style="margin-bottom:.75rem; font-size:.85rem;">
+          Доступен только если в IV этапе была использована <span class="item-req" style="font-size:.75rem;">Восстановленная голова Хранителя Вулкана × 1</span>. Убийца Паукана проломит завал в стене — пройдите через него в лабораторию.
+        </div>
+        <div class="step-desc">
+          Откройте дверь испытательной установки взаимодействием. Поднимитесь на верхний этаж, войдите в зал с пультами управления и активируйте <strong>Переключатель ВТ-1</strong> — начнётся мини-событие.
+        </div>
+        <div class="event-block">
+          <div class="event-label">// МИНИ-СОБЫТИЕ IV · ПЕРЕРЫВЫ: 30 СЕК (I→II) / 45 СЕК (II→III)</div>
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза I</div>
+            <div class="event-timer">⏱ 5 мин 20 сек — убить 24 противника</div>
+            <ul class="event-mobs">
+              <li><strong>Мутировавшая крыса</strong> × 30</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза II</div>
+            <div class="event-timer">⏱ 7 мин 30 сек — убить 32 противника</div>
+            <ul class="event-mobs">
+              <li><strong>Отверженный</strong> × 20</li>
+              <li><strong>Мутировавшая крыса</strong> × 10</li>
+              <li><strong>Медленный бес</strong> × 10</li>
+            </ul>
+          </div>
+          <hr class="event-sep">
+          <div class="event-phase">
+            <div class="event-phase-title">Фаза III</div>
+            <div class="event-timer">⏱ 8 мин 20 сек — убить 48 противников</div>
+            <ul class="event-mobs">
+              <li><strong>Отверженный</strong> × 20</li>
+              <li><strong>Мутировавшая крыса</strong> × 20</li>
+              <li><strong>Медленный бес</strong> × 20</li>
+            </ul>
+          </div>
+          <div class="event-note green">✓ После уничтожения последнего врага — ещё 45 секунд ожидания, затем событие завершается и выдаётся задание «Паукан: партийные запасы»</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+<script>
+(function() {
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+})();
+
+document.getElementById('navBurger').addEventListener('click', function() {
+  document.getElementById('navDropdown').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>
+</body>
+</html>
