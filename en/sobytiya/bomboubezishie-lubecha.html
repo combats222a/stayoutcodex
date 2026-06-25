@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+const DATA = {
+
+  /* ── HEADER ──────────────────────────────────────── */
+  title:    "Lubech Bomb Shelter",
+  subtitle: "Expedition · Solo · Cooldown: 23 hours",
+
+  /* ── BREADCRUMBS ─────────────────────────────────── */
+  breadcrumb: [
+    { label: "Home", href: "../index.html" },
+    { label: "Events", href: "sobytiya.html" }
+  ],
+
+  /* ── FIRST INFO BLOCK ────────────────────────────── */
+  info: "The expedition is designed for <strong>one</strong> character. Available during and after completing the main story quest <strong>\"Echo of the Slaughter\"</strong>.<br><br>The entrance is located in the <strong>Lubech</strong> area — via dialogue with the <strong>Technician</strong> in the basement. The basement entrance can be found in the southern part of square <code>E3-3</code>. After speaking with the Technician, the character is sent to the expedition and receives the quest <strong>\"Abandon Hope All Ye Who Enter Here\"</strong>.<br><br>Access to replay the expedition and complete the quest resets once every <strong>23 hours</strong>.",
+
+  /* ── STAGES ──────────────────────────────────────── */
+  stages: [
+    {
+      label: "Stage I",
+      steps: [
+        {
+          title: "Assemble the Flamethrower",
+          body: "Go down the stairs and follow the corridors forward. Find the <strong>Handheld Flamethrower \"Korotysh\"</strong> and a few <strong>Flamethrower Fuel Canisters</strong> on the floor — pick them up."
+        },
+        {
+          title: "Refuel the Canister",
+          body: "Approach the fuel jerrycan on the chair and refill your <em>Flamethrower Fuel Canister</em> — the mechanic is identical to filling a flask with water.<br><br><strong>How to refuel:</strong> approach the fuel container → open your inventory <code>[I]</code> or interact with the jerrycan via <code>[F]</code> (context menu → <strong>[Select Container]</strong> → <strong>[1]</strong>) → click <code>[RMB]</code> on the canister → select <strong>[Fill]</strong>.<br><br>Equip the flamethrower instead of one of your primary weapons and attach the filled canister. Reload using the <code>[R]</code> key."
+        },
+        {
+          title: "Speak with the SOYUZ Technician",
+          body: "Move further down the corridor until you reach the SOYUZ technician. Talk to him about your next steps."
+        },
+        {
+          title: "Eliminate Rats and Activate Switches",
+          body: "After the technician starts up the installation, eliminate <strong>10 \"Underground Mutant Rat\" specimens</strong>. Then, the technician will ask you to activate <strong>4 circuit breakers (switches)</strong> along the perimeter of the room (each has a red light above it).<br><br>After the command to activate the switches, another <strong>13 mutant rats</strong> will appear — for convenience, it's better to clear them out first before dealing with the switches. To pull the lever, hold <code>[F]</code> for <strong>2 seconds</strong>. Upon success, the light turns green."
+        }
+      ]
+    },
+    {
+      label: "Stage II",
+      steps: [
+        {
+          title: "Proceed to the Comms Station",
+          body: "Wait for the blast doors to open and proceed inside. Move forward until you reach the communications station room. On your way, you can replenish your supply of <em>Flamethrower Fuel Canisters</em> and refill them."
+        },
+        {
+          title: "Start the Filtration System",
+          body: "Find the filtration unit near the wall opposite the entrance. Approach the control panel and hold <code>[F]</code> for <strong>3 seconds</strong>."
+        },
+        {
+          title: "Hold Out for 2 Minutes",
+          body: "After activation, <em>Underground Mutant Rats</em> and <em>Underground Domovoy</em> will begin spawning from all cracks. Protect the filtration unit and yourself for <strong>2 minutes</strong>."
+        }
+      ]
+    },
+    {
+      label: "Stage III",
+      steps: [
+        {
+          title: "Find the Breach with the Grate",
+          body: "Look for a breach closed by a metal grate along one of the walls of the comms station. Approach and interact with it — the grate will slide open. Crawl into the passage."
+        },
+        {
+          title: "Cross the Electrified Floor",
+          body: "A section of the floor in the corridor is under high voltage. There are two ways to pass:<br><br><strong>Method 1 (Easy)</strong> — climb onto the boxes by the wall and move along them to the other side.<br><br><strong>Method 2 (Turn off power)</strong> — return to the comms station, enter the office on the opposite side, find the electrical cabinet, and hold <code>[F]</code> for <strong>3 seconds</strong>. Then return to the corridor: immediately after the breach turn left, find the switch behind the boxes, and pull the lever — the electricity will turn off for <strong>15 seconds</strong>, after which the lever resets. You can activate it again if needed."
+        },
+        {
+          title: "Reach the Sewer Network",
+          body: "After overcoming the electricity, move forward between the crates and boxes, climb over the pile, and drop down to the other side. Near the breach in the wall, you can top up your <em>Flamethrower Fuel Canisters</em>. Crawl through the breach — you are now in the sewers."
+        }
+      ]
+    },
+    {
+      label: "Stage IV",
+      steps: [
+        {
+          title: "Ascend to the Filtration Node",
+          body: "Follow the sewer tunnel until you reach the shaft. Climb up the ladder — you will emerge at the filtration node."
+        },
+        {
+          title: "Start the Unit and Hold Out for 2 Minutes",
+          body: "Approach the control panel on the unit's body and hold <code>[F]</code> for <strong>3 seconds</strong>. After starting, <em>Underground Mutant Rats</em> and the <em>Outcast (Otrezhenny)</em> will appear. Defend the unit and yourself for <strong>2 minutes</strong>."
+        }
+      ]
+    },
+    {
+      label: "Stage V · Finale",
+      steps: [
+        {
+          title: "Reach the Final Room",
+          body: "Follow the tunnel illuminated by the red light. If necessary, replenish your <em>Flamethrower Fuel Canisters</em>. Walk along the iron catwalk around the perimeter of the room to the end — this is the fastest way to reach the filtration unit."
+        },
+        {
+          title: "Start the Unit and Close the Valves",
+          body: "Activate the filtration unit (<code>[F]</code> for <strong>3 seconds</strong>). After <strong>30 seconds</strong>, the first valve will blow off — a total of <strong>3 out of 6</strong> valves will fail one by one. Follow the distinctive sound and heavy steam hiss.<br><br>You have <strong>60 seconds</strong> to shut off each failed valve. If you fail, the unit explodes, and the stage restarts. To close a valve: approach it and hold <code>[F]</code> for <strong>3 seconds</strong>. Upon success, the steam will stop."
+        },
+        {
+          title: "Eliminate the Drowned Ones",
+          body: "While working with the valves, <em>Drowned Ones (Utoplenniki)</em> will periodically spawn — they disrupt your interactions and distract you. It is highly recommended to dispatch them quickly or keep them at a distance. You need to eliminate a total of <strong>14 Drowned Ones</strong>."
+        },
+        {
+          title: "Defeat the Underground Sorcerer",
+          body: "Once all three blown valves are closed and 14 Drowned Ones are eliminated, a teleport anomaly will appear near the filtration unit. The final boss — the <strong>Underground Sorcerer (Vedun)</strong> — will step out. Eliminate him."
+        }
+      ],
+      result: "After defeating the boss, the main objective is completed.<br><br><strong>Exiting the Expedition:</strong> climb the ladder to the left of the filtration unit onto the metal platform, walk along it, and climb the second ladder. Alternatively, press <code>[ESC]</code> → <strong>[Leave Event]</strong>."
+    }
+  ]
+
+}; // ← end of DATA
+</script>
+
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Loading...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --code:      #7aaa2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 1rem; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+  /* NAV */
+  #site-nav { position: sticky; top: 0; z-index: 100; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 1rem; }
+  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); letter-spacing: .08em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1; }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+  .nav-links { display: flex; gap: .25rem; flex-shrink: 0; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: .8rem; letter-spacing: .05em; padding: .3rem .55rem; border: 1px solid transparent; border-radius: 2px; transition: all .15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-lang { display: flex; align-items: center; gap: 0; flex-shrink: 0; font-family: 'Share Tech Mono', monospace; font-size: 1rem; letter-spacing: .08em; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .nav-lang a { color: var(--text-dim); text-decoration: none; padding: .35rem .6rem; transition: all .15s; line-height: 1; }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active { color: var(--green); background: rgba(122,170,46,.1); cursor: default; pointer-events: none; }
+  .nav-lang span { color: var(--border); padding: 0 1px; user-select: none; }
+  .nav-steam { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid transparent; border-radius: 2px; color: var(--text-dim); text-decoration: none; transition: all .15s; flex-shrink: 0; }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+  .nav-burger { display: none; flex-shrink: 0; background: none; border: 1px solid var(--border); border-radius: 3px; padding: .35rem .45rem; cursor: pointer; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+  .nav-dropdown { display: none; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .5rem 1rem; }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a { display: block; color: var(--text-dim); text-decoration: none; font-size: .85rem; letter-spacing: .05em; padding: .5rem .25rem; border-bottom: 1px solid var(--border); transition: color .15s; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row { display: flex; gap: .75rem; padding: .5rem .25rem; border-bottom: 1px solid var(--border); }
+  .nav-dropdown .lang-row a { border: none; padding: 0; font-family: 'Share Tech Mono', monospace; font-size: .8rem; }
+  .nav-dropdown .lang-row a.lang-active { color: var(--green); pointer-events: none; }
+  @media (max-width: 480px) { .nav-links { display: none; } .nav-lang { display: none; } .nav-burger { display: flex; } }
+
+  /* BREADCRUMB */
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .25rem; font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); margin: 0 .35em; }
+
+  /* WRAP */
+  .section-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 2.5rem; }
+
+  /* PAGE TITLE */
+  .page-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); letter-spacing: .04em; text-transform: uppercase; padding: 1.25rem 0 .25rem; }
+  .page-meta { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); letter-spacing: .12em; margin-bottom: 1.75rem; }
+  .page-meta::before { content: '// '; color: var(--text-dim); }
+
+  /* SECTION LABEL */
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .82rem; letter-spacing: .2em; color: var(--green); text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* INFO BLOCK */
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .85rem 1.1rem; margin-bottom: 1.75rem; font-size: .95rem; color: var(--text); }
+  .info-block strong { color: var(--amber); font-family: 'Oswald', sans-serif; font-weight: 600; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.75rem; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); background: var(--surface); border: 1px solid var(--border); width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .1rem; }
+  .step-body strong { color: var(--text); font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .03em; display: block; margin-bottom: .2rem; }
+  .step-body p { font-size: .92rem; color: var(--text-dim); }
+  code { font-family: 'Share Tech Mono', monospace; font-size: .88rem; color: var(--code); background: rgba(122,170,46,.08); padding: .05em .3em; border: 1px solid var(--green-dim); border-radius: 2px; }
+
+  /* STAGE */
+  .stage-block { margin-bottom: 2rem; }
+  .stage-label { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .12em; color: var(--green); text-transform: uppercase; margin-bottom: .85rem; display: flex; align-items: center; gap: .6rem; }
+  .stage-label::after { content: ''; flex: 1; height: 1px; background: var(--green-dim); }
+
+  /* RESULT NOTE */
+  .result-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .65rem 1rem; font-size: .88rem; color: var(--text-dim); margin-top: 1rem; }
+  .result-note strong { color: var(--amber); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 1.25rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); text-align: center; letter-spacing: .05em; line-height: 1.8; }
+  footer a { color: var(--text-dim); text-decoration: underline; }
+  footer a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+<nav class="breadcrumb" id="bc"></nav>
+
+<div class="section-wrap">
+
+  <h1 class="page-title" id="r-title"></h1>
+  <p class="page-meta"   id="r-subtitle"></p>
+
+  <p class="section-label">General Info</p>
+  <div class="info-block" id="r-info"></div>
+
+  <p class="section-label">Walkthrough</p>
+  <div id="r-stages"></div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // INDEPENDENT FAN ENCYCLOPEDIA ·
+  Content licensed under <a href="#">CC BY 4.0</a> ·
+  Stay Out and all associated materials belong to their respective owners. This resource is an unofficial fan site.
+</footer>
+
+<script>
+(function(){
+  const d = DATA;
+
+  document.title = d.title + ' — Stay Out Wiki';
+
+  // breadcrumb
+  let bc = '';
+  d.breadcrumb.forEach((c,i) => { bc += (i?'<span>›</span>':'') + '<a href="'+c.href+'">'+c.label+'</a>'; });
+  bc += '<span>›</span><span style="color:var(--text)">'+d.title+'</span>';
+  document.getElementById('bc').innerHTML = bc;
+
+  // заголовок
+  document.getElementById('r-title').textContent    = d.title;
+  document.getElementById('r-subtitle').textContent = d.subtitle;
+  document.getElementById('r-info').innerHTML       = d.info;
+
+  // этапы
+  let stagesHtml = '';
+  d.stages.forEach(stage => {
+    stagesHtml += `<div class="stage-block"><div class="stage-label">${stage.label}</div>`;
+
+    if (stage.steps) {
+      stagesHtml += '<div class="steps">';
+      stage.steps.forEach((s,i) => {
+        stagesHtml += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><strong>${s.title}</strong><p>${s.body}</p></div></div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.result) {
+      stagesHtml += `<div class="result-note">${stage.result}</div>`;
+    }
+
+    stagesHtml += '</div>';
+  });
+  document.getElementById('r-stages').innerHTML = stagesHtml;
+
+  // активный пункт навбара
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+
+  // бургер
+  const burger = document.getElementById('navBurger');
+  const drop   = document.getElementById('navDropdown');
+  if (burger && drop) burger.addEventListener('click', () => drop.classList.toggle('open'));
+})();
+</script>
+
+</body>
+</html>

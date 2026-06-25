@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+const DATA = {
+
+  title:    "Urban District",
+  subtitle: "Expedition · solo · level 35+ · resets every 23 hours",
+
+  breadcrumb: [
+    { label: "Home", href: "../index.html" },
+    { label: "Events", href: "sobytiya.html" }
+  ],
+
+  info: "The expedition is designed for <strong>one</strong> character <strong>above level 35</strong> who has completed the quest <strong>\"In the Depths of the Laboratory\"</strong>.<br><br>The entrance is located at the <strong>Airport</strong> location — through a dialogue with <strong>Dr. Garin</strong> in the southeastern sector of square <code>D3-1</code>, inside a one-story building next to the weather tower. After the conversation, the character is sent on the expedition and receives the quest <strong>\"Anomalous Rodeo\"</strong>.<br><br>Access to replay the expedition and complete the quest resets every <strong>23 hours</strong>.",
+
+  stages: [
+    {
+      label: "Stage I",
+      steps: [
+        {
+          title: "Talk to Laboratory Assistant Panov",
+          body: "<strong>Make sure</strong> to talk to Laboratory Assistant Panov, who is tinkering with the teleportation device."
+        },
+        {
+          title: "Go through the sewers",
+          body: "Go down to the first floor and find the entrance to the sewer tunnels. Move forward while avoiding moving <em>\"Teleport\" Anomalies</em> — hide in the alcoves to take shelter from them."
+        },
+        {
+          title: "Find gasoline and start the generator",
+          body: "Once outside, search the southwestern sector of square <code>B1-4</code>: look for a <strong>Bottle of Gasoline</strong> (1 pc.) inside canisters in the garages, near cars, and in their fuel tanks. Do not neglect collecting all fuel bottles — you will need them later.<br><br>The generator is located near the red \"Niva\" car in the western part of square <code>B1-4</code>. To start it, hold <code>[F]</code> for <strong>15 seconds</strong>."
+        },
+        {
+          title: "Defend the energy traps",
+          body: "After starting the generator, move south. On the playground to your right, you will find three <strong>energy traps</strong> placed around the anomaly. To successfully complete the stage, it is enough to <strong>keep at least one intact</strong>."
+        }
+      ],
+      phases: [
+        {
+          label: "PHASE I",
+          time: "3 min",
+          total: "14 enemies",
+          enemies: [
+            { name: "Dog",           count: "× 12" },
+            { name: "Outcast",       count: "× 2"  },
+            { name: "Imp",           count: "× 1"  },
+            { name: "Basement Blyak", count: "× 1"  }
+          ]
+        }
+      ],
+      result: "After successfully defending the first installation, continue moving south into the next section of the district."
+    },
+    {
+      label: "Stage II",
+      steps: [
+        {
+          title: "Gather resources",
+          body: "To restore the installation, you need to find:<br>— <strong>Bottle of Gasoline</strong> × 2 — in the generator tank near the stadium, as well as in canisters and fuel tanks of cars.<br>— <strong>Fuse Cable</strong> × 8 — in cardboard boxes prepared by looters (you might encounter a well-equipped looter in the northwestern sector of square <code>C2-3</code>), as well as under the hoods of cars."
+        },
+        {
+          title: "Install the cables into the traps",
+          body: "Head to the southwestern sector of square <code>B2-2</code>. Find two energy traps in the middle of the stadium — interact with the control panels and install the cables via the interaction window. Then go to the western part of square <code>B2-4</code> (a small square/park) — there are two more traps. Beware of moving anomalies."
+        },
+        {
+          title: "Go up to the roof and start the generator",
+          body: "Climb onto the roof of the building in the northwestern sector of square <code>B2-4</code>: move the wooden crates to the southern wall, stack them on top of each other, climb up, and interact with the ladder.<br><br>Refuel the generator — transfer <strong>2 fuel bottles</strong> into the interaction window. Then start the generator (this can also be done via the energy traps interface)."
+        },
+        {
+          title: "Defend the energy traps",
+          body: "During the mini-event, defend at least <strong>one of the four</strong> repaired traps."
+        }
+      ],
+      phases: [
+        {
+          label: "PHASE I",
+          time: "5 min",
+          total: "20 enemies",
+          enemies: [
+            { name: "Special Dog",    count: "× 5"  },
+            { name: "Domovoy",        count: "× 3"  },
+            { name: "Dog",            count: "× 13" },
+            { name: "Red Verlioka",   count: "× 1"  },
+            { name: "Vledun",         count: "× 1"  },
+            { name: "Blind Vledun",   count: "× 1"  }
+          ]
+        }
+      ],
+      result: "After successfully completing the defense, <strong>take the punch card</strong> from the control panel next to the generator on the roof. Then pass through the collapsed house in the eastern part of square <code>B2-3</code> to reach the next part of the district."
+    },
+    {
+      label: "Stage III",
+      steps: [
+        {
+          title: "Gather resources",
+          body: "To restore the installation, you need to find:<br>— <strong>Bottle of Gasoline</strong> × 4 — in canisters and fuel tanks of cars.<br>— <strong>Fuse Cable</strong> × 4 — under the hoods of cars or from the control panels of broken energy traps in square <code>B2-3</code>."
+        },
+        {
+          title: "Install the cables into the traps",
+          body: "Head to the northeastern sector of square <code>A2-2</code>. Find two energy traps in the middle of the stadium and install the cables via the interaction window. Be careful: you might encounter a well-equipped looter who starts patrolling in the southeastern sector of square <code>A1-4</code>."
+        },
+        {
+          title: "Go up to the roof and start the generator",
+          body: "Climb onto the roof of the building in the northern part of square <code>A2-4</code> — interact with the fire escape on the north side of the building.<br><br>Refuel the generator — transfer <strong>4 fuel bottles</strong> into the interaction window. Then start the generator (this can also be done via the energy traps interface)."
+        },
+        {
+          title: "Defend the energy traps",
+          body: "During the mini-event, defend at least <strong>one of the two</strong> repaired traps."
+        }
+      ],
+      phases: [
+        {
+          label: "PHASE I",
+          time: "5 min",
+          total: "22 enemies",
+          enemies: [
+            { name: "Dog",            count: "× 10" },
+            { name: "Red Verlioka",   count: "× 3"  },
+            { name: "Domovoy",        count: "× 5"  },
+            { name: "Imp",            count: "× 2"  },
+            { name: "Wild Dog",       count: "× 5"  }
+          ]
+        }
+      ],
+      result: "After successfully completing the defense, <strong>take the punch card</strong> from the control panel next to the generator on the roof. Then head to the southwestern sector of square <code>B1-3</code>."
+    },
+    {
+      label: "Stage IV · Final",
+      steps: [
+        {
+          title: "Insert the punch cards",
+          body: "Climb the stairs to the roof of the building. Insert both punch cards into the control panels via the interaction window. As soon as the second punch card is in place, the mini-event will begin."
+        },
+        {
+          title: "Defend the power cables and repair the transformers",
+          body: "During the mini-event, defend at least <strong>one of the three</strong> power cables leading to the main installation in the courtyard.<br><br><strong>Between phases:</strong> you have <strong>3 minutes</strong> to repair <strong>2 random transformers out of 5</strong> located around the perimeter of the courtyard. A successful repair is indicated by a <em>\"Fixed\"</em> notification."
+        }
+      ],
+      phases: [
+        {
+          label: "PHASE I",
+          time: "5 min",
+          total: "11 enemies",
+          enemies: [
+            { name: "Lesser Leshy",   count: "× 3"  },
+            { name: "Dog",            count: "× 10" },
+            { name: "Vledun",         count: "× 1"  }
+          ]
+        },
+        {
+          label: "PHASE II",
+          time: "5 min",
+          total: "17 enemies",
+          enemies: [
+            { name: "Infected Imp",   count: "× 2"  },
+            { name: "Dog",            count: "× 16" },
+            { name: "Sighted Vledun", count: "× 2"  }
+          ]
+        }
+      ],
+      phaseBreak: "// repair 2 transformers · 3 minutes //",
+      result: "After the defense is over, <strong>take the data drive</strong> from the table next to the computer on the roof.<br><br>After collecting the data, random artifacts may appear in some places of the block: <strong>\"Haze\"</strong>, <strong>\"Screen β\"</strong>, <strong>\"Screen γ\"</strong>.<br><br>Return to the eastern part of square <code>C2-1</code>. Find <strong>Laboratory Assistant Panov</strong> on the second floor of the former store building and hand him the data drive — the quest <strong>\"Anomalous Rodeo\"</strong> will be completed."
+    }
+  ]
+
+}; // ← end of DATA
+</script>
+
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Loading...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --code:      #7aaa2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 1rem; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+  #site-nav { position: sticky; top: 0; z-index: 100; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 1rem; }
+  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); letter-spacing: .08em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1; }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+  .nav-links { display: flex; gap: .25rem; flex-shrink: 0; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: .8rem; letter-spacing: .05em; padding: .3rem .55rem; border: 1px solid transparent; border-radius: 2px; transition: all .15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-lang { display: flex; align-items: center; gap: 0; flex-shrink: 0; font-family: 'Share Tech Mono', monospace; font-size: 1rem; letter-spacing: .08em; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .nav-lang a { color: var(--text-dim); text-decoration: none; padding: .35rem .6rem; transition: all .15s; line-height: 1; }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active { color: var(--green); background: rgba(122,170,46,.1); cursor: default; pointer-events: none; }
+  .nav-lang span { color: var(--border); padding: 0 1px; user-select: none; }
+  .nav-steam { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid transparent; border-radius: 2px; color: var(--text-dim); text-decoration: none; transition: all .15s; flex-shrink: 0; }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+  .nav-burger { display: none; flex-shrink: 0; background: none; border: 1px solid var(--border); border-radius: 3px; padding: .35rem .45rem; cursor: pointer; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+  .nav-dropdown { display: none; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .5rem 1rem; }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a { display: block; color: var(--text-dim); text-decoration: none; font-size: .85rem; letter-spacing: .05em; padding: .5rem .25rem; border-bottom: 1px solid var(--border); transition: color .15s; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row { display: flex; gap: .75rem; padding: .5rem .25rem; border-bottom: 1px solid var(--border); }
+  .nav-dropdown .lang-row a { border: none; padding: 0; font-family: 'Share Tech Mono', monospace; font-size: .8rem; }
+  .nav-dropdown .lang-row a.lang-active { color: var(--green); pointer-events: none; }
+  @media (max-width: 480px) { .nav-links { display: none; } .nav-lang { display: none; } .nav-burger { display: flex; } }
+
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .25rem; font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); margin: 0 .35em; }
+
+  .section-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 2.5rem; }
+
+  .page-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); letter-spacing: .04em; text-transform: uppercase; padding: 1.25rem 0 .25rem; }
+  .page-meta { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); letter-spacing: .12em; margin-bottom: 1.75rem; }
+  .page-meta::before { content: '// '; color: var(--text-dim); }
+
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .82rem; letter-spacing: .2em; color: var(--green); text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .85rem 1.1rem; margin-bottom: 1.75rem; font-size: .95rem; color: var(--text); }
+  .info-block strong { color: var(--amber); font-family: 'Oswald', sans-serif; font-weight: 600; }
+
+  .steps { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1rem; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); background: var(--surface); border: 1px solid var(--border); width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .1rem; }
+  .step-body strong { color: var(--text); font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .03em; display: block; margin-bottom: .2rem; }
+  .step-body p { font-size: .92rem; color: var(--text-dim); }
+  code { font-family: 'Share Tech Mono', monospace; font-size: .88rem; color: var(--code); background: rgba(122,170,46,.08); padding: .05em .3em; border: 1px solid var(--green-dim); border-radius: 2px; }
+
+  .stage-block { margin-bottom: 2rem; }
+  .stage-label { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .12em; color: var(--green); text-transform: uppercase; margin-bottom: .85rem; display: flex; align-items: center; gap: .6rem; }
+  .stage-label::after { content: ''; flex: 1; height: 1px; background: var(--green-dim); }
+
+  .phases { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1rem; }
+  .phase-card { background: var(--surface); border: 1px solid var(--border); }
+  .phase-header { display: flex; align-items: center; gap: 1rem; padding: .65rem 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .phase-num { font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .12em; color: var(--green); }
+  .phase-time { font-family: 'Share Tech Mono', monospace; font-size: .8rem; color: var(--amber); margin-left: auto; }
+  .phase-body { padding: .65rem 1rem; }
+  .phase-body ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+  .phase-body ul li { display: flex; align-items: center; font-size: .9rem; gap: .5rem; }
+  .phase-body ul li span { font-family: 'Share Tech Mono', monospace; font-size: .82rem; color: var(--text-dim); margin-left: auto; }
+  .phase-break { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); text-align: center; padding: .4rem; letter-spacing: .1em; background: rgba(200,146,10,.05); border: 1px solid rgba(200,146,10,.15); }
+
+  .result-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .65rem 1rem; font-size: .88rem; color: var(--text-dim); margin-top: 1rem; }
+  .result-note strong { color: var(--amber); }
+
+  footer { border-top: 1px solid var(--border); padding: 1.25rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); text-align: center; letter-spacing: .05em; line-height: 1.8; }
+  footer a { color: var(--text-dim); text-decoration: underline; }
+  footer a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+<nav class="breadcrumb" id="bc"></nav>
+
+<div class="section-wrap">
+
+  <h1 class="page-title" id="r-title"></h1>
+  <p class="page-meta"   id="r-subtitle"></p>
+
+  <p class="section-label">General Information</p>
+  <div class="info-block" id="r-info"></div>
+
+  <p class="section-label">Walkthrough</p>
+  <div id="r-stages"></div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // INDEPENDENT FAN ENCYCLOPEDIA ·
+  Content licensed under <a href="#">CC BY 4.0</a> ·
+  Stay Out and all related materials belong to their respective owners. This resource is an unofficial fan site.
+</footer>
+
+<script>
+(function(){
+  const d = DATA;
+
+  document.title = d.title + ' — Stay Out Wiki';
+
+  let bc = '';
+  d.breadcrumb.forEach((c,i) => { bc += (i?'<span>›</span>':'') + '<a href="'+c.href+'">'+c.label+'</a>'; });
+  bc += '<span>›</span><span style="color:var(--text)">'+d.title+'</span>';
+  document.getElementById('bc').innerHTML = bc;
+
+  document.getElementById('r-title').textContent    = d.title;
+  document.getElementById('r-subtitle').textContent = d.subtitle;
+  document.getElementById('r-info').innerHTML       = d.info;
+
+  let stagesHtml = '';
+  d.stages.forEach(stage => {
+    stagesHtml += `<div class="stage-block"><div class="stage-label">${stage.label}</div>`;
+
+    if (stage.steps && stage.steps.length) {
+      stagesHtml += '<div class="steps">';
+      stage.steps.forEach((s,i) => {
+        stagesHtml += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><strong>${s.title}</strong><p>${s.body}</p></div></div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.phases && stage.phases.length) {
+      stagesHtml += '<div class="phases">';
+      stage.phases.forEach((ph, i) => {
+        if (i && stage.phaseBreak) {
+          stagesHtml += `<div class="phase-break">${stage.phaseBreak}</div>`;
+        }
+        stagesHtml += `<div class="phase-card">
+          <div class="phase-header">
+            <span class="phase-num">${ph.label}</span>
+            <span style="color:var(--text-dim);font-size:.88rem;">${ph.total}</span>
+            <span class="phase-time">${ph.time}</span>
+          </div>
+          <div class="phase-body">
+            <ul>${ph.enemies.map(e=>`<li>${e.name}<span>${e.count}</span></li>`).join('')}</ul>
+          </div>
+        </div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.result) {
+      stagesHtml += `<div class="result-note">${stage.result}</div>`;
+    }
+
+    stagesHtml += '</div>';
+  });
+  document.getElementById('r-stages').innerHTML = stagesHtml;
+
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+
+  const burger = document.getElementById('navBurger');
+  const drop   = document.getElementById('navDropdown');
+  if (burger && drop) burger.addEventListener('click', () => drop.classList.toggle('open'));
+})();
+</script>
+
+</body>
+</html>
