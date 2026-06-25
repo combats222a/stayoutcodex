@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script>
+const DATA = {
+
+  title:    "Городской район",
+  subtitle: "Экспедиция · соло · 35+ уровень · обновление раз в 23 часа",
+
+  breadcrumb: [
+    { label: "Главная", href: "../index.html" },
+    { label: "События", href: "sobytiya.html" }
+  ],
+
+  info: "Экспедиция рассчитана на <strong>одного</strong> персонажа <strong>выше 35 уровня</strong>, завершившего задание <strong>«В недрах Лаборатории»</strong>.<br><br>Вход расположен на локации <strong>Аэропорт</strong> — через диалог с <strong>Доктором Гариным</strong> в юго-восточном секторе квадрата <code>D3-1</code>, внутри одноэтажного здания рядом с метеовышкой. После разговора персонаж отправляется в экспедицию и получает задание <strong>«Аномальное родео»</strong>.<br><br>Обновление доступа к повторному прохождению и выполнению задания происходит раз в <strong>23 часа</strong>.",
+
+  stages: [
+    {
+      label: "I-й этап",
+      steps: [
+        {
+          title: "Поговорите с Лаборантом Пановым",
+          body: "<strong>Обязательно</strong> поговорите с Лаборантом Пановым, который копошится в установке телепортации."
+        },
+        {
+          title: "Пройдите через канализацию",
+          body: "Спуститесь на первый этаж и найдите вход в канализационные тоннели. Двигайтесь вперёд, избегая движущихся <em>Аномалий «Телепорт»</em> — прячьтесь в нишах для укрытия от них."
+        },
+        {
+          title: "Найдите бензин и запустите генератор",
+          body: "Выбравшись наружу, осмотрите юго-западный сектор квадрата <code>B1-4</code>: ищите <strong>Бутылку с бензином</strong> (1 шт.) в канистрах в гаражах, возле автомобилей и в их топливных баках. Не брезгуйте сбором всех бутылок с топливом — они понадобятся дальше.<br><br>Генератор находится возле красной «Нивы» в западной части квадрата <code>B1-4</code>. Для запуска удерживайте <code>[F]</code> в течение <strong>15 секунд</strong>."
+        },
+        {
+          title: "Защитите уловители энергии",
+          body: "После запуска генератора двигайтесь на юг. На детской площадке, по правую руку, найдёте три <strong>уловителя энергии</strong>, расставленных вокруг аномалии. Для успешного завершения этапа достаточно <strong>сохранить хотя бы один</strong>."
+        }
+      ],
+      phases: [
+        {
+          label: "ФАЗА I",
+          time: "3 мин",
+          total: "14 противников",
+          enemies: [
+            { name: "Собака",          count: "× 12" },
+            { name: "Отверженный",     count: "× 2"  },
+            { name: "Бес",             count: "× 1"  },
+            { name: "Подвальный бляк", count: "× 1"  }
+          ]
+        }
+      ],
+      result: "Успешно справившись с обороной первой установки, продолжайте движение на юг, в следующую часть района."
+    },
+    {
+      label: "II-й этап",
+      steps: [
+        {
+          title: "Соберите ресурсы",
+          body: "Для восстановления установки необходимо найти:<br>— <strong>Бутылка с бензином</strong> × 2 — в баке генератора у стадиона, а также в канистрах и бензобаках автомобилей.<br>— <strong>Огнепроводный кабель</strong> × 8 — в картонных коробках, подготовленных мародёрами (в северо-западном секторе квадрата <code>C2-3</code> возможна встреча с хорошо экипированным мародёром), а также под капотом у автомобилей."
+        },
+        {
+          title: "Установите кабели в уловители",
+          body: "Отправляйтесь в юго-западный сектор квадрата <code>B2-2</code>. Посреди стадиона найдите два уловителя энергии — взаимодействуйте с блоками управления и установите кабели через окно взаимодействия. Затем идите в западную часть квадрата <code>B2-4</code> (небольшой скверик) — там ещё два уловителя. Остерегайтесь перемещающихся аномалий."
+        },
+        {
+          title: "Поднимитесь на крышу и запустите генератор",
+          body: "Поднимитесь на крышу здания в северо-западном секторе квадрата <code>B2-4</code>: перенесите деревянные ящики к южной стене, поставьте один на другой, взберитесь и взаимодействуйте с лестницей.<br><br>Заправьте генератор — переместите в окно взаимодействия <strong>2 бутылки с топливом</strong>. Затем запустите генератор (можно также через интерфейс уловителей энергии)."
+        },
+        {
+          title: "Защитите уловители энергии",
+          body: "В ходе мини-события защищайте хотя бы <strong>один из четырёх</strong> отремонтированных уловителей."
+        }
+      ],
+      phases: [
+        {
+          label: "ФАЗА I",
+          time: "5 мин",
+          total: "20 противников",
+          enemies: [
+            { name: "Особая Собака",   count: "× 5"  },
+            { name: "Домовой",         count: "× 3"  },
+            { name: "Собака",          count: "× 13" },
+            { name: "Красная верлиока",count: "× 1"  },
+            { name: "Ведун",           count: "× 1"  },
+            { name: "Слепой ведун",    count: "× 1"  }
+          ]
+        }
+      ],
+      result: "Успешно завершив оборону, <strong>заберите перфокарту</strong> с пульта управления рядом с генератором на крыше. Затем пройдите через обвалившийся дом в восточной части квадрата <code>B2-3</code> в следующую часть района."
+    },
+    {
+      label: "III-й этап",
+      steps: [
+        {
+          title: "Соберите ресурсы",
+          body: "Для восстановления установки необходимо найти:<br>— <strong>Бутылка с бензином</strong> × 4 — в канистрах и бензобаках автомобилей.<br>— <strong>Огнепроводный кабель</strong> × 4 — под капотом у автомобилей или с блоков управления сломанных энергоуловителей в квадрате <code>B2-3</code>."
+        },
+        {
+          title: "Установите кабели в уловители",
+          body: "Отправляйтесь в северо-восточный сектор квадрата <code>А2-2</code>. Посреди стадиона найдите два уловителя энергии и установите кабели через окно взаимодействия. Будьте осторожны: возможна встреча с хорошо экипированным мародёром, начинающим патрулирование в юго-восточном секторе квадрата <code>A1-4</code>."
+        },
+        {
+          title: "Поднимитесь на крышу и запустите генератор",
+          body: "Поднимитесь на крышу здания в северной части квадрата <code>А2-4</code> — взаимодействуйте с пожарной лестницей с северной стороны здания.<br><br>Заправьте генератор — переместите в окно взаимодействия <strong>4 бутылки с топливом</strong>. Затем запустите генератор (можно также через интерфейс уловителей энергии)."
+        },
+        {
+          title: "Защитите уловители энергии",
+          body: "В ходе мини-события защищайте хотя бы <strong>один из двух</strong> отремонтированных уловителей."
+        }
+      ],
+      phases: [
+        {
+          label: "ФАЗА I",
+          time: "5 мин",
+          total: "22 противника",
+          enemies: [
+            { name: "Собака",           count: "× 10" },
+            { name: "Красная верлиока", count: "× 3"  },
+            { name: "Домовой",          count: "× 5"  },
+            { name: "Бес",              count: "× 2"  },
+            { name: "Дикая собака",     count: "× 5"  }
+          ]
+        }
+      ],
+      result: "Успешно завершив оборону, <strong>заберите перфокарту</strong> с пульта управления рядом с генератором на крыше. Затем отправляйтесь в юго-западный сектор квадрата <code>B1-3</code>."
+    },
+    {
+      label: "IV-й этап · Финал",
+      steps: [
+        {
+          title: "Установите перфокарты",
+          body: "Поднимитесь по лестнице на крышу здания. Установите обе перфокарты в пульты управления через окно взаимодействия. Как только вторая перфокарта окажется на месте — начнётся мини-событие."
+        },
+        {
+          title: "Защитите силовые кабели и отремонтируйте трансформаторы",
+          body: "В ходе мини-события защищайте хотя бы <strong>один из трёх</strong> силовых кабелей, ведущих к главной установке во дворе.<br><br><strong>Между фазами:</strong> за <strong>3 минуты</strong> отремонтируйте <strong>2 случайных трансформатора из 5</strong>, расположенных по периметру двора. Признак успешного ремонта — уведомление <em>«Исправлено»</em>."
+        }
+      ],
+      phases: [
+        {
+          label: "ФАЗА I",
+          time: "5 мин",
+          total: "11 противников",
+          enemies: [
+            { name: "Малый леший", count: "× 3"  },
+            { name: "Собака",      count: "× 10" },
+            { name: "Ведун",       count: "× 1"  }
+          ]
+        },
+        {
+          label: "ФАЗА II",
+          time: "5 мин",
+          total: "17 противников",
+          enemies: [
+            { name: "Зараженный бес", count: "× 2"  },
+            { name: "Собака",         count: "× 16" },
+            { name: "Зрячий ведун",   count: "× 2"  }
+          ]
+        }
+      ],
+      phaseBreak: "// ремонт 2 трансформаторов · 3 минуты //",
+      result: "После завершения обороны <strong>заберите диск с данными</strong> со стола у компьютера на крыше.<br><br>После сбора данных в некоторых местах квартала могут появиться случайные артефакты: <strong>«Марево»</strong>, <strong>«Экран β»</strong>, <strong>«Экран γ»</strong>.<br><br>Вернитесь в восточную часть квадрата <code>C2-1</code>. На втором этаже здания бывшего магазина найдите <strong>Лаборанта Панова</strong> и передайте ему диск с данными — задание <strong>«Аномальное родео»</strong> будет завершено."
+    }
+  ]
+
+}; // ← конец DATA
+</script>
+
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Загрузка...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --code:      #7aaa2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 1rem; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+  #site-nav { position: sticky; top: 0; z-index: 100; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 1rem; }
+  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); letter-spacing: .08em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1; }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+  .nav-links { display: flex; gap: .25rem; flex-shrink: 0; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: .8rem; letter-spacing: .05em; padding: .3rem .55rem; border: 1px solid transparent; border-radius: 2px; transition: all .15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-lang { display: flex; align-items: center; gap: 0; flex-shrink: 0; font-family: 'Share Tech Mono', monospace; font-size: 1rem; letter-spacing: .08em; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .nav-lang a { color: var(--text-dim); text-decoration: none; padding: .35rem .6rem; transition: all .15s; line-height: 1; }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active { color: var(--green); background: rgba(122,170,46,.1); cursor: default; pointer-events: none; }
+  .nav-lang span { color: var(--border); padding: 0 1px; user-select: none; }
+  .nav-steam { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid transparent; border-radius: 2px; color: var(--text-dim); text-decoration: none; transition: all .15s; flex-shrink: 0; }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+  .nav-burger { display: none; flex-shrink: 0; background: none; border: 1px solid var(--border); border-radius: 3px; padding: .35rem .45rem; cursor: pointer; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+  .nav-dropdown { display: none; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .5rem 1rem; }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a { display: block; color: var(--text-dim); text-decoration: none; font-size: .85rem; letter-spacing: .05em; padding: .5rem .25rem; border-bottom: 1px solid var(--border); transition: color .15s; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row { display: flex; gap: .75rem; padding: .5rem .25rem; border-bottom: 1px solid var(--border); }
+  .nav-dropdown .lang-row a { border: none; padding: 0; font-family: 'Share Tech Mono', monospace; font-size: .8rem; }
+  .nav-dropdown .lang-row a.lang-active { color: var(--green); pointer-events: none; }
+  @media (max-width: 480px) { .nav-links { display: none; } .nav-lang { display: none; } .nav-burger { display: flex; } }
+
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .25rem; font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); margin: 0 .35em; }
+
+  .section-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 2.5rem; }
+
+  .page-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); letter-spacing: .04em; text-transform: uppercase; padding: 1.25rem 0 .25rem; }
+  .page-meta { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); letter-spacing: .12em; margin-bottom: 1.75rem; }
+  .page-meta::before { content: '// '; color: var(--text-dim); }
+
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .82rem; letter-spacing: .2em; color: var(--green); text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .85rem 1.1rem; margin-bottom: 1.75rem; font-size: .95rem; color: var(--text); }
+  .info-block strong { color: var(--amber); font-family: 'Oswald', sans-serif; font-weight: 600; }
+
+  .steps { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1rem; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); background: var(--surface); border: 1px solid var(--border); width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .1rem; }
+  .step-body strong { color: var(--text); font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .03em; display: block; margin-bottom: .2rem; }
+  .step-body p { font-size: .92rem; color: var(--text-dim); }
+  code { font-family: 'Share Tech Mono', monospace; font-size: .88rem; color: var(--code); background: rgba(122,170,46,.08); padding: .05em .3em; border: 1px solid var(--green-dim); border-radius: 2px; }
+
+  .stage-block { margin-bottom: 2rem; }
+  .stage-label { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .12em; color: var(--green); text-transform: uppercase; margin-bottom: .85rem; display: flex; align-items: center; gap: .6rem; }
+  .stage-label::after { content: ''; flex: 1; height: 1px; background: var(--green-dim); }
+
+  .phases { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1rem; }
+  .phase-card { background: var(--surface); border: 1px solid var(--border); }
+  .phase-header { display: flex; align-items: center; gap: 1rem; padding: .65rem 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .phase-num { font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .12em; color: var(--green); }
+  .phase-time { font-family: 'Share Tech Mono', monospace; font-size: .8rem; color: var(--amber); margin-left: auto; }
+  .phase-body { padding: .65rem 1rem; }
+  .phase-body ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+  .phase-body ul li { display: flex; align-items: center; font-size: .9rem; gap: .5rem; }
+  .phase-body ul li span { font-family: 'Share Tech Mono', monospace; font-size: .82rem; color: var(--text-dim); margin-left: auto; }
+  .phase-break { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); text-align: center; padding: .4rem; letter-spacing: .1em; background: rgba(200,146,10,.05); border: 1px solid rgba(200,146,10,.15); }
+
+  .result-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .65rem 1rem; font-size: .88rem; color: var(--text-dim); margin-top: 1rem; }
+  .result-note strong { color: var(--amber); }
+
+  footer { border-top: 1px solid var(--border); padding: 1.25rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); text-align: center; letter-spacing: .05em; line-height: 1.8; }
+  footer a { color: var(--text-dim); text-decoration: underline; }
+  footer a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+<nav class="breadcrumb" id="bc"></nav>
+
+<div class="section-wrap">
+
+  <h1 class="page-title" id="r-title"></h1>
+  <p class="page-meta"   id="r-subtitle"></p>
+
+  <p class="section-label">Общая информация</p>
+  <div class="info-block" id="r-info"></div>
+
+  <p class="section-label">Прохождение</p>
+  <div id="r-stages"></div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function(){
+  const d = DATA;
+
+  document.title = d.title + ' — Stay Out Wiki';
+
+  let bc = '';
+  d.breadcrumb.forEach((c,i) => { bc += (i?'<span>›</span>':'') + '<a href="'+c.href+'">'+c.label+'</a>'; });
+  bc += '<span>›</span><span style="color:var(--text)">'+d.title+'</span>';
+  document.getElementById('bc').innerHTML = bc;
+
+  document.getElementById('r-title').textContent    = d.title;
+  document.getElementById('r-subtitle').textContent = d.subtitle;
+  document.getElementById('r-info').innerHTML       = d.info;
+
+  let stagesHtml = '';
+  d.stages.forEach(stage => {
+    stagesHtml += `<div class="stage-block"><div class="stage-label">${stage.label}</div>`;
+
+    if (stage.steps && stage.steps.length) {
+      stagesHtml += '<div class="steps">';
+      stage.steps.forEach((s,i) => {
+        stagesHtml += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><strong>${s.title}</strong><p>${s.body}</p></div></div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.phases && stage.phases.length) {
+      stagesHtml += '<div class="phases">';
+      stage.phases.forEach((ph, i) => {
+        if (i && stage.phaseBreak) {
+          stagesHtml += `<div class="phase-break">${stage.phaseBreak}</div>`;
+        }
+        stagesHtml += `<div class="phase-card">
+          <div class="phase-header">
+            <span class="phase-num">${ph.label}</span>
+            <span style="color:var(--text-dim);font-size:.88rem;">${ph.total}</span>
+            <span class="phase-time">${ph.time}</span>
+          </div>
+          <div class="phase-body">
+            <ul>${ph.enemies.map(e=>`<li>${e.name}<span>${e.count}</span></li>`).join('')}</ul>
+          </div>
+        </div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.result) {
+      stagesHtml += `<div class="result-note">${stage.result}</div>`;
+    }
+
+    stagesHtml += '</div>';
+  });
+  document.getElementById('r-stages').innerHTML = stagesHtml;
+
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+
+  const burger = document.getElementById('navBurger');
+  const drop   = document.getElementById('navDropdown');
+  if (burger && drop) burger.addEventListener('click', () => drop.classList.toggle('open'));
+})();
+</script>
+
+</body>
+</html>

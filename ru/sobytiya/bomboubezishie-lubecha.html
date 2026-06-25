@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script>
+const DATA = {
+
+  /* ── ЗАГОЛОВОК ────────────────────────────────────── */
+  title:    "Бомбоубежище Любеча",
+  subtitle: "Экспедиция · соло · обновление раз в 23 часа",
+
+  /* ── ХЛЕБНЫЕ КРОШКИ ──────────────────────────────── */
+  breadcrumb: [
+    { label: "Главная", href: "../index.html" },
+    { label: "События", href: "sobytiya.html" }
+  ],
+
+  /* ── ПЕРВЫЙ ИНФО-БЛОК ────────────────────────────── */
+  info: "Экспедиция рассчитана на <strong>одного</strong> персонажа. Доступна во время и после выполнения сюжетного задания <strong>«Эхо бойни»</strong>.<br><br>Вход расположен на локации <strong>Любеч</strong> — через диалог с <strong>Техником</strong> в подвале. Вход в подвал находится в южной части квадрата <code>E3-3</code>. После разговора с Техником персонаж отправляется в экспедицию и получает задание <strong>«Оставь надежду всяк сюда входящий»</strong>.<br><br>Обновление доступа к повторному прохождению и выполнению задания происходит раз в <strong>23 часа</strong>.",
+
+  /* ── ЭТАПЫ ───────────────────────────────────────── */
+  stages: [
+    {
+      label: "I-й этап",
+      steps: [
+        {
+          title: "Соберите огнемёт",
+          body: "Спуститесь по лестнице и следуйте по коридорам вперёд. Найдите на полу <strong>Ручной огнемёт «Коротыш»</strong> и несколько <strong>Баллонов для огнемёта</strong> — подберите их."
+        },
+        {
+          title: "Заправьте баллон",
+          body: "Подойдите к канистре на стуле и заправьте <em>Баллон для огнемёта</em> — механика аналогична набору воды во флягу.<br><br><strong>Как заправить:</strong> подойдите к канистре с топливом → откройте инвентарь <code>[I]</code> или взаимодействуйте с канистрой через <code>[F]</code> (контекстное меню → <strong>[Выбрать ёмкость]</strong> → <strong>[1]</strong>) → кликните <code>[ПКМ]</code> по баллону → выберите <strong>[Наполнить]</strong>.<br><br>Экипируйте огнемёт вместо одного из основных видов оружия и прикрепите заправленный баллон. Перезарядка — клавиша <code>[R]</code>."
+        },
+        {
+          title: "Поговорите с техником СОЮЗа",
+          body: "Продвигайтесь дальше по коридору до техника СОЮЗа. Поговорите с ним о дальнейших действиях."
+        },
+        {
+          title: "Уничтожьте крыс и активируйте рубильники",
+          body: "После запуска установки техником уничтожьте <strong>10 особей «Подземная крыса-мутант»</strong>. Затем техник попросит активировать <strong>4 рубильника</strong> по периметру помещения (над каждым — красная лампа).<br><br>После команды на рубильники появится ещё <strong>13 крыс-мутантов</strong> — для удобства лучше сначала устранить их, а потом заниматься рубильниками. Для подъёма рычага удерживайте <code>[F]</code> в течение <strong>2 секунд</strong>. При успехе лампа загорается зелёным."
+        }
+      ]
+    },
+    {
+      label: "II-й этап",
+      steps: [
+        {
+          title: "Пройдите в пункт связи",
+          body: "Дождитесь открытия гермодверей и проследуйте внутрь. Двигайтесь вперёд до помещения пункта связи. По пути можно пополнить запас <em>Баллонов для огнемёта</em> и заправить их."
+        },
+        {
+          title: "Запустите фильтрационную установку",
+          body: "Найдите фильтрационную установку у стены напротив входа. Подойдите к пульту управления и удерживайте <code>[F]</code> в течение <strong>3 секунд</strong>."
+        },
+        {
+          title: "Продержитесь 2 минуты",
+          body: "После запуска из всех щелей начнут появляться <em>Подземная крыса-мутант</em> и <em>Подземный Домовой</em>. Защищайте фильтратор и себя в течение <strong>2 минут</strong>."
+        }
+      ]
+    },
+    {
+      label: "III-й этап",
+      steps: [
+        {
+          title: "Найдите пролом с решёткой",
+          body: "У одной из стен пункта связи найдите пролом, закрытый решёткой. Подойдите и взаимодействуйте — решётка сдвинется. Пролезьте в проход."
+        },
+        {
+          title: "Преодолейте пол под напряжением",
+          body: "В коридоре часть пола находится под высоким напряжением. Есть два способа:<br><br><strong>Способ 1 (простой)</strong> — залезьте на ящики у стены и передвигайтесь по ним до другой стороны.<br><br><strong>Способ 2 (отключение электричества)</strong> — вернитесь в пункт связи, зайдите в кабинет с противоположной стороны, найдите электрический шкаф и удерживайте <code>[F]</code> в течение <strong>3 секунд</strong>. Затем вернитесь в коридор: сразу после пролома поверните налево, за ящиками найдите рубильник и опустите рычаг — электричество отключится на <strong>15 секунд</strong>, затем рычаг вернётся в исходное положение. Можно активировать повторно."
+        },
+        {
+          title: "Доберитесь до канализационной сети",
+          body: "Преодолев напряжение, продвигайтесь вперёд между коробками и ящиками, взберитесь на нагромождение, перейдите на другую сторону. У пролома в стене можно пополнить <em>Баллоны для огнемёта</em>. Пролезьте через пролом — вы в канализации."
+        }
+      ]
+    },
+    {
+      label: "IV-й этап",
+      steps: [
+        {
+          title: "Поднимитесь к фильтрационному узлу",
+          body: "Двигайтесь по канализационному тоннелю до колодца. Поднимитесь по лестнице наверх — вы у фильтрационного узла."
+        },
+        {
+          title: "Запустите установку и продержитесь 2 минуты",
+          body: "Подойдите к пульту управления на корпусе установки и удерживайте <code>[F]</code> в течение <strong>3 секунд</strong>. После запуска появятся <em>Подземная крыса-мутант</em> и <em>Отверженный</em>. Защищайте фильтратор и себя в течение <strong>2 минут</strong>."
+        }
+      ]
+    },
+    {
+      label: "V-й этап · Финал",
+      steps: [
+        {
+          title: "Дойдите до финального помещения",
+          body: "Следуйте в тоннель, подсвеченный красной лампой. При необходимости пополните <em>Баллоны для огнемёта</em>. Пройдите по железному мостику по периметру помещения до конца — так быстрее добраться до фильтратора."
+        },
+        {
+          title: "Запустите установку и перекройте краны",
+          body: "Активируйте фильтрационную установку (<code>[F]</code>, <strong>3 секунды</strong>). Через <strong>30 секунд</strong> сорвёт первый кран — всего сорвётся <strong>3 из 6</strong>. Ориентируйтесь на характерный звук и обильный пар.<br><br>На перекрытие каждого крана — <strong>60 секунд</strong>. Не успели — установка взрывается, этап начинается заново. Чтобы перекрыть кран: подойдите и удерживайте <code>[F]</code> в течение <strong>3 секунд</strong>. При успехе пар прекратится."
+        },
+        {
+          title: "Устраните Утопленников",
+          body: "В процессе работы с кранами периодически появляются <em>Утопленники</em> — они мешают перекрытию и отвлекают внимание. Рекомендуется быстро расправляться с ними или держать на расстоянии. Всего нужно устранить <strong>14 Утопленников</strong>."
+        },
+        {
+          title: "Победите Подземного Ведуна",
+          body: "Закрыв все три сорванных крана и устранив 14 Утопленников, рядом с фильтрационной установкой появится аномалия-телепорт. Из неё выйдет финальный босс — <strong>Подземный Ведун</strong>. Устраните его."
+        }
+      ],
+      result: "После победы над боссом основная задача завершена.<br><br><strong>Выход из экспедиции:</strong> поднимитесь по лестнице слева от фильтратора на металлическую площадку, пройдите по ней вглубь и взберитесь по второй лестнице. Или нажмите <code>[ESC]</code> → <strong>[Выйти из события]</strong>."
+    }
+  ]
+
+}; // ← конец DATA
+</script>
+
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Загрузка...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --code:      #7aaa2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 1rem; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+  /* NAV */
+  #site-nav { position: sticky; top: 0; z-index: 100; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 1rem; }
+  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); letter-spacing: .08em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1; }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+  .nav-links { display: flex; gap: .25rem; flex-shrink: 0; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: .8rem; letter-spacing: .05em; padding: .3rem .55rem; border: 1px solid transparent; border-radius: 2px; transition: all .15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-lang { display: flex; align-items: center; gap: 0; flex-shrink: 0; font-family: 'Share Tech Mono', monospace; font-size: 1rem; letter-spacing: .08em; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .nav-lang a { color: var(--text-dim); text-decoration: none; padding: .35rem .6rem; transition: all .15s; line-height: 1; }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active { color: var(--green); background: rgba(122,170,46,.1); cursor: default; pointer-events: none; }
+  .nav-lang span { color: var(--border); padding: 0 1px; user-select: none; }
+  .nav-steam { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid transparent; border-radius: 2px; color: var(--text-dim); text-decoration: none; transition: all .15s; flex-shrink: 0; }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+  .nav-burger { display: none; flex-shrink: 0; background: none; border: 1px solid var(--border); border-radius: 3px; padding: .35rem .45rem; cursor: pointer; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+  .nav-dropdown { display: none; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .5rem 1rem; }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a { display: block; color: var(--text-dim); text-decoration: none; font-size: .85rem; letter-spacing: .05em; padding: .5rem .25rem; border-bottom: 1px solid var(--border); transition: color .15s; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row { display: flex; gap: .75rem; padding: .5rem .25rem; border-bottom: 1px solid var(--border); }
+  .nav-dropdown .lang-row a { border: none; padding: 0; font-family: 'Share Tech Mono', monospace; font-size: .8rem; }
+  .nav-dropdown .lang-row a.lang-active { color: var(--green); pointer-events: none; }
+  @media (max-width: 480px) { .nav-links { display: none; } .nav-lang { display: none; } .nav-burger { display: flex; } }
+
+  /* BREADCRUMB */
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .25rem; font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); margin: 0 .35em; }
+
+  /* WRAP */
+  .section-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 2.5rem; }
+
+  /* PAGE TITLE */
+  .page-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); letter-spacing: .04em; text-transform: uppercase; padding: 1.25rem 0 .25rem; }
+  .page-meta { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); letter-spacing: .12em; margin-bottom: 1.75rem; }
+  .page-meta::before { content: '// '; color: var(--text-dim); }
+
+  /* SECTION LABEL */
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .82rem; letter-spacing: .2em; color: var(--green); text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* INFO BLOCK */
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .85rem 1.1rem; margin-bottom: 1.75rem; font-size: .95rem; color: var(--text); }
+  .info-block strong { color: var(--amber); font-family: 'Oswald', sans-serif; font-weight: 600; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.75rem; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); background: var(--surface); border: 1px solid var(--border); width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .1rem; }
+  .step-body strong { color: var(--text); font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .03em; display: block; margin-bottom: .2rem; }
+  .step-body p { font-size: .92rem; color: var(--text-dim); }
+  code { font-family: 'Share Tech Mono', monospace; font-size: .88rem; color: var(--code); background: rgba(122,170,46,.08); padding: .05em .3em; border: 1px solid var(--green-dim); border-radius: 2px; }
+
+  /* STAGE */
+  .stage-block { margin-bottom: 2rem; }
+  .stage-label { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .12em; color: var(--green); text-transform: uppercase; margin-bottom: .85rem; display: flex; align-items: center; gap: .6rem; }
+  .stage-label::after { content: ''; flex: 1; height: 1px; background: var(--green-dim); }
+
+  /* RESULT NOTE */
+  .result-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .65rem 1rem; font-size: .88rem; color: var(--text-dim); margin-top: 1rem; }
+  .result-note strong { color: var(--amber); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 1.25rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); text-align: center; letter-spacing: .05em; line-height: 1.8; }
+  footer a { color: var(--text-dim); text-decoration: underline; }
+  footer a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+<nav class="breadcrumb" id="bc"></nav>
+
+<div class="section-wrap">
+
+  <h1 class="page-title" id="r-title"></h1>
+  <p class="page-meta"   id="r-subtitle"></p>
+
+  <p class="section-label">Общая информация</p>
+  <div class="info-block" id="r-info"></div>
+
+  <p class="section-label">Прохождение</p>
+  <div id="r-stages"></div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function(){
+  const d = DATA;
+
+  document.title = d.title + ' — Stay Out Wiki';
+
+  // breadcrumb
+  let bc = '';
+  d.breadcrumb.forEach((c,i) => { bc += (i?'<span>›</span>':'') + '<a href="'+c.href+'">'+c.label+'</a>'; });
+  bc += '<span>›</span><span style="color:var(--text)">'+d.title+'</span>';
+  document.getElementById('bc').innerHTML = bc;
+
+  // заголовок
+  document.getElementById('r-title').textContent    = d.title;
+  document.getElementById('r-subtitle').textContent = d.subtitle;
+  document.getElementById('r-info').innerHTML       = d.info;
+
+  // этапы
+  let stagesHtml = '';
+  d.stages.forEach(stage => {
+    stagesHtml += `<div class="stage-block"><div class="stage-label">${stage.label}</div>`;
+
+    if (stage.steps) {
+      stagesHtml += '<div class="steps">';
+      stage.steps.forEach((s,i) => {
+        stagesHtml += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><strong>${s.title}</strong><p>${s.body}</p></div></div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.result) {
+      stagesHtml += `<div class="result-note">${stage.result}</div>`;
+    }
+
+    stagesHtml += '</div>';
+  });
+  document.getElementById('r-stages').innerHTML = stagesHtml;
+
+  // активный пункт навбара
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+
+  // бургер
+  const burger = document.getElementById('navBurger');
+  const drop   = document.getElementById('navDropdown');
+  if (burger && drop) burger.addEventListener('click', () => drop.classList.toggle('open'));
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<script>
+const DATA = {
+
+  /* ── ЗАГОЛОВОК ────────────────────────────────────── */
+  title:    "Улей",
+  subtitle: "Экспедиция · 60 уровень · отряд от 2 человек · до 5 игроков",
+
+  /* ── ХЛЕБНЫЕ КРОШКИ ──────────────────────────────── */
+  breadcrumb: [
+    { label: "Главная",  href: "../index.html"  },
+    { label: "События",  href: "sobytiya.html"  }
+  ],
+
+  /* ── ПЕРВЫЙ ИНФО-БЛОК ────────────────────────────── */
+  info: "Экспедиция рассчитана на <strong>5 игроков</strong>. Доступна только персонажам <strong>60 уровня</strong> и выше, и только в составе отряда из двух или более человек.<br><br>Вход расположен на локации <strong>Везувий</strong>, в северо-восточном секторе квадрата <code>Е5-4</code>, — внутри бетонного ангара с терминалом. При входе каждому игроку автоматически выдаётся задание <strong>«Путешествие к центру Земли»</strong>.<br><br>Обновление доступа к повторному прохождению (в роли лидера) и выполнение заданий происходит в <strong>07:00 по серверному времени</strong> — команда <code>/time</code>.",
+
+  /* ── ЭТАПЫ ───────────────────────────────────────── */
+  stages: [
+    {
+      label: "I-й этап",
+      steps: [
+        {
+          title: "Соберите ОСА-01",
+          body: "Войдите в комплекс, сверните налево. У грузовика «КамАЗ» соберите <strong>Опрыскиватель ОСА-01</strong> и <strong>Ёмкость для ОСА-01</strong>. Заправьте ёмкость у жёлтой бочки с раствором — механика аналогична набору воды во флягу."
+        },
+        {
+          title: "Устраните Сеятелей спор у ворот",
+          body: "Распылите раствор из ОСА-01 по <em>Сеятелям спор</em> слева и справа от ворот. Огнестрельное оружие по ним не работает — только раствор. После уничтожения ворота откроются."
+        },
+        {
+          title: "Активируйте вентиляцию",
+          body: "Поднимитесь в комнату управления на втором этаже внутренней пристройки распределительного хранилища. Активируйте пульт запуска вентиляции — начнётся мини-событие."
+        }
+      ],
+      eventTitle: "Мини-событие I-го этапа",
+      eventDesc: "<em>Сеятели спор</em> активируются в случайном порядке с интервалом ~<strong>30 секунд</strong>, в течение <strong>4 мин 22 сек — 5 мин 22 сек</strong> с момента активации пульта. На их устранение отводится <strong>11 мин 15 сек</strong>, за <strong>6 мин 30 сек</strong> до конца прозвучит предупреждение. Если не успеть с <em>Сеятелями</em> — этап провален.",
+      phases: [
+        {
+          label: "ФАЗА I",
+          time: "5 мин",
+          enemies: [
+            { name: "Грибовик (Улей)",       count: "× 70"  },
+            { name: "Зараженная крыса (Улей)",count: "× 100" },
+            { name: "Зараженный (Улей)",      count: "× 40"  }
+          ],
+          total: "199 мутантов"
+        },
+        {
+          label: "ФАЗА II",
+          time: "5 мин 30 сек",
+          enemies: [
+            { name: "Зараженная крыса (Улей)",count: "× 50"  },
+            { name: "Грибовик (Улей)",        count: "× 80"  },
+            { name: "Зараженный (Улей)",      count: "× 100" },
+            { name: "Существо (Улей)",        count: "× 20"  }
+          ],
+          total: "237 мутантов"
+        }
+      ],
+      phaseBreak: "// 30-секундный перерыв между фазами //",
+      result: "По завершении мини-события откроется дверь к лестничной клетке в дальнем углу хранилища."
+    },
+    {
+      label: "II-й этап",
+      steps: [
+        {
+          title: "Пройдите через вестибюль",
+          body: "Поднимитесь по лестнице. Следуйте по коридорам до вестибюля, затем — до приёмной. Зайдите в комнату слева, устраните <em>Заражённых</em> и спускайтесь по обрушенным перекрытиям в тоннель."
+        },
+        {
+          title: "Прорвитесь через Адептов гриба",
+          body: "Продвигайтесь по тоннелю, уничтожая <em>Адептов гриба</em>. Большинство вооружены ножами, некоторые — <strong>винтовками и дробовиками</strong>: с такими нужно быть особенно осторожными."
+        },
+        {
+          title: "Очистите помещение и найдите оранжерею",
+          body: "Устраните <em>Сеятелей спор</em> с помощью ОСА-01. В дальнем углу очищенного помещения найдите открытый проход в оранжерею."
+        },
+        {
+          title: "Восстановите электропитание",
+          body: "Активируйте пульт управления на колонне первого этажа. В оранжерее появятся <em>Адепты гриба</em>, а по периметру будут случайно активироваться <strong>электрические щитки</strong> (красная лампочка над каждым). Дождитесь, пока утихнут разряды — тогда приступайте к «наладке» (<strong>15 секунд</strong>). Нужно починить <strong>10 щитков</strong> (по 5 на каждом этаже), каждый даёт +10% к шкале успеха."
+        },
+        {
+          title: "Разблокируйте двери",
+          body: "При 100% питания поднимитесь на второй этаж к пульту управления дверьми (красная лампочка над дверью) и активируйте его (<strong>5 секунд</strong>). Двери откроются."
+        }
+      ]
+    },
+    {
+      label: "III-й этап",
+      steps: [
+        {
+          title: "Дойдите до раздвижных ворот",
+          body: "Следуйте по коридору, поднимитесь по лестнице на верхний уровень и пройдите к тоннелю. Активируйте пульт у больших раздвижных ворот."
+        },
+        {
+          title: "Пройдите тоннель за 3 минуты",
+          body: "Как только кто-то из участников окажется <strong>в тоннеле за воротами</strong>, активируется система безопасности — у вас <strong>3 минуты</strong>. Пробирайтесь через завалы в моменты, когда электрические разряды в разломах утихают."
+        },
+        {
+          title: "Устраните Сеятелей и деактивируйте сигнализацию",
+          body: "У погрузчика и далее по маршруту устраните <em>Сеятелей спор</em> с помощью ОСА-01. В помещении дезинфекции взаимодействуйте с пультом сигнализации — деактивация займёт <strong>15 секунд</strong>. Если не успеть — ворота заблокируются, этап провален."
+        },
+        {
+          title: "Откройте путь к лестнице",
+          body: "Взаимодействуйте с вентилем слева от ворот. Пройдите через тоннель, уничтожая противников, и расправьтесь с оставшимися <em>Сеятелями спор</em>, чтобы добраться до лестничной клетки."
+        }
+      ]
+    },
+    {
+      label: "IV-й этап · Страж улья",
+      steps: [
+        {
+          title: "Найдите логово Стража",
+          body: "Поднимитесь по лестнице в инкубаторные лаборатории. Пройдите по коридорам, спуститесь в пещеру и следуйте вглубь до логова <strong>Стража улья</strong>."
+        },
+        {
+          title: "Фаза 1 — Отравите нарост (≈10 000 урона из ОСА-01)",
+          body: "Поливайте раствором нарост на спине <em>Стража</em>. После ~10 000 урона на животе появится уязвимое место — «пупок». <strong>Продолжайте поливать нарост</strong>, чтобы удерживать его открытым (если остановиться — закроется). Наносите по «пупку» ~10 000 урона из <strong>огнестрельного оружия</strong>. Страж закричит."
+        },
+        {
+          title: "Фаза 2 — Прервите насыщение спорами",
+          body: "После первого крика Страж периодически будет испражняться: попавшие под его выделения получат эффект <strong>Токсин Стража</strong>. После второго крика он пойдёт насыщаться спорами, прильнув к грибу. В течение <strong>1 минуты</strong> вокруг него начнут появляться <em>Сеятели спор</em>. За <strong>3 минуты</strong> нужно уничтожить всех пятерых. При успехе нарост почернеет. Нанесите по почерневшему наросту ~10 000 урона из огнестрельного оружия, чтобы сбить панцирь."
+        },
+        {
+          title: "Фаза 3 — Уничтожьте сердце (повторить ещё 2 раза)",
+          body: "Повторите цикл «нарост → пупок → крик → споры → панцирь» ещё <strong>два раза</strong>. После третьего сброса панциря обнажится <strong>сердце</strong> Стража. Нанесите по нему ~10 000 урона из огнестрельного оружия. Всё это время защищайте союзников от периодически появляющихся мутантов."
+        }
+      ],
+      result: "После гибели Стража задание <strong>«Путешествие к центру Земли»</strong> завершается. Рядом с телом выпадут <strong>Внутренности Стража</strong> — обыщите их, чтобы найти образцы и другие предметы."
+    }
+  ],
+
+  /* ── ИСТОРИЯ ЭКСПЕДИЦИИ ──────────────────────────── */
+  lore: [
+    {
+      date: "19.06.96",
+      title: "Запись 1",
+      text: "Миша Зверобой всё-таки уговорил нас добраться до Везувия. Новые горизонты, говорит. Заработаем побольше, говорит. Видите ли, надоело ему на Гурмана горбатиться. Не платит толком, да и с головой у мужика точно не всё в порядке, раз из местной дряни готов харчи свои варить. Дак ещё и продавать это! Нонсенс.<br>Конечно, мы слышали от местных доходяг, что не всё на Везе так просто, но когда мы с мужиками увидели всё своими глазами, у некоторых из нас волосы встали дыбом.<br>Как, просто как посреди привычного ландшафта образовалась эта мерзкая, деформированная, будто не из нашего мира громадина? Сталкеры на радиовышке не то в шутку, не то серьёзно зовут её вулканом. Не сказал бы, что похоже, но и не мне судить. Немец по старой памяти назвал его fauler Berg. Гнилая гора, как мы потом выяснили. Нервно перекурив, Спорт предложил добраться до лагеря учёных «Эгида», чтобы пополнить припасы да и поспрашивать знающих людей о природе этой махины, всё-таки не каждый день такое увидишь.<br>Вернёмся на радиовышку, выспимся и двинем."
+    },
+    {
+      date: "20.06.96",
+      title: "Запись 2",
+      text: "Не, ну интересный народ эти учёные. Мы, значится, к ним со всей нашей сталкерской душой, а они даже торговать с нами не стали. Не положено, мол. Запасов и так мало и бла бла бла. Ну что за люди? Я их ещё со времён практики в институте недолюбливал, а здесь окончательно убедился, что мы разного поля ягоды.<br>Рифму вся эта история особенно задела. Еле угомонили его, чтобы рожи бить не начал. А такое желание, признаться честно, было у каждого из нас. Спасибо Зверобою за то, что со свойственным ему хладнокровием решил всё же спросить этого всезнайку Симонова, нужна ли им какая-нибудь помощь в обмен на ресурсы.<br>В общем, тема такая: как нам объяснили, гора эта появилась не просто так. Разумеется, по старой доброй традиции, не обошлось без секретной советской лаборатории. В детали нас особо не посвящали. Сказали лишь, что лаборатория и имеющиеся в ней данные невероятно ценны для научного мира и помогут разобраться в причинах возникновения аномальной горы. Нам предложили проникнуть в лабораторию, собрать всю документацию и передать учёным.<br>Дело мрачноватое, но ветер в карманах и какой-то глупый детский авантюризм не оставляют нам вариантов. После достаточно длительных обсуждений за стаканчиком беленькой, нами было принято решение согласиться. С завтрашнего дня начинаем подготовку."
+    },
+    {
+      date: "22.06.96",
+      title: "Запись 3",
+      text: "Учёные, как и было обещано, выделили нам всё необходимое: запас ИРП на три дня, солидный запас патронов и магазинов, набор медикаментов и сменных фильтров, видавший виды фотоаппарат Зоркий-4. Отдельное спасибо нашему технарю Немцу за то, что смог где-то выменять фонари на оружие. Даже на мой калашников нашёл.<br>Не без труда добравшись до входа в лабораторию и спустившись в неё, первое, что мы заметили — при полном отсутствии внешних факторов, весь подземный комплекс был наполнен миллионом всевозможных звуков. От шорохов в стенах до далёкого рыка из тёмных глубин. Зверобой говорит, что так кричать может только что-то очень большое. И очень злое. Спорт же уверяет, что слышал голоса из темноты, будто кто-то нежно напевает себе мелодию под нос. Вероятно, у мужика просто сдают нервы. Я его не виню, ведь чем дальше мы спускались, тем «интереснее» становилось."
+    },
+    {
+      date: "22.06.96",
+      title: "Запись 4",
+      text: "Если какой-то очкастый увалень ещё хоть раз нас о чём-то попросит — сразу даю в морду, без разбора. Даже Зверобой сменил милость на праведный гнев. Учёные, мать их. Одно название.<br>Я в жизни не поверю, что они не знали ничего о том, что тут творится. По мере спуска в это зловонное безумие мы периодически находим следы чьего-то присутствия. Весьма свежие, должен сказать.<br>Помимо огромного количества мусора, провалов и заваленных коридоров, основные неудобства нам доставляли огромные, сочащиеся вонючей жижей наросты грибов.<br>Но и это не самое прекрасное. Мы нашли бывших сотрудников комплекса. Где мы их нашли? В чёртовых грибах. Они буквально вросли в эти чёртовы грибы. Проходя по очередному тёмному коридору, бедный Спорт чуть не лишился рассудка после того, как прямо из стены ему на плечо легла чья-то бледная рука.<br>Нужно будет присмотреться к Спорту, ему здорово досталось. Пожалуй, как только я допишу эту запись — пропустим по стаканчику всей группой. Нервы начинают сдавать."
+    },
+    {
+      date: "23.06.96",
+      title: "Запись 5",
+      text: "Пишу трясущимися руками, под тусклым светом лампы разрушенного тоннеля. Спорт и Немец пропали. А вместе с ними и большая часть наших медикаментов и припасов.<br>Зверобой отправился в обратную сторону по нашему маршруту, но не нашёл никаких следов парней. Нам троим оставалось только одно — найти ребят и вернуться на поверхность. К чёрту учёных, к чёрту все эти документы. Главной задачей стало живыми вернуться в лагерь.<br>По мере спуска стены начинают давить ещё сильнее. Если вчера заунывные песнопения слышал только Спорт, то сегодня я тоже стал ловить себя на этом. Звук становится всё ощутимее и громче, стены будто вибрируют в такт этому заунывному мычанию.<br>Мы нашли странный труп. Вокруг него — ни одного гриба. Рядом лежало устройство, похожее на распылитель причудливой формы, будто осиное жало, и несколько флаконов с непонятной вонючей жижей. Рифма предположил, что учёные пытались нейтрализовать споры с помощью этих распылителей. Мы взяли устройство с собой.<br>Дальше начинался ад. В огромном зале Спорт и Немец не находились, но мы нашли хаотично разбросанные упаковки наших медикаментов. Потом — тишина. Песнопения прекратились. Затылком мы чувствовали, что в зале есть ещё кто-то.<br>Тварь вырвалась из нароста и набросилась на Зверобоя. Что-то похожее на человека, но высохшая мумия из грибов. Удары один за другим. Я остолбенел. Спасибо Рифме — он в хаосе всадил пулю прямо в гнилую голову этой твари.<br>Зверобой уже не подавал признаков жизни. Покойся с миром, Миша.<br>Следом весь комплекс пронзили истошные вопли. Рифма схватил меня и потащил в ближайший проход, ещё глубже в катакомбы. Мы добрались до тоннеля и закрыли за собой гермодверь. Как минимум на какое-то время это их задержит."
+    },
+    {
+      date: "",
+      title: "Запись 6",
+      text: "Я не смог ему помочь. Я просто… не смог.<br>Он спас мне жизнь, а я не смог спасти его. Остатки бетона предательски провалились под Рифмой при попытке пересечь эту пропасть.<br>Я потерял их всех и остался один.<br>Я уже не надеюсь на то, что Спорт или Немец живы, после того, что я здесь увидел. Всё, что мне остаётся — просто двигаться вперёд и постараться продать свою жизнь подороже, забрав хотя бы нескольких тварей с собой.<br>Я слышу, как они ломают дверь в начале тоннеля. Скоро они будут здесь."
+    },
+    {
+      date: "",
+      title: "Запись 7",
+      text: "я нашёл спорта. точнее то, чем он стал.<br>блуждая по чёрным коридорам в одной из комнат я встретил его. он… он говорил. не со мной — нет. он говорил с заросшей стеной, говорил с ней так, будто она его старый друг. на секунду я даже обрадовался, услышав его голос.<br>под моими ботинками предательски чавкнула грибная жижа. спорт… обернулся. не тот спорт, с которым мы весело сидели в баре любеча. и точно не тот, кто не раз спасал нас из аномалий.<br>в его глазах была тьма. в его глазах было безумие.<br>а в руке — нож. такой же как у твари, убившей мишу.<br>он бросился на меня. с тем же безумным воплем. автомат остался в каком-то из бесконечных коридоров. я не заметил, как нож прошёл между складок бронежилета и попал в мой живот. из последних сил я отбросил его и вывалился из комнаты.<br>я бежал. бежал по остаткам тусклых ламп на потолке, пока не добрался до какой-то пещеры. она явно искусственная. спорт гнался за мной, но на входе в пещеру — встал как вкопанный. и смотрел. своим пустым взглядом.<br>и вот я просто лежу под светом, исходящим от грибов, и записываю эти слова. даже не знаю, зачем.<br>если кто-то найдёт эти записи — я умоляю вас — бегите. передайте всем в зоне, что это место… проклято. оно приносит только зло и страдания.<br>запомните нас."
+    },
+    {
+      date: "",
+      title: "Эпилог",
+      text: "Дневник и разбитый фотоаппарат были найдены в скоплении грибов недалеко от входа в лабораторию второй экспедиционной группой лагеря «Эгида».<br>Все материалы были переданы учёным.<br>Тела участников первой экспедиции так и не были обнаружены.<br><br><strong>Состав первой экспедиции:</strong><br>Спорт · Немец · Старый · Миша Зверобой · Рифма",
+      epilogue: true
+    }
+  ]
+
+}; // ← конец DATA
+</script>
+
+<script src="../_nav.js"></script>
+<script src="../../common.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Загрузка...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Share+Tech+Mono&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f0a;
+    --surface:   #141710;
+    --border:    #2a2f1e;
+    --green:     #7aaa2e;
+    --green-dim: #4a6a1a;
+    --amber:     #c8920a;
+    --text:      #c9cdbf;
+    --text-dim:  #6b7060;
+    --code:      #7aaa2e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'PT Sans', sans-serif; font-size: 1rem; line-height: 1.6; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px); pointer-events: none; z-index: 9999; }
+
+  /* NAV */
+  #site-nav { position: sticky; top: 0; z-index: 100; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1rem; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 1rem; }
+  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); letter-spacing: .08em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1; }
+  .nav-logo span { color: var(--text-dim); font-weight: 400; }
+  @media (max-width: 600px) { .nav-logo span { display: none; } }
+  .nav-links { display: flex; gap: .25rem; flex-shrink: 0; align-items: center; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: .8rem; letter-spacing: .05em; padding: .3rem .55rem; border: 1px solid transparent; border-radius: 2px; transition: all .15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--green); border-color: var(--green-dim); }
+  .nav-links a.active { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-lang { display: flex; align-items: center; gap: 0; flex-shrink: 0; font-family: 'Share Tech Mono', monospace; font-size: 1rem; letter-spacing: .08em; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+  .nav-lang a { color: var(--text-dim); text-decoration: none; padding: .35rem .6rem; transition: all .15s; line-height: 1; }
+  .nav-lang a:hover { color: var(--green); background: rgba(122,170,46,.06); }
+  .nav-lang a.lang-active { color: var(--green); background: rgba(122,170,46,.1); cursor: default; pointer-events: none; }
+  .nav-lang span { color: var(--border); padding: 0 1px; user-select: none; }
+  .nav-steam { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid transparent; border-radius: 2px; color: var(--text-dim); text-decoration: none; transition: all .15s; flex-shrink: 0; }
+  .nav-steam:hover { color: var(--green); border-color: var(--green-dim); background: rgba(122,170,46,.06); }
+  .nav-steam svg { width: 24px; height: 24px; }
+  .nav-burger { display: none; flex-shrink: 0; background: none; border: 1px solid var(--border); border-radius: 3px; padding: .35rem .45rem; cursor: pointer; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
+  .nav-burger span { display: block; width: 18px; height: 2px; background: var(--text-dim); border-radius: 1px; transition: background .15s; }
+  .nav-burger:hover span { background: var(--green); }
+  .nav-dropdown { display: none; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: .5rem 1rem; }
+  .nav-dropdown.open { display: block; }
+  .nav-dropdown a { display: block; color: var(--text-dim); text-decoration: none; font-size: .85rem; letter-spacing: .05em; padding: .5rem .25rem; border-bottom: 1px solid var(--border); transition: color .15s; }
+  .nav-dropdown a:last-child { border-bottom: none; }
+  .nav-dropdown a:hover { color: var(--green); }
+  .nav-dropdown a.active { color: var(--green); }
+  .nav-dropdown .lang-row { display: flex; gap: .75rem; padding: .5rem .25rem; border-bottom: 1px solid var(--border); }
+  .nav-dropdown .lang-row a { border: none; padding: 0; font-family: 'Share Tech Mono', monospace; font-size: .8rem; }
+  .nav-dropdown .lang-row a.lang-active { color: var(--green); pointer-events: none; }
+  @media (max-width: 480px) { .nav-links { display: none; } .nav-lang { display: none; } .nav-burger { display: flex; } }
+
+  /* BREADCRUMB */
+  .breadcrumb { max-width: 900px; margin: 0 auto; padding: 1rem 1.25rem .25rem; font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: var(--text-dim); letter-spacing: .08em; }
+  .breadcrumb a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--green); }
+  .breadcrumb span { color: var(--green); margin: 0 .35em; }
+
+  /* WRAP */
+  .section-wrap { max-width: 900px; margin: 0 auto; padding: 0 1.25rem 2.5rem; }
+
+  /* PAGE TITLE */
+  .page-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); letter-spacing: .04em; text-transform: uppercase; padding: 1.25rem 0 .25rem; }
+  .page-meta { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--amber); letter-spacing: .12em; margin-bottom: 1.75rem; }
+  .page-meta::before { content: '// '; color: var(--text-dim); }
+
+  /* SECTION LABEL */
+  .section-label { font-family: 'Share Tech Mono', monospace; font-size: .82rem; letter-spacing: .2em; color: var(--green); text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* INFO BLOCK */
+  .info-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .85rem 1.1rem; margin-bottom: 1.75rem; font-size: .95rem; color: var(--text); }
+  .info-block strong { color: var(--amber); font-family: 'Oswald', sans-serif; font-weight: 600; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.75rem; }
+  .step { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--green); background: var(--surface); border: 1px solid var(--border); width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .1rem; }
+  .step-body strong { color: var(--text); font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: .03em; display: block; margin-bottom: .2rem; }
+  .step-body p { font-size: .92rem; color: var(--text-dim); }
+  code { font-family: 'Share Tech Mono', monospace; font-size: .88rem; color: var(--code); background: rgba(122,170,46,.08); padding: .05em .3em; border: 1px solid var(--green-dim); border-radius: 2px; }
+
+  /* STAGE */
+  .stage-block { margin-bottom: 2rem; }
+  .stage-label { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .12em; color: var(--green); text-transform: uppercase; margin-bottom: .85rem; display: flex; align-items: center; gap: .6rem; }
+  .stage-label::after { content: ''; flex: 1; height: 1px; background: var(--green-dim); }
+
+  /* EVENT NOTE */
+  .event-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green-dim); padding: .75rem 1rem; margin-bottom: 1rem; font-size: .88rem; color: var(--text-dim); }
+  .event-note strong { color: var(--text); font-family: 'Oswald', sans-serif; }
+
+  /* PHASES */
+  .phases { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1rem; }
+  .phase-card { background: var(--surface); border: 1px solid var(--border); }
+  .phase-header { display: flex; align-items: center; gap: 1rem; padding: .65rem 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .phase-num { font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .12em; color: var(--green); }
+  .phase-time { font-family: 'Share Tech Mono', monospace; font-size: .8rem; color: var(--amber); margin-left: auto; }
+  .phase-body { padding: .65rem 1rem; }
+  .phase-body ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+  .phase-body ul li { display: flex; align-items: center; font-size: .9rem; gap: .5rem; }
+  .phase-body ul li span { font-family: 'Share Tech Mono', monospace; font-size: .82rem; color: var(--text-dim); margin-left: auto; }
+  .phase-break { font-family: 'Share Tech Mono', monospace; font-size: .78rem; color: var(--text-dim); text-align: center; padding: .3rem; letter-spacing: .12em; }
+
+  /* RESULT NOTE */
+  .result-note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); padding: .65rem 1rem; font-size: .88rem; color: var(--text-dim); margin-top: 1rem; }
+  .result-note strong { color: var(--amber); }
+
+  /* QUOTE BLOCK */
+  .quote-block { border-left: 3px solid var(--green-dim); background: var(--surface); padding: 1rem 1.25rem; margin-bottom: .1rem; font-size: .9rem; color: var(--text-dim); font-style: italic; line-height: 1.7; }
+  .quote-block strong { color: var(--text); font-style: normal; }
+
+  /* LORE */
+  .lore-entry { margin-bottom: 1.5rem; }
+  .lore-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: .5rem; }
+  .lore-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text); letter-spacing: .04em; }
+  .lore-date { font-family: 'Share Tech Mono', monospace; font-size: .75rem; color: var(--text-dim); letter-spacing: .08em; }
+  .lore-epilogue .lore-title { color: var(--amber); }
+  .lore-epilogue .quote-block { border-color: var(--amber); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 1.25rem; font-family: 'Share Tech Mono', monospace; font-size: .72rem; color: var(--text-dim); text-align: center; letter-spacing: .05em; line-height: 1.8; }
+  footer a { color: var(--text-dim); text-decoration: underline; }
+  footer a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div id="site-nav"></div>
+<nav class="breadcrumb" id="bc"></nav>
+
+<div class="section-wrap">
+
+  <h1 class="page-title" id="r-title"></h1>
+  <p class="page-meta"   id="r-subtitle"></p>
+
+  <p class="section-label">Общая информация</p>
+  <div class="info-block" id="r-info"></div>
+
+  <p class="section-label">Прохождение</p>
+  <div id="r-stages"></div>
+
+  <p class="section-label">История первой экспедиции</p>
+  <div id="r-lore"></div>
+
+</div>
+
+<footer>
+  STAY OUT // WIKI // НЕЗАВИСИМАЯ ФАНАТСКАЯ ЭНЦИКЛОПЕДИЯ ·
+  Контент под лицензией <a href="#">CC BY 4.0</a> ·
+  Stay Out и все связанные материалы принадлежат их правообладателям. Данный ресурс является неофициальным фан-сайтом.
+</footer>
+
+<script>
+(function(){
+  const d = DATA;
+
+  document.title = d.title + ' — Stay Out Wiki';
+
+  // breadcrumb
+  let bc = '';
+  d.breadcrumb.forEach((c,i) => { bc += (i?'<span>›</span>':'') + '<a href="'+c.href+'">'+c.label+'</a>'; });
+  bc += '<span>›</span><span style="color:var(--text)">'+d.title+'</span>';
+  document.getElementById('bc').innerHTML = bc;
+
+  // заголовок
+  document.getElementById('r-title').textContent    = d.title;
+  document.getElementById('r-subtitle').textContent = d.subtitle;
+  document.getElementById('r-info').innerHTML       = d.info;
+
+  // этапы
+  let stagesHtml = '';
+  d.stages.forEach(stage => {
+    stagesHtml += `<div class="stage-block"><div class="stage-label">${stage.label}</div>`;
+
+    if (stage.steps) {
+      stagesHtml += '<div class="steps">';
+      stage.steps.forEach((s,i) => {
+        stagesHtml += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><strong>${s.title}</strong><p>${s.body}</p></div></div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.eventTitle) {
+      stagesHtml += `<div class="event-note"><strong>${stage.eventTitle}</strong><br>${stage.eventDesc}</div>`;
+    }
+
+    if (stage.phases) {
+      stagesHtml += '<div class="phases">';
+      stage.phases.forEach((ph,i) => {
+        if (i && stage.phaseBreak) stagesHtml += `<div class="phase-break">${stage.phaseBreak}</div>`;
+        stagesHtml += `<div class="phase-card">
+          <div class="phase-header">
+            <span class="phase-num">${ph.label}</span>
+            <span style="color:var(--text-dim);font-size:.88rem;">${ph.total}</span>
+            <span class="phase-time">${ph.time}</span>
+          </div>
+          <div class="phase-body">
+            <ul>${ph.enemies.map(e=>`<li>${e.name}<span>${e.count}</span></li>`).join('')}</ul>
+          </div>
+        </div>`;
+      });
+      stagesHtml += '</div>';
+    }
+
+    if (stage.result) {
+      stagesHtml += `<div class="result-note">${stage.result}</div>`;
+    }
+
+    stagesHtml += '</div>';
+  });
+  document.getElementById('r-stages').innerHTML = stagesHtml;
+
+  // история
+  let loreHtml = '';
+  d.lore.forEach(entry => {
+    const cls = entry.epilogue ? 'lore-entry lore-epilogue' : 'lore-entry';
+    loreHtml += `<div class="${cls}">
+      <div class="lore-header">
+        <span class="lore-title">${entry.title}</span>
+        ${entry.date ? `<span class="lore-date">${entry.date}</span>` : ''}
+      </div>
+      <div class="quote-block">${entry.text}</div>
+    </div>`;
+  });
+  document.getElementById('r-lore').innerHTML = loreHtml;
+
+  // активный пункт навбара
+  const page = location.pathname.split('/').pop().replace('.html','');
+  document.querySelectorAll('.nav-links a, .nav-dropdown a').forEach(a => {
+    if (a.dataset.page === page) a.classList.add('active');
+  });
+
+  // бургер
+  const burger = document.getElementById('navBurger');
+  const drop   = document.getElementById('navDropdown');
+  if (burger && drop) burger.addEventListener('click', () => drop.classList.toggle('open'));
+})();
+</script>
+
+</body>
+</html>
